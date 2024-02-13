@@ -1,29 +1,12 @@
-use pages::{home::HomePage, login::LoginPage, not_found::NotFoundPage, signup::SignupPage};
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-use crate::router::Route;
+use crate::router::{switch, Route};
 
 mod components;
 mod pages;
 mod router;
-
-fn switch(routes: Route) -> Html {
-    match routes {
-        Route::Home => html! {
-        <HomePage />
-        },
-        Route::Login => html! {
-        <LoginPage />
-        },
-        Route::Signup => html! {
-        <SignupPage />
-        },
-        Route::NotFound => html! {
-        <NotFoundPage />
-        },
-    }
-}
+mod data;
 
 #[function_component]
 fn App() -> Html {

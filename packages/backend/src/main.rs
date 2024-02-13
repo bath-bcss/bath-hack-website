@@ -1,11 +1,13 @@
 use actix_web::{middleware::Logger, web, App, HttpServer};
 use app_config::parse_config;
 use db::init_db;
+use routes::sign_up::sign_up_route;
 
 mod app_config;
 mod schema;
 mod db;
 mod models;
+mod routes;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -21,6 +23,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(Logger::default())
             .app_data(web::Data::new(config.to_owned()))
             .app_data(web::Data::new(db_con.to_owned()))
+            .service(sign_up_route)
     };
 
     HttpServer::new(http_factory)

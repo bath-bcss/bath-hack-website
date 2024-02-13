@@ -10,6 +10,8 @@ pub struct Props {
     pub class: Option<Classes>,
     #[prop_or("button".to_string())]
     pub button_type: String,
+    #[prop_or_default]
+    pub disabled: bool,
 }
 
 #[function_component(Button)]
@@ -37,12 +39,12 @@ pub fn button(props: &Props) -> Html {
             if props.dark_mode {
                 "hover:bg-white/20"
             } else {
-                "hover:bg-bcss-700/50"
+                "hover:bg-bcss-800/90"
             },
             if props.dark_mode {
                 "active:bg-white/10"
             } else {
-                "active:bg-bcss-800/80"
+                "active:bg-bcss-800"
             },
         );
 
@@ -54,7 +56,8 @@ pub fn button(props: &Props) -> Html {
     });
 
     html! {
-    <button class={(*class).clone()} onclick={props.onclick.clone()} type={props.button_type.clone()}>
+    <button class={(*class).clone()} onclick={props.onclick.clone()} type={props.button_type.clone()}
+        disabled={props.disabled}>
         {props.children.clone()}
     </button>
     }
