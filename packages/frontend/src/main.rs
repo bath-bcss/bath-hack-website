@@ -1,21 +1,30 @@
+use pages::{home::HomePage, login::LoginPage, not_found::NotFoundPage};
 use yew::prelude::*;
+use yew_router::prelude::*;
+
+use crate::router::Route;
+
+mod components;
+mod pages;
+mod router;
+
+fn switch(routes: Route) -> Html {
+    match routes {
+        Route::Home => html! {
+        <HomePage /> },
+        Route::Login => html! {
+        <LoginPage /> },
+        Route::NotFound => html! {
+        <NotFoundPage /> },
+    }
+}
 
 #[function_component]
 fn App() -> Html {
-    let counter = use_state(|| 0);
-    let onclick = {
-        let counter = counter.clone();
-        move |_| {
-            let value = *counter + 1;
-            counter.set(value);
-        }
-    };
-
     html! {
-        <div>
-            <button {onclick}>{ "+1" }</button>
-            <p>{ *counter }</p>
-        </div>
+    <BrowserRouter>
+        <Switch<Route> render={switch} />
+    </BrowserRouter>
     }
 }
 
