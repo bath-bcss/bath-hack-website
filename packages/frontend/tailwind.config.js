@@ -8,21 +8,22 @@ module.exports = {
         extend: {
             colors: {
                 bcss: {
-                    '50': '#f1f1ff',
-                    '100': '#e6e6ff',
-                    '200': '#d0d0ff',
-                    '300': '#aeabff',
-                    '400': '#867cff',
-                    '500': '#6047ff',
-                    '600': '#4b21ff',
-                    '700': '#3d10f1',
-                    '800': '#340dd3',
-                    '900': '#2a0ca6',
-                    '950': '#160471',
+                    '50': '#fcf4ff',
+                    '100': '#f8e6ff',
+                    '200': '#f2d1ff',
+                    '300': '#e8acff',
+                    '400': '#d978ff',
+                    '500': '#cb44ff',
+                    '600': '#be20fd',
+                    '700': '#a510de',
+                    '800': '#8b13b6',
+                    '900': '#711192',
+                    '950': '#51006e',
                 },
             },
             fontSize: {
-                hero: '4rem',
+                hero: '4.5rem',
+                heroSubtitle: '1.5rem',
             },
             fontFamily: {
                 'sans': ['"Sometype Mono"', "ui-sans-serif", "system-ui"]

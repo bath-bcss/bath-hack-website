@@ -1,4 +1,4 @@
-use pages::{home::HomePage, login::LoginPage, not_found::NotFoundPage};
+use pages::{home::HomePage, login::LoginPage, not_found::NotFoundPage, signup::SignupPage};
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -11,11 +11,17 @@ mod router;
 fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => html! {
-        <HomePage /> },
+        <HomePage />
+        },
         Route::Login => html! {
-        <LoginPage /> },
+        <LoginPage />
+        },
+        Route::Signup => html! {
+        <SignupPage />
+        },
         Route::NotFound => html! {
-        <NotFoundPage /> },
+        <NotFoundPage />
+        },
     }
 }
 

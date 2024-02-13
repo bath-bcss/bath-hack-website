@@ -355,6 +355,9 @@ dependencies = [
 name = "bhw-frontend"
 version = "0.1.0"
 dependencies = [
+ "gloo-console 0.3.0",
+ "uuid",
+ "web-sys",
  "yew",
  "yew-router",
 ]
@@ -2148,6 +2151,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f00cc9702ca12d3c81455259621e676d0f7251cec66a21e98fe2e9a37db93b2a"
 dependencies = [
  "getrandom",
+ "rand",
 ]
 
 [[package]]

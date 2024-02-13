@@ -8,3 +8,6 @@ edition = "2021"
 [dependencies]
 yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
 yew-router = { git = "https://github.com/yewstack/yew.git" }
+gloo-console = "0.3.0"
+uuid = {version = "1.7.0", features = ["v4", "fast-rng"]}
+web-sys = "0.3.68"

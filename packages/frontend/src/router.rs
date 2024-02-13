@@ -4,6 +4,8 @@ use yew_router::prelude::*;
 pub enum Route {
     #[at("/")]
     Home,
+    #[at("/signup")]
+    Signup,
     #[at("/login")]
     Login,
     #[not_found]
