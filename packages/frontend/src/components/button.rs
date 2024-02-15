@@ -46,6 +46,8 @@ pub fn button(props: &Props) -> Html {
             } else {
                 "active:bg-bcss-800"
             },
+            "disabled:bg-gray-400",
+            "disabled:cursor-not-allowed"
         );
 
         if let Some(class_prop) = class_prop {

@@ -9,6 +9,16 @@ diesel::table! {
 }
 
 diesel::table! {
+    signup_request (id) {
+        id -> Uuid,
+        bath_username -> Text,
+        created_at -> Timestamp,
+        expires -> Timestamp,
+        secret_hash -> Text,
+    }
+}
+
+diesel::table! {
     users (id) {
         id -> Uuid,
         display_name -> Text,
@@ -25,5 +35,6 @@ diesel::joinable!(users -> groups (group_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
     groups,
+    signup_request,
     users,
 );

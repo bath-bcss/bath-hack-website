@@ -8,6 +8,8 @@ mod schema;
 mod db;
 mod models;
 mod routes;
+mod util;
+mod data;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

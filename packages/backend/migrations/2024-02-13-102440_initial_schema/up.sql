@@ -1,5 +1,5 @@
 CREATE TABLE groups (
-    id uuid primary key,
+    id uuid primary key not null,
     join_code char(8) unique
 );
 
