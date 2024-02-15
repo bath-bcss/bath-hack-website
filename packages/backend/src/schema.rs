@@ -21,12 +21,12 @@ diesel::table! {
 diesel::table! {
     users (id) {
         id -> Uuid,
-        display_name -> Text,
+        display_name -> Nullable<Text>,
         bath_username -> Text,
         password_hash -> Text,
         created_at -> Timestamp,
-        dietary_requirements -> Text,
-        accessibility_requirements -> Text,
+        dietary_requirements -> Nullable<Text>,
+        accessibility_requirements -> Nullable<Text>,
         group_id -> Nullable<Uuid>,
     }
 }

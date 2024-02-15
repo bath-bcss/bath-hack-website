@@ -1,13 +1,20 @@
+use std::collections::HashMap;
+
 use chrono::Duration;
 use chrono::NaiveDateTime;
 use chrono::Utc;
 use diesel::prelude::*;
 use diesel::PgConnection;
+use mailgun_rs::SendResponse;
+use mailgun_rs::SendResult;
 use thiserror::Error;
 
+use crate::app_config::AppConfig;
+use crate::data::mail::Mailer;
+use crate::data::mail::SendInstruction;
 use crate::util::passwords::PasswordManager;
 
-#[derive(Queryable, Selectable, Insertable)]
+#[derive(Debug, Queryable, Selectable, Insertable, Clone)]
 #[diesel(table_name = crate::schema::signup_request)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct SignupRequestObject {
@@ -32,8 +39,8 @@ pub enum SignupRequestCreateError {
 
 #[derive(Debug)]
 pub struct NewSignupRequestSecret {
-    pub id: String,
     pub secret: String,
+    pub request: SignupRequestObject,
 }
 
 impl SignupRequestObject {
@@ -47,6 +54,26 @@ impl SignupRequestObject {
             .filter(signup_request::bath_username.eq(username))
             .get_result(conn)?;
         Ok(resp > 0)
+    }
+
+    pub fn from_id(
+        conn: &mut PgConnection,
+        id: &String,
+    ) -> Result<Option<SignupRequestObject>, diesel::result::Error> {
+        use crate::schema::signup_request;
+        let parsed_id = uuid::Uuid::parse_str(id).unwrap();
+
+        let resp: Vec<SignupRequestObject> = signup_request::table
+            .select(SignupRequestObject::as_select())
+            .filter(signup_request::id.eq(parsed_id))
+            .load(conn)?;
+
+        let first = resp.first().cloned();
+        Ok(first)
+    }
+
+    pub fn verify_hash(&self, secret: &String) -> Result<bool, argon2::password_hash::Error> {
+        PasswordManager::verify(&secret, &self.secret_hash)
     }
 
     pub fn create(
@@ -84,8 +111,31 @@ impl SignupRequestObject {
             .map_err(|e| SignupRequestCreateError::DBError(e))?;
 
         Ok(NewSignupRequestSecret {
-            id: new_signup_request.id.to_string(),
             secret: secret.random_password,
+            request: new_signup_request,
         })
+    }
+
+    fn email_address(&self) -> String {
+        return (self.bath_username.clone()) + "@bath.ac.uk";
+    }
+
+    pub fn send_email<'a>(
+        &self,
+        config: &'a AppConfig,
+        secret: &'a String,
+    ) -> SendResult<SendResponse> {
+        let mailer = Mailer::<'a>::client(config);
+        let mut mail_vars = HashMap::new();
+        mail_vars.insert("request_id".to_string(), self.id.to_string());
+        mail_vars.insert("secret".to_string(), secret.clone());
+
+        let instruction = SendInstruction {
+            to: &self.email_address(),
+            subject: &"Welcome to Bath Hack!".to_string(),
+            template_key: &"bhw-welcome".to_string(),
+            vars: &mail_vars,
+        };
+        mailer.send_template(&instruction)
     }
 }

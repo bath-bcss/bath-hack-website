@@ -1,5 +1,5 @@
 use chrono::NaiveDateTime;
-use diesel::{associations::{Associations, Identifiable}, deserialize::Queryable, Selectable};
+use diesel::prelude::*;
 
 #[derive(Queryable, Selectable, Identifiable, Associations)]
 #[diesel(table_name = crate::schema::users)]
@@ -14,4 +14,30 @@ pub struct User {
     pub dietary_requirements: String,
     pub accessibility_requirements: String,
     pub group_id: Option<uuid::Uuid>,
+}
+
+impl User {
+    pub fn check_username_exists(
+        conn: &mut PgConnection,
+        username: String,
+    ) -> Result<bool, diesel::result::Error> {
+        use crate::schema::users;
+
+        let result_count: i64 = users::table
+            .count()
+            .filter(users::bath_username.eq(username))
+            .get_result(conn)?;
+
+        Ok(result_count > 0)
+    }
+
+    pub fn create(conn: &mut PgConnection, username: String) {
+        use crate::schema::users;
+
+        let new_user = User {
+
+        };
+
+        diesel::insert_into(users::table).values(records)
+    }
 }

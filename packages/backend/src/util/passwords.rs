@@ -1,4 +1,4 @@
-use argon2::{password_hash::SaltString, Argon2, PasswordHasher};
+use argon2::{password_hash::SaltString, Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use rand::{rngs::OsRng, RngCore};
 
 pub struct PasswordManager;
@@ -28,5 +28,12 @@ impl PasswordManager {
             random_password: random_string,
             hash,
         })
+    }
+
+    pub fn verify(password: &String, hash: &String) -> Result<bool, argon2::password_hash::Error> {
+        let parsed_hash = PasswordHash::new(hash)?;
+        let result = Argon2::default().verify_password(password.as_bytes(), &parsed_hash);
+
+        Ok(result.is_ok())
     }
 }
