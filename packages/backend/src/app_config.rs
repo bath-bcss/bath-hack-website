@@ -7,6 +7,9 @@ pub struct AppConfig {
     pub bind_port: u16,
     pub database_url: String,
 
+    pub redis_string: String,
+    pub cookie_secret: String,
+
     pub mailgun_api_key: String,
     pub mailgun_domain: String,
 }

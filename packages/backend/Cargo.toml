@@ -8,6 +8,7 @@ rust-version = "1.75"
 
 [dependencies]
 actix-web = "4"
+actix-session = { version = "0.9.0", features = ["redis-actor-session"] }
 figment = { version = "0.10", features = ["env", "toml"] }
 serde = {version = "1.0", features = ["derive"]}
 serde_json = "1"
@@ -15,10 +16,12 @@ env_logger = { version = "0.11" }
 diesel = { version = "2.1.0", features = ["postgres", "r2d2", "uuid", "chrono"] }
 uuid = { version = "1.7.0", features = ["v4"] }
 chrono = "0.4.34"
-bhw-types = { path = "../types" }
 r2d2 = "0.8.10"
 argon2 = "0.5.3"
 rand = {version = "0.8.5", features=["getrandom"]}
 hex = "0.4.3"
 thiserror = "1.0.57"
 mailgun-rs = "0.1.10"
+futures-util = "0.3.30"
+
+bhw-types = { path = "../types" }

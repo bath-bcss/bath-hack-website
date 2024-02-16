@@ -24,4 +24,8 @@ pub enum AccountActivateResponseError {
     SecretError,
     #[error("Database error")]
     DBError,
+    #[error("Creating user: {0}")]
+    CreateUserError(String),
+    #[error("SessionError")]
+    SessionError,
 }
