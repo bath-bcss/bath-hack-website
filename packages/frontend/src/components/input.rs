@@ -1,4 +1,5 @@
 use uuid::Uuid;
+use web_sys::HtmlInputElement;
 use yew::prelude::*;
 
 #[derive(Properties, PartialEq)]
@@ -7,8 +8,12 @@ pub struct Props {
     pub input_label: Option<String>,
     #[prop_or_default]
     pub placeholder: Option<String>,
-    pub value: String,
-    pub onchange: Callback<InputEvent, ()>,
+    pub handle: UseStateHandle<String>,
+
+    #[prop_or_default]
+    pub input_type: Option<String>,
+    #[prop_or_default]
+    pub required: bool,
 }
 
 #[function_component(Input)]
@@ -34,6 +39,18 @@ pub fn input(props: &Props) -> Html {
 
     let label_id = use_memo((), |_| Uuid::new_v4().to_string());
 
+    let handle_value = (*props.handle).clone();
+    let on_change_handler = {
+        let handle = props.handle.to_owned();
+
+        use_callback((), move |value: InputEvent, _| {
+            let target = value.target_dyn_into::<HtmlInputElement>();
+            if let Some(target) = target {
+                handle.set(target.value());
+            }
+        })
+    };
+
     html! {
     <>
         if props.input_label.clone().is_some() {
@@ -42,7 +59,8 @@ pub fn input(props: &Props) -> Html {
         </label>
         }
         <input class={input_class} id={(*label_id).clone()} placeholder={props.placeholder.clone()}
-            oninput={props.onchange.clone()} />
+            type={props.input_type.clone()} required={props.required.clone()}
+            oninput={on_change_handler} value={handle_value} />
     </>
     }
 }

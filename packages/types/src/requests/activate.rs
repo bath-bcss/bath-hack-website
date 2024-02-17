@@ -13,7 +13,7 @@ pub struct AccountActivateRequest {
     Debug, Serialize, Deserialize, Clone, PartialEq, BadRequestResponder, DefaultWithError,
 )]
 pub struct AccountActivateResponse {
-    error: Option<AccountActivateResponseError>,
+    pub error: Option<AccountActivateResponseError>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Error, ErrorBadRequestResponder, FromDieselError)]
@@ -26,6 +26,8 @@ pub enum AccountActivateResponseError {
     DBError,
     #[error("Creating user: {0}")]
     CreateUserError(String),
+    #[error("Deleting signup request: {0}")]
+    DeleteRequestError(String),
     #[error("SessionError")]
     SessionError,
 }

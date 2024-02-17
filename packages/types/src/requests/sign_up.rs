@@ -28,6 +28,8 @@ pub struct SignUpResponse {
 pub enum SignUpResponseError {
     #[error("Username already registered")]
     UsernameAlreadyExists,
+    #[error("That doesn't look like a valid UoB username. Please contact su-bcss@bath.ac.uk if we're wrong.")]
+    UsernameInvalid,
     #[error("{0}")]
     CreateError(String),
     #[error("Cannot send email: {0}")]

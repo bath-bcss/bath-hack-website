@@ -1,5 +1,5 @@
 use actix_session::Session;
-use actix_web::{get, post, web, Responder};
+use actix_web::{post, web, Responder};
 use bhw_types::requests::{
     activate::{AccountActivateRequest, AccountActivateResponse, AccountActivateResponseError},
     sign_up::{SignUpRequest, SignUpResponse, SignUpResponseError},
@@ -9,7 +9,10 @@ use crate::{
     app_config::AppConfig,
     data::session::SessionUser,
     db::DbPool,
-    models::{signup_requests::SignupRequestObject, users::User},
+    models::{
+        signup_requests::{SignupRequestFromIdError, SignupRequestObject},
+        users::User,
+    },
 };
 
 #[post("/auth/signup")]
@@ -18,6 +21,10 @@ pub async fn sign_up_route(
     db: web::Data<DbPool>,
     config: web::Data<AppConfig>,
 ) -> actix_web::Result<impl Responder> {
+    if !User::validate_username(&request.bath_username) {
+        return Err(SignUpResponseError::UsernameInvalid.into());
+    }
+
     web::block(move || -> Result<(), SignUpResponseError> {
         let mut conn = db.get().map_err(|_| SignUpResponseError::DBError)?;
 
@@ -46,8 +53,8 @@ pub async fn sign_up_route(
     Ok(SignUpResponse::default())
 }
 
-#[get("/auth/activate")]
-pub async fn user_sign_up_activate_route(
+#[post("/auth/activate")]
+pub async fn account_activate_route(
     request: web::Json<AccountActivateRequest>,
     db: web::Data<DbPool>,
     session: Session,
@@ -60,7 +67,15 @@ pub async fn user_sign_up_activate_route(
 
             let new_user_id = conn.build_transaction().serializable().run(
                 |mut tx| -> Result<uuid::Uuid, AccountActivateResponseError> {
-                    let signup_request = SignupRequestObject::from_id(&mut tx, &request.id)?
+                    let signup_request = SignupRequestObject::from_id(&mut tx, &request.id)
+                        .map_err(|e| match e {
+                            SignupRequestFromIdError::InvalidID(_) => {
+                                AccountActivateResponseError::IdOrSecretWrong
+                            }
+                            SignupRequestFromIdError::DBError(_) => {
+                                AccountActivateResponseError::DBError
+                            }
+                        })?
                         .ok_or(AccountActivateResponseError::IdOrSecretWrong)?;
 
                     let is_password_correct = signup_request
@@ -76,6 +91,10 @@ pub async fn user_sign_up_activate_route(
                             .map_err(|e| {
                                 AccountActivateResponseError::CreateUserError(e.to_string())
                             })?;
+
+                    signup_request.delete(&mut tx).map_err(|e| {
+                        AccountActivateResponseError::DeleteRequestError(e.to_string())
+                    })?;
 
                     Ok(new_user.id)
                 },

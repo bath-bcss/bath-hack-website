@@ -1,5 +1,4 @@
 use bhw_types::requests::sign_up::SignUpRequest;
-use web_sys::HtmlInputElement;
 use yew::prelude::*;
 use yew_router::hooks::use_navigator;
 
@@ -16,16 +15,6 @@ use crate::{
 pub fn sign_up_page() -> Html {
     let username_handle = use_state(String::default);
     let username = (*username_handle).clone();
-    let on_username_change = {
-        let username_handle = username_handle.clone();
-
-        use_callback((), move |value: InputEvent, _| {
-            let target = value.target_dyn_into::<HtmlInputElement>();
-            if let Some(target) = target {
-                username_handle.set(target.value());
-            }
-        })
-    };
 
     let loading_handle = use_state(|| false);
     let loading = (*loading_handle).clone();
@@ -54,7 +43,7 @@ pub fn sign_up_page() -> Html {
 
                     loading_handle.set(true);
                     error_handle.set(None);
-                    let response = sign_up_request(SignUpRequest {
+                    let response = sign_up_request(&SignUpRequest {
                         bath_username: username.clone(),
                     })
                     .await;
@@ -83,8 +72,7 @@ pub fn sign_up_page() -> Html {
             </h1>
 
             <form onsubmit={on_form_submit}>
-                <Input input_label="Bath Username" placeholder="E.g. pk760" onchange={on_username_change}
-                    value={username} />
+                <Input input_label="Bath Username" placeholder="E.g. pk760" handle={username_handle} required={true} />
 
                 <Button dark_mode={false} class={classes!("mt-4")} button_type="submit" disabled={loading}>
                     {"Sign up!"}

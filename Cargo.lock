@@ -512,6 +512,7 @@ dependencies = [
  "mailgun-rs",
  "r2d2",
  "rand",
+ "regex",
  "serde",
  "serde_json",
  "thiserror",

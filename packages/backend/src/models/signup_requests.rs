@@ -43,6 +43,14 @@ pub struct NewSignupRequestSecret {
     pub request: SignupRequestObject,
 }
 
+#[derive(Debug, Error)]
+pub enum SignupRequestFromIdError {
+    #[error("Could not parse ID: {0}")]
+    InvalidID(uuid::Error),
+    #[error("Finding SignupRequest failed: {0}")]
+    DBError(diesel::result::Error),
+}
+
 impl SignupRequestObject {
     pub fn exists_for_username(
         conn: &mut PgConnection,
@@ -59,14 +67,16 @@ impl SignupRequestObject {
     pub fn from_id(
         conn: &mut PgConnection,
         id: &String,
-    ) -> Result<Option<SignupRequestObject>, diesel::result::Error> {
+    ) -> Result<Option<SignupRequestObject>, SignupRequestFromIdError> {
         use crate::schema::signup_request;
-        let parsed_id = uuid::Uuid::parse_str(id).unwrap();
+        let parsed_id =
+            uuid::Uuid::parse_str(id).map_err(|e| SignupRequestFromIdError::InvalidID(e))?;
 
         let resp: Vec<SignupRequestObject> = signup_request::table
             .select(SignupRequestObject::as_select())
             .filter(signup_request::id.eq(parsed_id))
-            .load(conn)?;
+            .load(conn)
+            .map_err(|e| SignupRequestFromIdError::DBError(e))?;
 
         let first = resp.first().cloned();
         Ok(first)
@@ -114,6 +124,16 @@ impl SignupRequestObject {
             secret: secret.random_password,
             request: new_signup_request,
         })
+    }
+
+    pub fn delete(&self, conn: &mut PgConnection) -> Result<(), diesel::result::Error> {
+        use crate::schema::signup_request;
+
+        diesel::delete(signup_request::table)
+            .filter(signup_request::id.eq(self.id))
+            .execute(conn)?;
+
+        Ok(())
     }
 
     fn email_address(&self) -> String {

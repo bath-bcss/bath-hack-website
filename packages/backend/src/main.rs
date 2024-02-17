@@ -8,7 +8,7 @@ use actix_web::{
 };
 use app_config::parse_config;
 use db::init_db;
-use routes::sign_up::sign_up_route;
+use routes::sign_up::{sign_up_route, account_activate_route};
 
 mod app_config;
 mod data;
@@ -45,6 +45,7 @@ async fn main() -> std::io::Result<()> {
                 .app_data(web::Data::new(config.to_owned()))
                 .app_data(web::Data::new(db_con.to_owned()))
                 .service(sign_up_route)
+                .service(account_activate_route)
         }
     };
 

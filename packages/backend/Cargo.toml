@@ -23,5 +23,6 @@ hex = "0.4.3"
 thiserror = "1.0.57"
 mailgun-rs = "0.1.10"
 futures-util = "0.3.30"
+regex = "1.10.3"
 
 bhw-types = { path = "../types" }

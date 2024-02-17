@@ -1,18 +1,11 @@
-use bhw_types::requests::sign_up::{SignUpRequest, SignUpResponse};
-use gloo_net::http::Request;
+use bhw_types::requests::{sign_up::{SignUpRequest, SignUpResponse}, activate::{AccountActivateRequest, AccountActivateResponse}};
 
-use super::api::{build_path, FrontendRequestError};
+use super::api::{FrontendRequestError, send_post};
 
-pub async fn sign_up_request(request: SignUpRequest) -> Result<SignUpResponse, FrontendRequestError> {
-    let resp: SignUpResponse = Request::post(build_path("/auth/signup".to_string()).as_str())
-        .json(&request)
-        .map_err(|e| FrontendRequestError::SerializeFailed(e.to_string()))?
-        .send()
-        .await
-        .map_err(|e| FrontendRequestError::RequestFailed(e.to_string()))?
-        .json()
-        .await
-        .map_err(|e| FrontendRequestError::DeserializeFailed(e.to_string()))?;
+pub async fn sign_up_request(request: &SignUpRequest) -> Result<SignUpResponse, FrontendRequestError> {
+    send_post("/auth/signup".to_string(), &request).await
+}
 
-    Ok(resp)
+pub async fn account_activate_request(request: &AccountActivateRequest) -> Result<AccountActivateResponse, FrontendRequestError> {
+    send_post("/auth/activate".to_string(), request).await
 }

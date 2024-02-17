@@ -28,6 +28,11 @@ pub enum CreateUserError {
 }
 
 impl User {
+    pub fn validate_username(username: &String) -> bool {
+        let username_regex = regex::Regex::new(r"^[a-z]{2,4}\d{2,5}$").expect("Username regex");
+        username_regex.is_match(username.as_str())
+    }
+
     pub fn check_username_exists(
         conn: &mut PgConnection,
         username: String,
