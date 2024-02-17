@@ -1,7 +1,10 @@
-use yew_router::prelude::*;
 use yew::prelude::*;
+use yew_router::prelude::*;
 
-use crate::pages::{home::HomePage, login::LoginPage, not_found::NotFoundPage, signup::SignupPage, signup_success::SignupSuccessPage};
+use crate::pages::{
+    home::HomePage, login::LoginPage, not_found::NotFoundPage, signup::SignupPage,
+    signup_activate::SignupActivatePage, signup_success::SignupSuccessPage,
+};
 
 #[derive(Clone, Routable, PartialEq)]
 pub enum Route {
@@ -11,6 +14,8 @@ pub enum Route {
     Signup,
     #[at("/signup/success")]
     SignupSuccess,
+    #[at("/signup/activate")]
+    ActivateAccount,
     #[at("/login")]
     Login,
     #[not_found]
@@ -31,6 +36,9 @@ pub fn switch(routes: Route) -> Html {
         },
         Route::SignupSuccess => html! {
         <SignupSuccessPage />
+        },
+        Route::ActivateAccount => html! {
+        <SignupActivatePage />
         },
         Route::NotFound => html! {
         <NotFoundPage />
