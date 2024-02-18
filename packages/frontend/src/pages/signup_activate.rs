@@ -23,12 +23,12 @@ struct QueryParams {
 pub fn signup_activate_page() -> Html {
     let location = use_location();
 
-    let new_password_handle = use_state(|| String::from(""));
+    let new_password_handle = use_state_eq(String::default);
     let new_password = (*new_password_handle).clone();
 
-    let loading_handle = use_state(|| false);
+    let loading_handle = use_state_eq(|| false);
     let loading = (*loading_handle).clone();
-    let error_handle = use_state(|| None::<String>);
+    let error_handle = use_state_eq(|| None::<String>);
     let error = (*error_handle).clone();
 
     let navigator = use_navigator().expect_throw("Navigator not found");
@@ -66,7 +66,7 @@ pub fn signup_activate_page() -> Html {
                 Err(e) => error_handle.set(Some(e.to_string())),
                 Ok(d) => match d.error {
                     None => {
-                        navigator.push(&Route::Home);
+                        navigator.push(&Route::AccountHome);
                     }
                     Some(e) => error_handle.set(Some(e.to_string())),
                 },

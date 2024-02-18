@@ -12,6 +12,8 @@ pub struct AppConfig {
 
     pub mailgun_api_key: String,
     pub mailgun_domain: String,
+
+    pub ldap_url: String
 }
 
 pub fn parse_config() -> AppConfig {

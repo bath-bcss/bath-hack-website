@@ -4,7 +4,7 @@ use thiserror::Error;
 
 use crate::util::passwords::PasswordManager;
 
-#[derive(Queryable, Selectable, Identifiable, Associations, Insertable)]
+#[derive(Debug, Queryable, Selectable, Identifiable, Associations, Insertable, Clone)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[diesel(belongs_to(crate::models::groups::Group))]
@@ -42,9 +42,26 @@ impl User {
         let result_count: i64 = users::table
             .count()
             .filter(users::bath_username.eq(username))
+            .limit(1)
             .get_result(conn)?;
 
         Ok(result_count > 0)
+    }
+
+    pub fn find_by_username(
+        conn: &mut PgConnection,
+        username: String,
+    ) -> Result<Option<Self>, diesel::result::Error> {
+        use crate::schema::users;
+
+        let response: Vec<Self> = users::table
+            .select(Self::as_select())
+            .filter(users::bath_username.eq(username))
+            .limit(1)
+            .load(conn)?;
+
+        let first = response.first().cloned();
+        Ok(first)
     }
 
     pub fn create(
@@ -74,5 +91,9 @@ impl User {
             .map_err(|e| CreateUserError::DBError(e))?;
 
         Ok(new_user)
+    }
+
+    pub fn verify_password(&self, password: &String) -> Result<bool, argon2::password_hash::Error> {
+        PasswordManager::verify(password, &self.password_hash)
     }
 }

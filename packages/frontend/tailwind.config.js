@@ -26,7 +26,7 @@ module.exports = {
                 heroSubtitle: '1.5rem',
             },
             fontFamily: {
-                'sans': ['"Sometype Mono"', "ui-sans-serif", "system-ui"]
+                'sans': ['"IBM Plex Sans"', "ui-sans-serif", "system-ui"]
             },
             fontWeight: {
                 hero: '800',

@@ -13,12 +13,12 @@ use crate::{
 
 #[function_component(SignupPage)]
 pub fn sign_up_page() -> Html {
-    let username_handle = use_state(String::default);
+    let username_handle = use_state_eq(String::default);
     let username = (*username_handle).clone();
 
-    let loading_handle = use_state(|| false);
+    let loading_handle = use_state_eq(|| false);
     let loading = (*loading_handle).clone();
-    let error_handle = use_state(|| Option::<String>::None);
+    let error_handle = use_state_eq(|| Option::<String>::None);
     let error = (*error_handle).clone();
 
     let navigator = use_navigator().unwrap();

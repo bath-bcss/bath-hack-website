@@ -14,26 +14,37 @@ pub struct Props {
     pub input_type: Option<String>,
     #[prop_or_default]
     pub required: bool,
+
+    #[prop_or_default]
+    pub button_class: Option<Classes>,
 }
 
 #[function_component(Input)]
 pub fn input(props: &Props) -> Html {
-    let input_class = classes!(
-        "bg-transparent",
-        "px-4",
-        "py-3",
-        "rounded-md",
-        "border",
-        "border-bcss-700",
-        "focus:ring-2",
-        "focus:border-bcss-800",
-        "ring-bcss-800",
-        "transition-all",
-        "outline-none",
-        "text-md",
-        "placeholder:text-bcss-800",
-        "w-full",
-    );
+    let input_class = use_memo((props.button_class.clone(),), |(button_class_prop,)| {
+        let mut input_class = classes!(
+            "bg-transparent",
+            "px-4",
+            "py-3",
+            "rounded-md",
+            "border",
+            "border-bcss-700",
+            "focus:ring-2",
+            "focus:border-bcss-800",
+            "ring-bcss-800",
+            "transition-all",
+            "outline-none",
+            "text-md",
+            "placeholder:text-bcss-800",
+            "w-full",
+        );
+
+        if let Some(button_class_prop) = button_class_prop {
+            input_class.push((*button_class_prop).clone());
+        }
+
+        input_class
+    });
 
     let label_class = classes!("mb-1", "block", "text-bcss-900");
 
@@ -58,9 +69,9 @@ pub fn input(props: &Props) -> Html {
             { props.input_label.clone().unwrap() }
         </label>
         }
-        <input class={input_class} id={(*label_id).clone()} placeholder={props.placeholder.clone()}
-            type={props.input_type.clone()} required={props.required.clone()}
-            oninput={on_change_handler} value={handle_value} />
+        <input class={(*input_class).clone()} id={(*label_id).clone()}
+            placeholder={props.placeholder.clone()} type={props.input_type.clone()}
+            required={props.required.clone()} oninput={on_change_handler} value={handle_value} />
     </>
     }
 }

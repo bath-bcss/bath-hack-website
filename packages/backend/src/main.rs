@@ -1,14 +1,16 @@
 use actix_session::{
-    config::PersistentSession, storage::RedisActorSessionStore, SessionMiddleware,
+    config::{CookieContentSecurity, PersistentSession},
+    storage::RedisActorSessionStore,
+    SessionMiddleware,
 };
 use actix_web::{
-    cookie::{time, Key},
+    cookie::{Key, time},
     middleware::Logger,
     web, App, HttpServer,
 };
 use app_config::parse_config;
-use db::init_db;
-use routes::sign_up::{sign_up_route, account_activate_route};
+use db::{init_db, DbPool};
+use routes::{sign_up::{account_activate_route, sign_up_route}, auth::{check_signed_in_route, sign_in_route}};
 
 mod app_config;
 mod data;
@@ -17,6 +19,7 @@ mod models;
 mod routes;
 mod schema;
 mod util;
+mod ldap;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -40,12 +43,16 @@ async fn main() -> std::io::Result<()> {
                     .session_lifecycle(
                         PersistentSession::default().session_ttl(time::Duration::hours(1)),
                     )
+                    .cookie_content_security(CookieContentSecurity::Signed)
+                    .cookie_http_only(false)
                     .build(),
                 )
                 .app_data(web::Data::new(config.to_owned()))
-                .app_data(web::Data::new(db_con.to_owned()))
+                .app_data(web::Data::<DbPool>::new(db_con.to_owned()))
                 .service(sign_up_route)
                 .service(account_activate_route)
+                .service(check_signed_in_route)
+                .service(sign_in_route)
         }
     };
 

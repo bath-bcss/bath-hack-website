@@ -48,7 +48,7 @@ impl FromRequest for SessionUser {
     type Future = futures_util::future::LocalBoxFuture<'static, Result<Self, Self::Error>>;
 
     fn from_request(req: &actix_web::HttpRequest, _: &mut actix_web::dev::Payload) -> Self::Future {
-        let db_pool = req.app_data::<DbPool>().cloned();
+        let db_pool = req.app_data::<web::Data<DbPool>>().cloned();
         let session = req.get_session();
 
         Box::pin(async move {

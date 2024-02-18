@@ -13,16 +13,20 @@ figment = { version = "0.10", features = ["env", "toml"] }
 serde = {version = "1.0", features = ["derive"]}
 serde_json = "1"
 env_logger = { version = "0.11" }
+log = "0.4.20"
 diesel = { version = "2.1.0", features = ["postgres", "r2d2", "uuid", "chrono"] }
 uuid = { version = "1.7.0", features = ["v4"] }
 chrono = "0.4.34"
 r2d2 = "0.8.10"
 argon2 = "0.5.3"
-rand = {version = "0.8.5", features=["getrandom"]}
+rand = {version = "0.8.5", features = ["getrandom"] }
 hex = "0.4.3"
 thiserror = "1.0.57"
 mailgun-rs = "0.1.10"
 futures-util = "0.3.30"
 regex = "1.10.3"
+ldap3 = "0.11.3"
+url = "2.5.0"
+tokio = {version = "1.36.0", features = ["time"] }
 
 bhw-types = { path = "../types" }

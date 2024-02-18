@@ -5,40 +5,33 @@ use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-pub struct AccountActivateRequest {
-    pub id: String,
-    pub secret: String,
+pub struct SignInRequest {
+    pub username: String,
     pub password: String,
 }
 
 #[derive(
     Debug, Serialize, Deserialize, Clone, PartialEq, BadRequestResponder, DefaultWithError,
 )]
-pub struct AccountActivateResponse {
-    pub error: Option<AccountActivateResponseError>,
+pub struct SignInResponse {
+    pub error: Option<SignInResponseError>,
 }
 
 #[derive(
     Debug,
+    Serialize,
+    Deserialize,
     Clone,
     PartialEq,
-    Deserialize,
-    Serialize,
     Error,
     ErrorBadRequestResponder,
     FromDieselError,
 )]
-pub enum AccountActivateResponseError {
-    #[error("ID or secret was wrong")]
-    IdOrSecretWrong,
-    #[error("Secret checking failed")]
-    SecretError,
+pub enum SignInResponseError {
     #[error("Database error")]
     DBError,
-    #[error("Creating user: {0}")]
-    CreateUserError(String),
-    #[error("Deleting signup request: {0}")]
-    DeleteRequestError(String),
-    #[error("SessionError")]
+    #[error("Username or password was incorrect")]
+    UsernameOrPasswordIncorrect,
+    #[error("Session error")]
     SessionError,
 }

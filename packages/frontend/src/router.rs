@@ -2,8 +2,8 @@ use yew::prelude::*;
 use yew_router::prelude::*;
 
 use crate::pages::{
-    home::HomePage, login::LoginPage, not_found::NotFoundPage, signup::SignupPage,
-    signup_activate::SignupActivatePage, signup_success::SignupSuccessPage,
+    account_home::AccountHomePage, home::HomePage, login::LoginPage, not_found::NotFoundPage,
+    signup::SignupPage, signup_activate::SignupActivatePage, signup_success::SignupSuccessPage,
 };
 
 #[derive(Clone, Routable, PartialEq)]
@@ -21,6 +21,9 @@ pub enum Route {
     #[not_found]
     #[at("/404")]
     NotFound,
+
+    #[at("/account")]
+    AccountHome,
 }
 
 pub fn switch(routes: Route) -> Html {
@@ -42,6 +45,10 @@ pub fn switch(routes: Route) -> Html {
         },
         Route::NotFound => html! {
         <NotFoundPage />
+        },
+
+        Route::AccountHome => html! {
+        <AccountHomePage />
         },
     }
 }
