@@ -1,25 +1,31 @@
+use actix_cors::Cors;
 use actix_session::{
     config::{CookieContentSecurity, PersistentSession},
     storage::RedisActorSessionStore,
     SessionMiddleware,
 };
 use actix_web::{
-    cookie::{Key, time},
+    cookie::{time, Key, SameSite},
     middleware::Logger,
     web, App, HttpServer,
 };
 use app_config::parse_config;
 use db::{init_db, DbPool};
-use routes::{sign_up::{account_activate_route, sign_up_route}, auth::{check_signed_in_route, sign_in_route}};
+use middleware::csrf::Csrf;
+use routes::{
+    auth::{check_signed_in_route, sign_in_route},
+    sign_up::{account_activate_route, sign_up_route},
+};
 
 mod app_config;
 mod data;
 mod db;
+mod ldap;
+mod middleware;
 mod models;
 mod routes;
 mod schema;
 mod util;
-mod ldap;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -32,8 +38,19 @@ async fn main() -> std::io::Result<()> {
         let db_con = init_db(config.clone());
 
         move || {
+            let cors = Cors::default()
+                .allowed_origin(config.clone().allowed_origin.as_str())
+                .allowed_methods(vec!["GET", "POST"])
+                .max_age(3600);
+
+            let csrf = Csrf {
+                allowed_origin: config.clone().allowed_origin,
+            };
+
             App::new()
                 .wrap(Logger::default())
+                .wrap(cors)
+                .wrap(csrf)
                 .wrap(
                     SessionMiddleware::builder(
                         RedisActorSessionStore::new(config.redis_string.clone()),
@@ -45,6 +62,7 @@ async fn main() -> std::io::Result<()> {
                     )
                     .cookie_content_security(CookieContentSecurity::Signed)
                     .cookie_http_only(false)
+                    .cookie_same_site(SameSite::Lax)
                     .build(),
                 )
                 .app_data(web::Data::new(config.to_owned()))

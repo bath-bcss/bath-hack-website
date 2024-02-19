@@ -14,6 +14,8 @@ pub struct Props {
     pub input_type: Option<String>,
     #[prop_or_default]
     pub required: bool,
+    #[prop_or_default]
+    pub disabled: bool,
 
     #[prop_or_default]
     pub button_class: Option<Classes>,
@@ -71,7 +73,8 @@ pub fn input(props: &Props) -> Html {
         }
         <input class={(*input_class).clone()} id={(*label_id).clone()}
             placeholder={props.placeholder.clone()} type={props.input_type.clone()}
-            required={props.required.clone()} oninput={on_change_handler} value={handle_value} />
+            required={props.required.clone()} oninput={on_change_handler} value={handle_value}
+            disabled={props.disabled.clone()} />
     </>
     }
 }

@@ -13,6 +13,7 @@ use crate::{
         signup_requests::{SignupRequestFromIdError, SignupRequestObject},
         users::User,
     },
+    util::passwords::PasswordManager,
 };
 
 #[post("/auth/signup")]
@@ -76,7 +77,10 @@ pub async fn account_activate_route(
                                 AccountActivateResponseError::DBError
                             }
                         })?
-                        .ok_or(AccountActivateResponseError::IdOrSecretWrong)?;
+                        .ok_or_else(|| {
+                            PasswordManager::dummy_verify(&request.secret);
+                            AccountActivateResponseError::IdOrSecretWrong
+                        })?;
 
                     let is_password_correct = signup_request
                         .verify_hash(&request.secret)
