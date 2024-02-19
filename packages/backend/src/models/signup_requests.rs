@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-use argon2::PasswordHash;
 use chrono::Duration;
 use chrono::NaiveDateTime;
 use chrono::Utc;

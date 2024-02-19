@@ -2,7 +2,7 @@ use actix_session::Session;
 use actix_web::{get, post, web, Responder};
 use bhw_types::requests::{
     check::CheckAuthResponse,
-    sign_in::{SignInRequest, SignInResponse, SignInResponseError},
+    sign_in::{SignInRequest, SignInResponseError, SignInResult},
 };
 use log::{error, warn};
 
@@ -22,9 +22,12 @@ pub async fn sign_in_route(
     data: web::Json<SignInRequest>,
     db: web::Data<DbPool>,
     session: Session,
-) -> actix_web::Result<impl Responder> {
+) -> SignInResult {
     let user_id = web::block(move || -> Result<uuid::Uuid, SignInResponseError> {
-        let mut conn = db.get().map_err(|_| SignInResponseError::DBError)?;
+        let mut conn = db.get().map_err(|e| {
+            error!("getting db from pool: {}", e);
+            SignInResponseError::DBError
+        })?;
 
         conn.build_transaction().serializable().run(
             |mut tx| -> Result<uuid::Uuid, SignInResponseError> {
@@ -55,5 +58,5 @@ pub async fn sign_in_route(
         SignInResponseError::SessionError
     })?;
 
-    Ok(SignInResponse::default())
+    SignInResult::Ok(bhw_types::nothing::Nothing)
 }

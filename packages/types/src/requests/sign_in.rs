@@ -1,8 +1,8 @@
-use bhw_macro_types::{
-    BadRequestResponder, DefaultWithError, ErrorBadRequestResponder, FromDieselError,
-};
+use bhw_macro_types::{FromDieselError, ResponseError, FromBlockingError};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
+
+use crate::nothing::Nothing;
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub struct SignInRequest {
@@ -10,23 +10,7 @@ pub struct SignInRequest {
     pub password: String,
 }
 
-#[derive(
-    Debug, Serialize, Deserialize, Clone, PartialEq, BadRequestResponder, DefaultWithError,
-)]
-pub struct SignInResponse {
-    pub error: Option<SignInResponseError>,
-}
-
-#[derive(
-    Debug,
-    Serialize,
-    Deserialize,
-    Clone,
-    PartialEq,
-    Error,
-    ErrorBadRequestResponder,
-    FromDieselError,
-)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Error, FromDieselError, FromBlockingError, ResponseError)]
 pub enum SignInResponseError {
     #[error("Database error")]
     DBError,
@@ -35,3 +19,5 @@ pub enum SignInResponseError {
     #[error("Session error")]
     SessionError,
 }
+
+pub type SignInResult = Result<Nothing, SignInResponseError>;

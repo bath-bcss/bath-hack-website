@@ -1,8 +1,8 @@
-use bhw_macro_types::{
-    BadRequestResponder, DefaultWithError, ErrorBadRequestResponder, FromDieselError,
-};
+use bhw_macro_types::{FromDieselError, ResponseError, FromBlockingError};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
+
+use crate::nothing::Nothing;
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub struct AccountActivateRequest {
@@ -12,21 +12,7 @@ pub struct AccountActivateRequest {
 }
 
 #[derive(
-    Debug, Serialize, Deserialize, Clone, PartialEq, BadRequestResponder, DefaultWithError,
-)]
-pub struct AccountActivateResponse {
-    pub error: Option<AccountActivateResponseError>,
-}
-
-#[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    Deserialize,
-    Serialize,
-    Error,
-    ErrorBadRequestResponder,
-    FromDieselError,
+    Debug, Clone, PartialEq, Deserialize, Serialize, Error, FromDieselError, FromBlockingError, ResponseError,
 )]
 pub enum AccountActivateResponseError {
     #[error("ID or secret was wrong")]
@@ -42,3 +28,5 @@ pub enum AccountActivateResponseError {
     #[error("SessionError")]
     SessionError,
 }
+
+pub type AccountActivateResult = Result<Nothing, AccountActivateResponseError>;

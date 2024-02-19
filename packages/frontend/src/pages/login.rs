@@ -3,7 +3,10 @@ use yew::prelude::*;
 use yew_router::hooks::use_navigator;
 
 use crate::{
-    components::{button::Button, glass_container::GlassContainer, hero::HeroHeader, input::Input, error::ErrorMessage},
+    components::{
+        button::Button, error::ErrorMessage, glass_container::GlassContainer, hero::HeroHeader,
+        input::Input,
+    },
     data::auth::sign_in,
     router::Route,
 };
@@ -40,12 +43,7 @@ pub fn login_page() -> Html {
 
                 match response {
                     Err(e) => error_handle.set(Some(e.to_string())),
-                    Ok(response) => match response.error {
-                        Some(e) => error_handle.set(Some(e.to_string())),
-                        None => {
-                            navigator.push(&Route::AccountHome);
-                        }
-                    },
+                    Ok(_) => navigator.push(&Route::AccountHome),
                 }
             });
         },

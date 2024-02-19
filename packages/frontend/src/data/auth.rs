@@ -1,11 +1,14 @@
-use bhw_types::requests::{
-    check::CheckAuthResponse,
-    sign_in::{SignInRequest, SignInResponse},
+use bhw_types::{
+    nothing::Nothing,
+    requests::{
+        check::CheckAuthResponse,
+        sign_in::{SignInRequest, SignInResponseError},
+    },
 };
 
 use super::api::{send_get, send_post, FrontendRequestError};
 
-pub async fn check_signed_in() -> Result<CheckAuthResponse, FrontendRequestError> {
+pub async fn check_signed_in() -> Result<CheckAuthResponse, FrontendRequestError<()>> {
     send_get("/auth/check".to_string()).await
 }
 
@@ -27,7 +30,7 @@ macro_rules! redirect_if_not_authed {
 pub async fn sign_in(
     username: String,
     password: String,
-) -> Result<SignInResponse, FrontendRequestError> {
+) -> Result<Nothing, FrontendRequestError<SignInResponseError>> {
     let request = SignInRequest { username, password };
     send_post("/auth/signin".to_string(), &request).await
 }

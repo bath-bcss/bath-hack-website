@@ -64,12 +64,7 @@ pub fn signup_activate_page() -> Html {
 
             match resp {
                 Err(e) => error_handle.set(Some(e.to_string())),
-                Ok(d) => match d.error {
-                    None => {
-                        navigator.push(&Route::AccountHome);
-                    }
-                    Some(e) => error_handle.set(Some(e.to_string())),
-                },
+                Ok(_) => navigator.push(&Route::AccountHome),
             }
         });
     });

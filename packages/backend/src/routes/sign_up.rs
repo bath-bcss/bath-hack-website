@@ -1,9 +1,9 @@
 use actix_session::Session;
-use actix_web::{post, web, Responder};
-use bhw_types::requests::{
-    activate::{AccountActivateRequest, AccountActivateResponse, AccountActivateResponseError},
-    sign_up::{SignUpRequest, SignUpResponse, SignUpResponseError},
-};
+use actix_web::{post, web};
+use bhw_types::{requests::{
+    activate::{AccountActivateRequest, AccountActivateResponseError, AccountActivateResult},
+    sign_up::{SignUpRequest, SignUpResponseError, SignUpResult},
+}, nothing::Nothing};
 
 use crate::{
     app_config::AppConfig,
@@ -21,7 +21,7 @@ pub async fn sign_up_route(
     request: web::Json<SignUpRequest>,
     db: web::Data<DbPool>,
     config: web::Data<AppConfig>,
-) -> actix_web::Result<impl Responder> {
+) -> SignUpResult {
     if !User::validate_username(&request.bath_username) {
         return Err(SignUpResponseError::UsernameInvalid.into());
     }
@@ -51,7 +51,7 @@ pub async fn sign_up_route(
     })
     .await??;
 
-    Ok(SignUpResponse::default())
+    Ok(Nothing)
 }
 
 #[post("/auth/activate")]
@@ -59,7 +59,7 @@ pub async fn account_activate_route(
     request: web::Json<AccountActivateRequest>,
     db: web::Data<DbPool>,
     session: Session,
-) -> actix_web::Result<impl Responder> {
+) -> AccountActivateResult {
     let new_user_id = web::block(
         move || -> Result<uuid::Uuid, AccountActivateResponseError> {
             let mut conn = db
@@ -112,5 +112,5 @@ pub async fn account_activate_route(
     SessionUser::set_id(&session, &new_user_id.to_string())
         .map_err(|_| AccountActivateResponseError::SessionError)?;
 
-    Ok(AccountActivateResponse::default())
+    Ok(Nothing)
 }

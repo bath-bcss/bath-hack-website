@@ -51,13 +51,8 @@ pub fn sign_up_page() -> Html {
                     loading_handle.set(false);
                     if let Err(response) = response {
                         error_handle.set(Some(response.to_string()));
-                    } else if let Ok(response) = response {
-                        let response_error = response.error;
-                        if let Some(response_error) = response_error {
-                            error_handle.set(Some(response_error.to_string()));
-                        } else {
-                            n.push(&Route::SignupSuccess);
-                        }
+                    } else if let Ok(_) = response {
+                        n.push(&Route::SignupSuccess);
                     }
                 });
             },
