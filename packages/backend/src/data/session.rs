@@ -94,4 +94,8 @@ impl SessionUser {
     pub fn set_id(session: &Session, new_user_id: &String) -> Result<(), SessionInsertError> {
         session.insert(USER_SESSION_KEY, new_user_id)
     }
+
+    pub fn forget(session: &Session) {
+        session.remove(USER_SESSION_KEY);
+    }
 }

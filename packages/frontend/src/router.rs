@@ -7,6 +7,7 @@ use crate::{
         account::{account_group::AccountGroupPage, account_home::AccountHomePage},
         home::HomePage,
         login::LoginPage,
+        logout::LogoutPage,
         not_found::NotFoundPage,
         signup::SignupPage,
         signup_activate::SignupActivatePage,
@@ -26,6 +27,8 @@ pub enum Route {
     ActivateAccount,
     #[at("/login")]
     Login,
+    #[at("/logout")]
+    Logout,
     #[not_found]
     #[at("/404")]
     NotFound,
@@ -52,6 +55,8 @@ pub fn switch(routes: Route) -> Html {
         Route::Login => html! {
         <LoginPage />
         },
+        Route::Logout => html! {
+        <LogoutPage />},
         Route::Signup => html! {
         <SignupPage />
         },

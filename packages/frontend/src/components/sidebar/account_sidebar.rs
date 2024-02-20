@@ -1,10 +1,10 @@
 use yew::prelude::*;
 use yew_icons::{Icon, IconId};
-use yew_router::hooks::use_route;
+use yew_router::{components::Link, hooks::use_route};
 
 use crate::{
     components::{button::Button, sidebar::sidebar_element::SidebarElement},
-    router::AccountRoute,
+    router::{AccountRoute, Route},
 };
 
 #[derive(Properties, PartialEq, Clone)]
@@ -23,7 +23,6 @@ pub fn account_sidebar(props: &Props) -> Html {
             "md:w-60",
             "lg:w-80",
             "h-screen",
-            "min-h-full",
             "py-8",
             "px-4",
             "rounded-r-2xl",
@@ -80,6 +79,12 @@ pub fn account_sidebar(props: &Props) -> Html {
                     <Icon icon_id={IconId::FontAwesomeSolidCircleXmark} />
                 </Button>
             </div>
+
+            <p>
+                <Link<Route> to={Route::Logout} classes={classes!("text-bcss-100", "hover:underline")}>
+                    {"Log out"}
+                </Link<Route>>
+            </p>
 
             <div class="space-y-2 mt-4">
                 <SidebarElement link_to={AccountRoute::Profile} label="Profile" icon={IconId::FontAwesomeSolidUser} />

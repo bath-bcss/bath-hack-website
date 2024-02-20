@@ -2,7 +2,7 @@ use bhw_types::{
     nothing::Nothing,
     requests::{
         check::CheckAuthResponse,
-        sign_in::{SignInRequest, SignInResponseError},
+        sign_in::{SignInRequest, SignInResponseError}, sign_out::SignOutResponseError,
     },
 };
 
@@ -33,4 +33,8 @@ pub async fn sign_in(
 ) -> Result<Nothing, FrontendRequestError<SignInResponseError>> {
     let request = SignInRequest { username, password };
     send_post("/auth/signin".to_string(), &request).await
+}
+
+pub async fn sign_out() -> Result<Nothing, FrontendRequestError<SignOutResponseError>> {
+    send_post("/auth/signout".to_string(), &Nothing).await
 }

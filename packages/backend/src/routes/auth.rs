@@ -1,9 +1,9 @@
 use actix_session::Session;
 use actix_web::{get, post, web, Responder};
-use bhw_types::requests::{
+use bhw_types::{requests::{
     check::CheckAuthResponse,
-    sign_in::{SignInRequest, SignInResponseError, SignInResult},
-};
+    sign_in::{SignInRequest, SignInResponseError, SignInResult}, sign_out::SignOutResult,
+}, nothing::Nothing};
 use log::{error, warn};
 
 use crate::{
@@ -58,5 +58,13 @@ pub async fn sign_in_route(
         SignInResponseError::SessionError
     })?;
 
-    SignInResult::Ok(bhw_types::nothing::Nothing)
+    SignInResult::Ok(Nothing)
+}
+
+#[post("/auth/signout")]
+pub async fn sign_out_route(
+    session: Session,
+) -> SignOutResult {
+    SessionUser::forget(&session);
+    Ok(Nothing)
 }
