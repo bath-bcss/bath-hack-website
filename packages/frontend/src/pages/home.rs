@@ -2,7 +2,7 @@ use yew::prelude::*;
 use yew_router::prelude::*;
 
 use crate::{
-    components::{button::Button, hero::HeroHeader},
+    components::{button::Button, hero::HeroHeader, nav::ScrollingNavbar},
     router::Route,
 };
 
@@ -16,6 +16,7 @@ pub fn home_page() -> Html {
 
     html! {
     <>
+        <ScrollingNavbar />
         <HeroHeader>
             <h1 class="text-center text-hero font-hero text-bcss-100 leading-none">
                 { "Bath Hack 2024" }
