@@ -57,6 +57,7 @@ pub fn scrolling_navbar() -> Html {
             "justify-between",
             "items-center",
             "px-8",
+            "z-10",
         );
 
         if *is_at_top {

@@ -1,4 +1,3 @@
-pub mod hero;
 pub mod button;
 pub mod glass_container;
 pub mod input;
@@ -8,3 +7,5 @@ pub mod page_title;
 pub mod profile_datapoint;
 pub mod sidebar;
 pub mod nav;
+pub mod flashy_homepage;
+pub mod hero;

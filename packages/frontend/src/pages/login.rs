@@ -4,8 +4,8 @@ use yew_router::hooks::use_navigator;
 
 use crate::{
     components::{
-        button::Button, error::ErrorMessage, glass_container::GlassContainer, hero::HeroHeader,
-        input::Input,
+        button::Button, error::ErrorMessage, glass_container::GlassContainer,
+        input::Input, hero::center::HeroCenterContainer,
     },
     data::auth::sign_in,
     router::Route,
@@ -50,7 +50,7 @@ pub fn login_page() -> Html {
     );
 
     html! {
-    <HeroHeader>
+    <HeroCenterContainer>
         <GlassContainer>
             <h1 class="text-3xl font-hero text-bcss-900 dark:text-bcss-200 mb-4">
                 {"Sign in"}
@@ -70,6 +70,6 @@ pub fn login_page() -> Html {
                 <ErrorMessage message={error} />
             </form>
         </GlassContainer>
-    </HeroHeader>
+    </HeroCenterContainer>
     }
 }

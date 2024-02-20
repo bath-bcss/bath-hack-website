@@ -1,11 +1,11 @@
 use yew::prelude::*;
 
-use crate::components::{glass_container::GlassContainer, hero::HeroHeader};
+use crate::components::{glass_container::GlassContainer, hero::center::HeroCenterContainer};
 
 #[function_component(SignupSuccessPage)]
 pub fn signup_success_page() -> Html {
     html! {
-    <HeroHeader>
+    <HeroCenterContainer>
         <GlassContainer>
             <h1 class="text-2xl text-bcss-900">
                 {"Awesome!"}
@@ -14,6 +14,6 @@ pub fn signup_success_page() -> Html {
                 {"We've sent an email to your Uni inbox. Please follow the link to continue :)"}
             </p>
         </GlassContainer>
-    </HeroHeader>
+    </HeroCenterContainer>
     }
 }
