@@ -18,11 +18,11 @@ pub fn page_title(props: &Props) -> Html {
             {category_label}
         </p>
         }
-        <h1 class="font-bold text-3xl tracking-tighter">
+        <h1 class="font-bold text-3xl dark:text-bcss-200 tracking-tighter">
             {props.children.clone()}
         </h1>
         if let Some(page_description) = props.page_description.clone() {
-        <h2 class="text-gray-500 font-medium text-xl">
+        <h2 class="text-gray-500 dark:text-bcss-400 font-medium text-xl">
             {page_description}
         </h2>
         }

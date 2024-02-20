@@ -42,10 +42,13 @@ pub fn input(props: &Props) -> Html {
             "focus:ring-2",
             "focus:border-bcss-800",
             "ring-bcss-800",
+            "dark:ring-bcss-400",
             "transition-all",
             "outline-none",
             "text-md",
             "placeholder:text-bcss-800",
+            "dark:placeholder:text-bcss-400",
+            "dark:text-bcss-100",
             "w-full",
         );
 
@@ -56,7 +59,7 @@ pub fn input(props: &Props) -> Html {
         input_class
     });
 
-    let label_class = classes!("mb-1", "block", "text-bcss-900");
+    let label_class = classes!("mb-1", "block", "text-bcss-900", "dark:text-bcss-300");
 
     let label_id = use_memo((), |_| Uuid::new_v4().to_string());
 

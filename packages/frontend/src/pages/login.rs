@@ -52,7 +52,7 @@ pub fn login_page() -> Html {
     html! {
     <HeroHeader>
         <GlassContainer>
-            <h1 class="text-3xl font-hero text-bcss-900 mb-4">
+            <h1 class="text-3xl font-hero text-bcss-900 dark:text-bcss-200 mb-4">
                 {"Sign in"}
             </h1>
 

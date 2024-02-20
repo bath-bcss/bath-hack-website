@@ -35,7 +35,7 @@ pub fn button(props: &Props) -> Html {
             "focus:ring-4",
             "focus:outline-0",
             "ring-bcss-300",
-            "transition-colors",
+            "transition-all",
             if props.dark_mode {
                 "hover:bg-white/20"
             } else {

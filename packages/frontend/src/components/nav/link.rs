@@ -27,7 +27,8 @@ pub fn nav_link(props: &Props) -> Html {
 
     html! {
     <p>
-        <a href={href} class="text-bcss-200 hover:text-white">
+        <a href={href}
+            class="text-bcss-200 hover:text-white hover:bg-bcss-800 px-2 py-2 rounded-md active:bg-bcss-900/80 active:ring-4 focus:ring-4 ring-bcss-500 transition-all">
             {props.label.clone()}
         </a>
     </p>

@@ -38,6 +38,8 @@ pub fn account_sidebar(props: &Props) -> Html {
             "md:backdrop-blur-none",
             "bg-bcss-700/70",
             "md:bg-bcss-600",
+            "dark:bg-bcss-900/70",
+            "dark:md:bg-bcss-900"
         );
 
         if *small_screen_show {
@@ -72,7 +74,7 @@ pub fn account_sidebar(props: &Props) -> Html {
     <div class="flex w-full">
         <div class={(*sidebar_container_classes).clone()}>
             <div class="flex items-center justify-between mb-2 md:mb-0">
-                <h1 class="text-3xl text-white font-bold tracking-tighter">
+                <h1 class="text-3xl text-white dark:text-bcss-200 font-bold tracking-tighter">
                     {"Bath Hack 24"}
                 </h1>
                 <Button dark_mode={true} onclick={on_small_screen_close_click} class={classes!("md:hidden")}>

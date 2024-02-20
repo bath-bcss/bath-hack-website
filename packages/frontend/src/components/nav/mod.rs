@@ -50,6 +50,7 @@ pub fn scrolling_navbar() -> Html {
             "w-full",
             "h-20",
             "bg-bcss-700",
+            "dark:bg-bcss-900",
             "fixed",
             "top-0",
             "flex",
@@ -59,7 +60,7 @@ pub fn scrolling_navbar() -> Html {
         );
 
         if *is_at_top {
-            base_classes.push("bg-transparent");
+            base_classes.push(classes!("bg-transparent", "dark:bg-transparent"));
         }
 
         base_classes
@@ -67,7 +68,7 @@ pub fn scrolling_navbar() -> Html {
 
     html! {
     <div class={(*container_classes).clone()}>
-        <div class="flex items-center justify-start space-x-4">
+        <div class="flex items-center justify-start space-x-3">
             <h1 class="transition-transform hover:scale-110 mr-6">
                 <a class="text-lg tracking-tighter font-bold text-bcss-200 hover:text-white" href="#">
                     {"Bath Hack 24"}
@@ -82,7 +83,7 @@ pub fn scrolling_navbar() -> Html {
             <NavLink dest={NavLinkDestination::Anchor("welcome".to_string())} label="FAQs" />
         </div>
 
-        <div class="flex items-center justify-start space-x-4">
+        <div class="flex items-center justify-start space-x-3">
             <NavLink dest={NavLinkDestination::Page("/login".to_string())} label="Log in" />
             <NavLink dest={NavLinkDestination::Page("/signup".to_string())} label="Sign up" />
         </div>

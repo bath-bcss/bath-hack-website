@@ -27,12 +27,13 @@ pub fn sidebar_element(props: &Props) -> Html {
             "text-bcss-200",
             "font-medium",
             "hover:bg-bcss-700",
+            "dark:hover:bg-bcss-800",
             "hover:text-white",
         );
 
         if let Some(route) = route {
             if route == link_to {
-                base_classes.push(classes!("bg-bcss-700", "text-white"));
+                base_classes.push(classes!("bg-bcss-700", "dark:bg-bcss-800", "text-white"));
             }
         }
 

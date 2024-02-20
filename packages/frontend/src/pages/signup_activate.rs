@@ -72,14 +72,14 @@ pub fn signup_activate_page() -> Html {
     html! {
     <HeroHeader>
         <GlassContainer>
-            <h1 class="text-3xl font-hero text-bcss-900">
+            <h1 class="text-3xl font-hero text-bcss-900 dark:text-bcss-200">
                 {"Welcome to Bath Hack 24!"}
             </h1>
 
-            <p class="mt-4">
+            <p class="mt-4 dark:text-bcss-300">
                 {"To get started, please create a password."}
             </p>
-            <p>
+            <p class="dark:text-bcss-300">
                 {"This should be different to your Uni password."}
             </p>
 
