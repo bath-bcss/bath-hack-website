@@ -58,10 +58,10 @@ pub fn login_page() -> Html {
 
             <form onsubmit={on_sign_in_callback}>
                 <Input handle={username_handle} input_label="Bath Username" placeholder="E.g. pk760" required={true}
-                    input_type="text" button_class={classes!("mb-4")} disabled={loading.clone()} />
+                    input_type="text" input_class={classes!("mb-4")} disabled={loading.clone()} />
 
                 <Input handle={password_handle} input_label="Password" placeholder="NOT your uni password"
-                    required={true} input_type="password" button_class={classes!("mb-4")} disabled={loading.clone()} />
+                    required={true} input_type="password" input_class={classes!("mb-4")} disabled={loading.clone()} />
 
                 <Button dark_mode={false} button_type="submit" disabled={loading.clone()}>
                     {"Sign in!"}

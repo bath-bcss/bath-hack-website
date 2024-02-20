@@ -3,3 +3,4 @@ pub mod sign_in;
 pub mod activate;
 pub mod check;
 pub mod profile;
+pub mod update_profile;

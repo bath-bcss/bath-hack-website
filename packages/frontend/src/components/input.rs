@@ -8,7 +8,13 @@ pub struct Props {
     pub input_label: Option<String>,
     #[prop_or_default]
     pub placeholder: Option<String>,
-    pub handle: UseStateHandle<String>,
+    #[prop_or_default]
+    pub handle: Option<UseStateHandle<String>>,
+    #[prop_or_default]
+    pub static_value: Option<String>,
+
+    #[prop_or_default]
+    pub readonly: bool,
 
     #[prop_or_default]
     pub input_type: Option<String>,
@@ -18,12 +24,14 @@ pub struct Props {
     pub disabled: bool,
 
     #[prop_or_default]
-    pub button_class: Option<Classes>,
+    pub input_class: Option<Classes>,
+    #[prop_or_default]
+    pub container_class: Option<Classes>,
 }
 
 #[function_component(Input)]
 pub fn input(props: &Props) -> Html {
-    let input_class = use_memo((props.button_class.clone(),), |(button_class_prop,)| {
+    let input_class = use_memo((props.input_class.clone(),), |(button_class_prop,)| {
         let mut input_class = classes!(
             "bg-transparent",
             "px-4",
@@ -52,20 +60,28 @@ pub fn input(props: &Props) -> Html {
 
     let label_id = use_memo((), |_| Uuid::new_v4().to_string());
 
-    let handle_value = (*props.handle).clone();
+    let handle_value = match props.handle.clone() {
+        Some(h) => (*h).clone(),
+        None => match props.static_value.clone() {
+            Some(s) => s,
+            None => String::default(),
+        },
+    };
     let on_change_handler = {
         let handle = props.handle.to_owned();
 
         use_callback((), move |value: InputEvent, _| {
-            let target = value.target_dyn_into::<HtmlInputElement>();
-            if let Some(target) = target {
-                handle.set(target.value());
+            if let Some(handle) = handle.clone() {
+                let target = value.target_dyn_into::<HtmlInputElement>();
+                if let Some(target) = target {
+                    handle.set(target.value());
+                }
             }
         })
     };
 
     html! {
-    <>
+    <div class={props.container_class.clone()}>
         if props.input_label.clone().is_some() {
         <label for={(*label_id).clone()} class={label_class}>
             { props.input_label.clone().unwrap() }
@@ -74,7 +90,7 @@ pub fn input(props: &Props) -> Html {
         <input class={(*input_class).clone()} id={(*label_id).clone()}
             placeholder={props.placeholder.clone()} type={props.input_type.clone()}
             required={props.required.clone()} oninput={on_change_handler} value={handle_value}
-            disabled={props.disabled.clone()} />
-    </>
+            disabled={props.disabled.clone()} readonly={props.readonly.clone()} />
+    </div>
     }
 }

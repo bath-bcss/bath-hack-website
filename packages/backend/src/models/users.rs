@@ -1,3 +1,4 @@
+use bhw_types::requests::update_profile::UpdateProfileRequest;
 use chrono::{NaiveDateTime, Utc};
 use diesel::prelude::*;
 use thiserror::Error;
@@ -24,7 +25,15 @@ pub enum CreateUserError {
     #[error("Hashing password: {0}")]
     PasswordHash(argon2::password_hash::Error),
     #[error("Inserting user: {0}")]
-    DBError(diesel::result::Error),
+    DBError(#[from] diesel::result::Error),
+}
+
+#[derive(Debug, Error)]
+pub enum UserFromIdError {
+    #[error("Could not parse ID: {0}")]
+    InvalidID(#[from] uuid::Error),
+    #[error("Finding User failed: {0}")]
+    DBError(#[from] diesel::result::Error),
 }
 
 impl User {
@@ -64,6 +73,24 @@ impl User {
         Ok(first)
     }
 
+    pub fn from_id(
+        conn: &mut PgConnection,
+        user_id: String,
+    ) -> Result<Option<Self>, UserFromIdError> {
+        use crate::schema::users;
+
+        let parsed_id = uuid::Uuid::parse_str(user_id.as_str())?;
+
+        let response: Vec<Self> = users::table
+            .select(Self::as_select())
+            .filter(users::id.eq(parsed_id))
+            .limit(1)
+            .load(conn)?;
+
+        let first = response.first().cloned();
+        Ok(first)
+    }
+
     pub fn create(
         conn: &mut PgConnection,
         username: &String,
@@ -87,10 +114,34 @@ impl User {
 
         diesel::insert_into(users::table)
             .values(&new_user)
-            .execute(conn)
-            .map_err(|e| CreateUserError::DBError(e))?;
+            .execute(conn)?;
 
         Ok(new_user)
+    }
+
+    pub fn update_property(
+        conn: &mut PgConnection,
+        user_id: uuid::Uuid,
+        request: UpdateProfileRequest,
+    ) -> Result<(), diesel::result::Error> {
+        use crate::schema::users;
+
+        let update_query = diesel::update(users::table).filter(users::id.eq(user_id));
+
+        match request {
+            UpdateProfileRequest::DisplayName(display_name) => {
+                update_query
+                    .set(users::display_name.eq(display_name))
+                    .execute(conn)?;
+            }
+            UpdateProfileRequest::AccessibilityRequirements(accessibility_requirements) => {
+                update_query
+                    .set(users::accessibility_requirements.eq(accessibility_requirements))
+                    .execute(conn)?;
+            }
+        };
+
+        Ok(())
     }
 
     pub fn verify_password(&self, password: &String) -> Result<bool, argon2::password_hash::Error> {
