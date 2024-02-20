@@ -139,6 +139,11 @@ impl User {
                     .set(users::accessibility_requirements.eq(accessibility_requirements))
                     .execute(conn)?;
             }
+            UpdateProfileRequest::DietaryRequirements(dietary_requirements) => {
+                update_query
+                    .set(users::dietary_requirements.eq(dietary_requirements))
+                    .execute(conn)?;
+            }
         };
 
         Ok(())

@@ -1,9 +1,12 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-use crate::pages::{
-    account_home::AccountHomePage, home::HomePage, login::LoginPage, not_found::NotFoundPage,
-    signup::SignupPage, signup_activate::SignupActivatePage, signup_success::SignupSuccessPage,
+use crate::{
+    components::sidebar::account_sidebar::AccountSidebar,
+    pages::{
+        account_home::AccountHomePage, home::HomePage, login::LoginPage, not_found::NotFoundPage,
+        signup::SignupPage, signup_activate::SignupActivatePage, signup_success::SignupSuccessPage,
+    },
 };
 
 #[derive(Clone, Routable, PartialEq)]
@@ -24,6 +27,16 @@ pub enum Route {
 
     #[at("/account")]
     AccountHome,
+    #[at("/account/*")]
+    Account,
+}
+
+#[derive(Clone, Routable, PartialEq)]
+pub enum AccountRoute {
+    #[at("/account")]
+    Profile,
+    #[at("/account/groups")]
+    Groups,
 }
 
 pub fn switch(routes: Route) -> Html {
@@ -47,8 +60,18 @@ pub fn switch(routes: Route) -> Html {
         <NotFoundPage />
         },
 
-        Route::AccountHome => html! {
-        <AccountHomePage />
+        Route::AccountHome | Route::Account => html! {
+        <AccountSidebar>
+            <Switch<AccountRoute> render={switch_account} />
+        </AccountSidebar>
         },
+    }
+}
+
+pub fn switch_account(route: AccountRoute) -> Html {
+    match route {
+        AccountRoute::Profile => html! {
+        <AccountHomePage /> },
+        AccountRoute::Groups => html! {<p>{"hi"}</p>},
     }
 }

@@ -6,3 +6,4 @@ pub mod error;
 pub mod page_container;
 pub mod page_title;
 pub mod profile_datapoint;
+pub mod sidebar;

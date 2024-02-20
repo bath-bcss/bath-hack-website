@@ -41,6 +41,7 @@ pub async fn get_profile_route(user: SessionUser, db: web::Data<DbPool>) -> Prof
                     display_name: user.display_name,
                     bath_username: user.bath_username,
                     accessibility_requirements: user.accessibility_requirements,
+                    dietary_requirements: user.dietary_requirements,
                 };
 
                 Ok(profile)

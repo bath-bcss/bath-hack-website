@@ -8,6 +8,7 @@ use crate::nothing::Nothing;
 pub enum UpdateProfileRequest {
     DisplayName(Option<String>),
     AccessibilityRequirements(Option<String>),
+    DietaryRequirements(Option<String>),
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Error, ResponseError, FromDieselError, FromBlockingError)]

@@ -10,6 +10,7 @@ use crate::{
 pub enum ProfileKey {
     DisplayName,
     AccessibilityRequirements,
+    DietaryRequirements,
 }
 
 #[derive(Properties, PartialEq)]
@@ -24,6 +25,7 @@ pub fn profile_datapoint(props: &Props) -> Html {
     let input_label = use_memo((props.data_key.clone(),), |(data_key,)| match data_key {
         ProfileKey::DisplayName => "Display name",
         ProfileKey::AccessibilityRequirements => "Accessibility requirements",
+        ProfileKey::DietaryRequirements => "Dietary requirements",
     });
 
     let local_input_state = use_state_eq(|| match props.current_value.clone() {
@@ -64,6 +66,9 @@ pub fn profile_datapoint(props: &Props) -> Html {
                 ProfileKey::AccessibilityRequirements => {
                     UpdateProfileRequest::AccessibilityRequirements(Some(local_input_value))
                 }
+                ProfileKey::DietaryRequirements => {
+                    UpdateProfileRequest::DietaryRequirements(Some(local_input_value))
+                }
             };
 
             let error_handle = error_handle.clone();
@@ -88,7 +93,8 @@ pub fn profile_datapoint(props: &Props) -> Html {
     <form onsubmit={on_save_click}>
         <Input input_label={input_label.to_string()} handle={local_input_state} disabled={loading} />
         if *value_has_changed {
-        <Button dark_mode={false} disabled={loading} button_type="submit" class={classes!("mt-4")}>{"Save"}</Button>
+        <Button dark_mode={false} disabled={loading} button_type="submit"
+            class={classes!("mt-4")}>{"Save"}</Button>
         }
     </form>
     }

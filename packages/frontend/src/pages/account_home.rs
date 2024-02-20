@@ -60,8 +60,11 @@ pub fn account_home_page() -> Html {
 
                 match req {
                     UpdateProfileRequest::DisplayName(d) => profile.display_name = d,
-                    UpdateProfileRequest::AccessibilityRequirements(a) => {
-                        profile.accessibility_requirements = a
+                    UpdateProfileRequest::AccessibilityRequirements(d) => {
+                        profile.accessibility_requirements = d
+                    }
+                    UpdateProfileRequest::DietaryRequirements(d) => {
+                        profile.dietary_requirements = d
                     }
                 }
 
@@ -84,6 +87,8 @@ pub fn account_home_page() -> Html {
                 on_value_change={on_datapoint_change.clone()} />
             <ProfileDatapoint data_key={ProfileKey::AccessibilityRequirements}
                 current_value={profile.accessibility_requirements} on_value_change={on_datapoint_change.clone()} />
+            <ProfileDatapoint data_key={ProfileKey::DietaryRequirements}
+                current_value={profile.dietary_requirements} on_value_change={on_datapoint_change.clone()} />
         </div>
         }
     </PageContainer>

@@ -7,6 +7,7 @@ pub struct ProfileResponse {
     pub bath_username: String,
     pub display_name: Option<String>,
     pub accessibility_requirements: Option<String>,
+    pub dietary_requirements: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Error, FromDieselError, FromBlockingError, ResponseError)]
