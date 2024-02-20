@@ -42,7 +42,7 @@ pub fn sidebar_element(props: &Props) -> Html {
     html! {
     <p>
         <Link<AccountRoute> to={props.link_to.clone()} classes={(*link_classes).clone()}>
-            <Icon icon_id={props.icon.clone()} class={classes!("h-full", "w-5" , "mr-2" )} />
+            <Icon icon_id={props.icon.clone()} class={classes!("h-full", "w-5" , "mr-3" )} />
             {props.label.clone()}
         </Link<AccountRoute>>
     </p>

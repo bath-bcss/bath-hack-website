@@ -22,7 +22,7 @@ pub fn page_title(props: &Props) -> Html {
             {props.children.clone()}
         </h1>
         if let Some(page_description) = props.page_description.clone() {
-        <h2 class="mt-2 text-gray-500 font-medium text-xl">
+        <h2 class="text-gray-500 font-medium text-xl">
             {page_description}
         </h2>
         }

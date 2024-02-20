@@ -10,9 +10,8 @@ use crate::{
         page_title::PageTitle,
         profile_datapoint::{ProfileDatapoint, ProfileKey},
     },
-    data::{auth::check_signed_in, profile::get_profile},
+    data::profile::get_profile,
     redirect_if_not_authed,
-    router::Route,
 };
 
 #[function_component(AccountHomePage)]
@@ -75,8 +74,8 @@ pub fn account_home_page() -> Html {
 
     html! {
     <PageContainer>
-        <PageTitle page_description="Manage your group membership and profile details">
-            {"Your details"}
+        <PageTitle page_description="View or edit your profile and requirements">
+            {"Your profile"}
         </PageTitle>
 
         if let Some(profile) = profile {

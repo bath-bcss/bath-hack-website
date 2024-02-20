@@ -4,8 +4,13 @@ use yew_router::prelude::*;
 use crate::{
     components::sidebar::account_sidebar::AccountSidebar,
     pages::{
-        account_home::AccountHomePage, home::HomePage, login::LoginPage, not_found::NotFoundPage,
-        signup::SignupPage, signup_activate::SignupActivatePage, signup_success::SignupSuccessPage,
+        account::{account_group::AccountGroupPage, account_home::AccountHomePage},
+        home::HomePage,
+        login::LoginPage,
+        not_found::NotFoundPage,
+        signup::SignupPage,
+        signup_activate::SignupActivatePage,
+        signup_success::SignupSuccessPage,
     },
 };
 
@@ -72,6 +77,7 @@ pub fn switch_account(route: AccountRoute) -> Html {
     match route {
         AccountRoute::Profile => html! {
         <AccountHomePage /> },
-        AccountRoute::Groups => html! {<p>{"hi"}</p>},
+        AccountRoute::Groups => html! {
+        <AccountGroupPage />},
     }
 }
