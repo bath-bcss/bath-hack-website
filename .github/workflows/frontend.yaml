@@ -31,7 +31,7 @@ jobs:
         run: |
           sudo apt-get install -y binaryen
       - name: Optimise wasm binary size
-        working-directory: ./packages/backend/dist
+        working-directory: ./packages/frontend/dist
         run: |
           mv bhw-frontend_bg.wasm unoptimised.wasm
           wasm-opt unoptimised.wasm -Os -o bhw-frontend_bg.wasm
