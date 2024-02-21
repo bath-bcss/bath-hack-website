@@ -46,7 +46,7 @@ pub fn nav_link(props: &Props) -> Html {
         );
 
         if *show_on_mobile {
-            base_class.push(classes!("inline"));
+            base_class.push(classes!("!inline"));
         }
 
         base_class
