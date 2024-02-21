@@ -28,12 +28,12 @@ pub fn nav_link(props: &Props) -> Html {
         }
     };
 
-    let classes = use_memo((props.show_on_mobile,), |(show_on_mobile,)| {
-        let mut base_class = classes!(
+    let classes = use_memo((), |_| {
+        let base_class = classes!(
             "text-bcss-200",
             "hover:text-white",
             "hover:bg-bcss-800",
-            "px-2",
+            "sm:px-2",
             "py-2",
             "rounded-md",
             "active:bg-bcss-900/80",
@@ -41,19 +41,21 @@ pub fn nav_link(props: &Props) -> Html {
             "focus:ring-4",
             "ring-bcss-500",
             "transition-all",
-            "hidden",
-            "md:inline",
         );
-
-        if *show_on_mobile {
-            base_class.push(classes!("!inline"));
-        }
 
         base_class
     });
 
+    let paragraph_classes = use_memo((props.show_on_mobile,), |(show_on_mobile,)| {
+        if *show_on_mobile {
+            classes!("block")
+        } else {
+            classes!("hidden", "md:block")
+        }
+    });
+
     html! {
-    <p>
+    <p class={(*paragraph_classes).clone()}>
         <a href={href} class={(*classes).clone()}>
             {props.label.clone()}
         </a>

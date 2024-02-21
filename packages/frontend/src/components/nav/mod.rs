@@ -78,7 +78,7 @@ pub fn scrolling_navbar() -> Html {
         <div class="flex items-center justify-start space-x-3">
             <h1 class="transition-transform hover:scale-110 active:scale-105 mr-6">
                 <a class="text-lg tracking-tighter font-bold text-bcss-200 hover:text-white" href="#">
-                    {"Bath Hack 24"}
+                    {"BH 24"}
                 </a>
             </h1>
 
