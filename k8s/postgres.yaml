@@ -41,17 +41,17 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: postgres
+      app: bhw-postgres
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: postgres
+        app: bhw-postgres
     spec:
       containers:
         - image: postgres:alpine
-          name: postgres
+          name: bhw-postgres
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
@@ -94,7 +94,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: postgres
+      app: bhw-postgres
   policyTypes:
     - Egress
     - Ingress

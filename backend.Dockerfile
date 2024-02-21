@@ -6,9 +6,10 @@ COPY . .
 
 RUN cargo install --path packages/backend --root /usr
 
-FROM docker.io/alpine:3 as runner
+FROM docker.io/debian:bookworm-slim
 
-WORKDIR /usr/bin
-COPY --from=builder --chmod=0755 /usr/bin/bhw-backend /usr/bin/bhw-backend
+COPY --from=builder --chmod=0755 /usr/bin/bhw-backend /opt/bhw-backend
 
-CMD ["/usr/bin/bhw-backend"]
+RUN apt-get update && apt-get install -y libpq5
+
+CMD ["/opt/bhw-backend"]
