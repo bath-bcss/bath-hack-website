@@ -14,7 +14,9 @@ jobs:
           rust-version: stable
           targets: wasm32-unknown-unknown
       - name: Install trunk
-        run: cargo install --locked trunk
+        run: |
+          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+          cargo binstall trunk
       - name: Build with trunk
         run: trunk build --release
         working-directory: ./packages/frontend
