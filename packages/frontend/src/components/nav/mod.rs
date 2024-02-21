@@ -58,10 +58,16 @@ pub fn scrolling_navbar() -> Html {
             "items-center",
             "px-8",
             "z-10",
+            "transition-colors",
+            "drop-shadow-md",
         );
 
         if *is_at_top {
-            base_classes.push(classes!("bg-transparent", "dark:bg-transparent"));
+            base_classes.push(classes!(
+                "bg-transparent",
+                "dark:bg-transparent",
+                "drop-shadow-none"
+            ));
         }
 
         base_classes
@@ -70,7 +76,7 @@ pub fn scrolling_navbar() -> Html {
     html! {
     <div class={(*container_classes).clone()}>
         <div class="flex items-center justify-start space-x-3">
-            <h1 class="transition-transform hover:scale-110 mr-6">
+            <h1 class="transition-transform hover:scale-110 active:scale-105 mr-6">
                 <a class="text-lg tracking-tighter font-bold text-bcss-200 hover:text-white" href="#">
                     {"Bath Hack 24"}
                 </a>

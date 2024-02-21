@@ -4,7 +4,10 @@ use yew_router::prelude::*;
 use crate::{
     components::{
         button::Button,
-        flashy_homepage::section::{FlashyHomepageSection, SectionIcon},
+        flashy_homepage::{
+            image_grid::ImageGrid,
+            section::{FlashyHomepageSection, SectionIcon},
+        },
         hero::gradient::HeroGradientContainer,
         nav::ScrollingNavbar,
     },
@@ -24,7 +27,7 @@ pub fn home_page() -> Html {
         <ScrollingNavbar />
         <HeroGradientContainer>
             <div class="w-full px-4 sm:px-6 md:px-8 lg:px-[10%] flex items-center">
-                <div class="space-y-4 flex-1">
+                <div class="space-y-4 flex-1 md:mr-10">
                     <h1 class="text-hero font-hero text-bcss-100 leading-none">
                         { "Bath Hack 2024" }
                     </h1>
@@ -38,7 +41,7 @@ pub fn home_page() -> Html {
                         {"Sign up!"}
                     </Button>
                 </div>
-                <img src="img/group.jpg" class="max-w-3xl rounded-2xl shadow-2xl shadow-bcss-400 dark:shadow-bcss-700 dark:brightness-90" />
+                <ImageGrid />
             </div>
         </HeroGradientContainer>
 
