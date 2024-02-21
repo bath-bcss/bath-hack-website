@@ -1,0 +1,136 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bhw-24
+  labels:
+    app: bhw
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bhw-session-secret
+  namespace: bhw-24
+  annotations:
+    secret-generator.v1.mittwald.de/autogenerate: value
+  labels:
+    app: bhw
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bhw
+  namespace: bhw-24
+  labels:
+    app: bhw
+spec:
+  selector:
+    matchLabels:
+      app: bhw
+  template:
+    metadata:
+      labels:
+        app: bhw
+    spec:
+      imagePullSecrets:
+        - name: bhw-ghcr
+      containers:
+        - name: bhw
+          image: ghcr.io/bath-bcss/bath-hack-website:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 700m
+            requests:
+              cpu: 300m
+          env:
+            - name: BHW_BIND_PORT
+              value: "8080"
+            - name: BHW_BIND_ADDRESS
+              value: "0.0.0.0"
+            - name: BHW_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: bhw-database
+                  key: url
+            - name: BHW_REDIS_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: bhw-redis
+                  key: url
+            - name: BHW_MAILGUN_DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: bhw-mailgun
+                  key: url
+            - name: BHW_MAILGUN_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: bhw-mailgun
+                  key: key
+            - name: BHW_COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: bhw-session-secret
+                  key: value
+            - name: BHW_LDAP_URL
+              value: ldap://example.com
+            - name: BHW_ALLOWED_ORIGIN
+              value: https://hack.bathcs.com
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bhw-svc
+  namespace: bhw-24
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 8080
+      port: 8081
+  selector:
+    app: bhw
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: bhw-hpa
+  namespace: bhw-24
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: bhw
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bhw-ingress
+  namespace: bhw-24
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - hack-api.bathcs.com
+      secretName: hack-api-bathcs-tls
+  rules:
+    - host: hack-api.bathcs.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bhw-svc
+                port:
+                  number: 8081
