@@ -22,20 +22,20 @@ jobs:
           curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
           cargo binstall -y trunk
       - name: Build with trunk
-        run: trunk build --release --filehash false
+        run: trunk build --release # --filehash false
         working-directory: ./packages/frontend
         env:
           BHW_FRONTEND_API_URL: "https://hack-api.bathcs.com"
           BHW_FRONTEND_USE_NETLIFY_IMAGE_CDN: "true"
-      - name: Install binaryen for wasm-opt
-        run: |
-          sudo apt-get install -y binaryen
-      - name: Optimise wasm binary size
-        working-directory: ./packages/frontend/dist
-        run: |
-          mv bhw-frontend_bg.wasm unoptimised.wasm
-          wasm-opt unoptimised.wasm -Os -o bhw-frontend_bg.wasm
-          rm unoptimised.wasm
+      # - name: Install binaryen for wasm-opt
+        # run: |
+          # sudo apt-get install -y binaryen
+      # - name: Optimise wasm binary size
+        # working-directory: ./packages/frontend/dist
+        # run: |
+          # mv bhw-frontend_bg.wasm unoptimised.wasm
+          # wasm-opt unoptimised.wasm -Os -o bhw-frontend_bg.wasm
+          # rm unoptimised.wasm
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.0
         with:
