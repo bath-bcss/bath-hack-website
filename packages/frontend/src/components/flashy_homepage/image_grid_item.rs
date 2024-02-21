@@ -12,7 +12,7 @@ pub fn image_grid_item(props: &Props) -> Html {
         let using_cdn = env!("BHW_FRONTEND_USE_NETLIFY_IMAGE_CDN") == "true";
 
         if using_cdn {
-            src.insert_str(0, "/.netlify/images/?fm=webp&w=400&url=/img/")
+            src.insert_str(0, "/home-page-imgs/")
         } else {
             src.insert_str(0, "/img/");
         }
