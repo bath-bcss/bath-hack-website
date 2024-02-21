@@ -5,14 +5,14 @@ on:
     branches: ['main']
 
 jobs:
-  build-backend:
+  build-frontend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: hecrj/setup-rust-action@v2
         with:
           rust-version: stable
-          targets: wasm32-unknown-unkown
+          targets: wasm32-unknown-unknown
       - name: Install trunk
         run: cargo install --locked trunk
       - name: Build with trunk
