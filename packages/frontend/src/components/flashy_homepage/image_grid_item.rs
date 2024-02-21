@@ -12,7 +12,7 @@ pub fn image_grid_item(props: &Props) -> Html {
         let using_cdn = env!("BHW_FRONTEND_USE_NETLIFY_IMAGE_CDN") == "true";
 
         if using_cdn {
-            src.insert_str(0, "/.netlify/images/?fm=webp&w=200&url=/img/")
+            src.insert_str(0, "/.netlify/images/?fm=webp&w=400&url=/img/")
         } else {
             src.insert_str(0, "/img/");
         }
@@ -21,7 +21,7 @@ pub fn image_grid_item(props: &Props) -> Html {
 
     html! {
     <img src={(*src).clone()}
-        class="w-full h-auto rounded-2xl shadow-2xl shadow-bcss-400 dark:shadow-bcss-700 dark:brightness-90"
-        loading="lazy" />
+        class="w-full h-auto rounded-2xl shadow-2xl shadow-bcss-400 dark:shadow-bcss-700 dark:brightness-90" loading="lazy"
+        width="400" />
     }
 }
