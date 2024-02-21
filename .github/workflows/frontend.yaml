@@ -1,0 +1,32 @@
+name: Build and deploy frontend
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hecrj/setup-rust-action@v2
+        with:
+          rust-version: stable
+          targets: wasm32-unknown-unkown
+      - name: Install trunk
+        run: cargo install --locked trunk
+      - name: Build with trunk
+        run: trunk build --release
+        working-directory: ./packages/frontend
+        env:
+          BHW_FRONTEND_API_URL: "https://hack-api.bathcs.com"
+          BHW_FRONTEND_USE_NETLIFY_IMAGE_CDN: "true"
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v2.0
+        with:
+          publish-dir: ./packages/frontend/dist
+          production-deploy: true
+          fails-without-credentials: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

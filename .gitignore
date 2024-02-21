@@ -1,3 +1,6 @@
 /target
 /.env
 /.secret.env
+
+# Local Netlify folder
+.netlify
