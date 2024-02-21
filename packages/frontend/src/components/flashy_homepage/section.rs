@@ -1,6 +1,8 @@
 use yew::prelude::*;
 use yew_icons::{Icon, IconId};
 
+use crate::components::flashy_homepage::section_paragraph::FlashyHomepageSectionParagraph;
+
 #[derive(PartialEq, Clone)]
 pub enum SectionIcon {
     Icon(IconId),
@@ -23,7 +25,7 @@ pub struct Props {
 pub fn flashy_homepage_section(props: &Props) -> Html {
     let icon_component = use_memo((props.icon.clone(),), |(icon,)| match icon {
         SectionIcon::Icon(id) => html! {
-        <Icon icon_id={id.clone()} />
+        <Icon icon_id={id.clone()} class={classes!("text-bcss-800")} width="48" height="48" />
         },
         SectionIcon::Emoji(emoji) => html! {
         <p class="text-6xl">{emoji.clone()}</p>
@@ -38,9 +40,9 @@ pub fn flashy_homepage_section(props: &Props) -> Html {
         </h1>
 
         if props.child_is_paragraph {
-        <p class="text-bcss-700 dark:text-bcss-300 text-lg md:max-w-[70%] mt-4">
+        <FlashyHomepageSectionParagraph>
             {props.children.clone()}
-        </p>
+        </FlashyHomepageSectionParagraph>
         } else {
         {props.children.clone()}
         }

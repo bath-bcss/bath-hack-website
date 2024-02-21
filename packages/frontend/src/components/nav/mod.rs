@@ -83,7 +83,7 @@ pub fn scrolling_navbar() -> Html {
             </h1>
 
             <NavLink dest={NavLinkDestination::Anchor("welcome".to_string())} label="About" />
-            <NavLink dest={NavLinkDestination::Anchor("welcome".to_string())} label="Tracks " />
+            <NavLink dest={NavLinkDestination::Anchor("tracks".to_string())} label="Tracks " />
             <NavLink dest={NavLinkDestination::Anchor("welcome".to_string())} label="Schedule" />
             <NavLink dest={NavLinkDestination::Anchor("welcome".to_string())} label="Talks" />
             <NavLink dest={NavLinkDestination::Anchor("welcome".to_string())} label="Sponsors" />

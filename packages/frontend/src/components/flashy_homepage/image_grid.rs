@@ -10,8 +10,11 @@ pub fn image_grid() -> Html {
         <ImageGridItem src="home_l2.jpg" />
         <ImageGridItem src="home_l1.jpg" />
         <ImageGridItem src="home_l3.jpg" />
-        <ImageGridItem src="home_p2.jpg" is_portrait={true} />
         <ImageGridItem src="home_l4.jpg" />
+        <ImageGridItem src="home_l5.jpg" />
+        <ImageGridItem src="home_p2.jpg" is_portrait={true} />
+        <ImageGridItem src="home_l6.jpg" />
+        <ImageGridItem src="home_l7.jpg" />
     </div>
     }
 }

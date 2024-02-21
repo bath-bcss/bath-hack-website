@@ -1,12 +1,15 @@
 use yew::prelude::*;
+use yew_icons::IconId;
 use yew_router::prelude::*;
 
 use crate::{
     components::{
         button::Button,
         flashy_homepage::{
+            footer::HomepageFooter,
             image_grid::ImageGrid,
             section::{FlashyHomepageSection, SectionIcon},
+            section_paragraph::FlashyHomepageSectionParagraph,
         },
         hero::gradient::HeroGradientContainer,
         nav::ScrollingNavbar,
@@ -35,9 +38,9 @@ pub fn home_page() -> Html {
                         {"The annual 24-hour hackathon for all Uni of Bath students"}
                     </p>
                     <p class="text-heroSubtitle text-bcss-100 font-bold italic">
-                        {"13th - 14th April"}
+                        {"13th - 14th April. £0."}
                     </p>
-                    <Button dark_mode={true} onclick={on_sign_up_click}>
+                    <Button dark_mode={true} onclick={on_sign_up_click.clone()}>
                         {"Sign up!"}
                     </Button>
                 </div>
@@ -47,16 +50,35 @@ pub fn home_page() -> Html {
 
         <div class="space-y-32 mt-32">
             <FlashyHomepageSection icon={SectionIcon::Emoji("👋".to_string())} title="Welcome to Bath Hack!"
-                anchor="welcome" child_is_paragraph={true}>
-                {"Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem
-            pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud
-            nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia
-            pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem
-            duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt
-            duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris
-            sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis."}
+                anchor="welcome">
+                <FlashyHomepageSectionParagraph>
+                    {"The official BCSS Hackathon is back for 2024 — another exciting year of projects, prizes, and (most
+                    importantly) pizza! As per usual, it's open to "}
+                    <strong>
+                        {"all University of Bath students"}
+                    </strong>
+                    {"; not just Computer Scientists."}
+                </FlashyHomepageSectionParagraph>
+                <FlashyHomepageSectionParagraph>
+                    {"You'll have exactly one day to build an innovative project with your team and impress the judges. It's
+                a fun,
+                inclusive, and beginner-friendly atmosphere with a wide range of tracks and talks."}
+                </FlashyHomepageSectionParagraph>
+                <FlashyHomepageSectionParagraph>
+                    {"Are you ready for the most exciting 24 hours of your life?"}
+                </FlashyHomepageSectionParagraph>
+                <Button onclick={on_sign_up_click.clone()} dark_mode={false} class={classes!("mt-4")}>
+                    {"Sign up now!"}
+                </Button>
+            </FlashyHomepageSection>
+
+            <FlashyHomepageSection icon={SectionIcon::Icon(IconId::FontAwesomeSolidShuffle)} title="Tracks" anchor="tracks"
+                child_is_paragraph={true}>
+                {"hi"}
             </FlashyHomepageSection>
         </div>
+
+        <HomepageFooter />
     </>
     }
 }
