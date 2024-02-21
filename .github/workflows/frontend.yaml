@@ -16,7 +16,7 @@ jobs:
       - name: Install trunk
         run: |
           curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-          cargo binstall trunk
+          cargo binstall -y trunk
       - name: Build with trunk
         run: trunk build --release
         working-directory: ./packages/frontend
