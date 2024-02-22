@@ -10,6 +10,6 @@ FROM docker.io/debian:bookworm-slim
 
 COPY --from=builder --chmod=0755 /usr/bin/bhw-backend /opt/bhw-backend
 
-RUN apt-get update && apt-get install -y libpq5
+RUN apt-get update && apt-get install -y libpq5 ca-certificates
 
 CMD ["/opt/bhw-backend"]
