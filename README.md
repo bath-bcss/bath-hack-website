@@ -10,7 +10,7 @@ For the backend, you'll need a local instance of PostgreSQL and Redis.
 If you have Podman (or Docker), you can easily start these:
 
 ```
-podman run --name postgres -p 54320:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=bhw docker.io/postgres
+podman run -d --name postgres -p 54320:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=bhw docker.io/postgres
 ```
 
 ```
