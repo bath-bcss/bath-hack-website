@@ -6,6 +6,7 @@ use actix_session::{
 };
 use actix_web::{
     cookie::{time, Key, SameSite},
+    http,
     middleware::Logger,
     web, App, HttpServer,
 };
@@ -45,6 +46,8 @@ async fn main() -> std::io::Result<()> {
             let cors = Cors::default()
                 .allowed_origin(config.clone().allowed_origin.as_str())
                 .allowed_methods(vec!["GET", "POST"])
+                .allowed_headers(vec![http::header::CONTENT_TYPE])
+                .supports_credentials()
                 .max_age(3600);
 
             let csrf = Csrf {
