@@ -1,4 +1,4 @@
-use bhw_macro_types::{FromDieselError, ResponseError, FromBlockingError};
+use bhw_macro_types::{FromBlockingError, FromDieselError, ResponseError};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
@@ -12,11 +12,23 @@ pub struct AccountActivateRequest {
 }
 
 #[derive(
-    Debug, Clone, PartialEq, Deserialize, Serialize, Error, FromDieselError, FromBlockingError, ResponseError,
+    Debug,
+    Clone,
+    PartialEq,
+    Deserialize,
+    Serialize,
+    Error,
+    FromDieselError,
+    FromBlockingError,
+    ResponseError,
 )]
 pub enum AccountActivateResponseError {
     #[error("ID or secret was wrong")]
     IdOrSecretWrong,
+    #[error("Your link has expired. Please go back to the signup page and start again.")]
+    RequestExpired,
+    #[error("{0}")]
+    InsecurePassword(String),
     #[error("Secret checking failed")]
     SecretError,
     #[error("Database error")]

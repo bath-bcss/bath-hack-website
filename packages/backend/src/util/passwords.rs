@@ -1,6 +1,8 @@
 use argon2::{password_hash::SaltString, Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use log::warn;
+use passwords::{analyzer, scorer};
 use rand::{rngs::OsRng, RngCore};
+use thiserror::Error;
 
 pub struct PasswordManager;
 pub struct RandomPasswordHash {
@@ -8,7 +10,32 @@ pub struct RandomPasswordHash {
     pub hash: String,
 }
 
+#[derive(Debug, Error, Clone)]
+pub enum PasswordSecurityError {
+    #[error("Password must be at least 12 characters")]
+    TooShort,
+    #[error("That password is too commonly used; please try something more unique")]
+    TooCommon,
+    #[error("Password was too weak; you need a score of at least 80 (current score {0}). Try adding numbers, symbols, upper/lowercase characters, etc.")]
+    LowScore(f64),
+}
+
 impl PasswordManager {
+    pub fn check_security(password: &String) -> Result<(), PasswordSecurityError> {
+        let analyzed_password = analyzer::analyze(password);
+
+        if analyzed_password.length() < 12 {
+            return Err(PasswordSecurityError::TooShort);
+        }
+        if analyzed_password.is_common() {
+            return Err(PasswordSecurityError::TooCommon);
+        }
+        let score = scorer::score(&analyzed_password);
+        if score < 80.0 {
+            return Err(PasswordSecurityError::LowScore(score));
+        }
+        Ok(())
+    }
     pub fn hash(password: &String) -> Result<String, argon2::password_hash::Error> {
         let salt = SaltString::generate(&mut OsRng);
         let argon2 = Argon2::default();
@@ -42,7 +69,10 @@ impl PasswordManager {
     pub fn dummy_verify(password: &String) {
         let res = Self::hash(password);
         if let Err(e) = res {
-            warn!("Failed to hash password during dummy_verify: {}", e.to_string());
+            warn!(
+                "Failed to hash password during dummy_verify: {}",
+                e.to_string()
+            );
         }
     }
 }

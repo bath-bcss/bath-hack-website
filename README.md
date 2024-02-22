@@ -10,14 +10,14 @@ For the backend, you'll need a local instance of PostgreSQL and Redis.
 If you have Podman (or Docker), you can easily start these:
 
 ```
-podman run --name postgres -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres docker.io/postgres
+podman run --name postgres -p 54320:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=bhw docker.io/postgres
 ```
 
 ```
-podman run -d --name redis -p 6379:6379 redis/redis-stack-server:latest
+podman run -d --name redis -p 63790:6379 docker.io/redis/redis-stack-server:latest
 ```
 
-Ensure you've created the `bhw` database inside your new local PostgreSQL instance.
+> Warning: do **not** use these commands for production containers; these are _insecure_ configurations. Make sure to use _real_ passwords and persistent storage for Postgres (preferably also for Redis).
 
 Copy `.env.example` to be `.env` and make sure all the variables have sensible values.
 
@@ -27,15 +27,20 @@ Then, `cd` into `packages/backend` to run the migrations:
 diesel migration run --database-url $BHW_DATABASE_URL
 ```
 
-Finally, `cd` back to the project root, and simultaneously (e.g. in two terminal tabs) start both the frontend and backend:
+Then, `cd` into `packages/frontend` and run:
 
 ```
 trunk server --config packages/frontend/Trunk.toml
 ```
 
+And in a new/parallel terminal, `cd` into the project root and run:
+
 ```
 cargo run -p bhw-backend
 ```
+
+## Deploying
+This can be done in a couple of ways. If you're using Kubernetes, see the `k8s` directory for a `kustomize`-compatible configuration. You'll need to set some secrets manually, so make sure to look through the files before deploying them.
 
 ## License
 Project created by Pal Kerecsenyi.

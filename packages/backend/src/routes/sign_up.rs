@@ -1,9 +1,13 @@
 use actix_session::Session;
 use actix_web::{post, web};
-use bhw_types::{requests::{
-    activate::{AccountActivateRequest, AccountActivateResponseError, AccountActivateResult},
-    sign_up::{SignUpRequest, SignUpResponseError, SignUpResult},
-}, nothing::Nothing};
+use bhw_types::{
+    nothing::Nothing,
+    requests::{
+        activate::{AccountActivateRequest, AccountActivateResponseError, AccountActivateResult},
+        sign_up::{SignUpRequest, SignUpResponseError, SignUpResult},
+    },
+};
+use log::error;
 
 use crate::{
     app_config::AppConfig,
@@ -33,7 +37,10 @@ pub async fn sign_up_route(
             .serializable()
             .run(|mut tx| -> Result<(), SignUpResponseError> {
                 let exists = User::check_username_exists(&mut tx, request.bath_username.clone())
-                    .map_err(|_| SignUpResponseError::DBError)?;
+                    .map_err(|e| {
+                        error!("checking username existence: {}", e.to_string());
+                        SignUpResponseError::DBError
+                    })?;
                 if exists {
                     return Err(SignUpResponseError::UsernameAlreadyExists);
                 }
@@ -73,7 +80,8 @@ pub async fn account_activate_route(
                             SignupRequestFromIdError::InvalidID(_) => {
                                 AccountActivateResponseError::IdOrSecretWrong
                             }
-                            SignupRequestFromIdError::DBError(_) => {
+                            SignupRequestFromIdError::DBError(e) => {
+                                error!("finding signup_request: {}", e.to_string());
                                 AccountActivateResponseError::DBError
                             }
                         })?
@@ -88,6 +96,17 @@ pub async fn account_activate_route(
 
                     if !is_password_correct {
                         return Err(AccountActivateResponseError::IdOrSecretWrong);
+                    }
+
+                    if signup_request.expired() {
+                        return Err(AccountActivateResponseError::RequestExpired);
+                    }
+
+                    if let Err(security_error) = PasswordManager::check_security(&request.password)
+                    {
+                        return Err(AccountActivateResponseError::InsecurePassword(
+                            security_error.to_string(),
+                        ));
                     }
 
                     let new_user =
@@ -109,8 +128,13 @@ pub async fn account_activate_route(
     )
     .await??;
 
-    SessionUser::set_id(&session, &new_user_id.to_string())
-        .map_err(|_| AccountActivateResponseError::SessionError)?;
+    SessionUser::set_id(&session, &new_user_id.to_string()).map_err(|e| {
+        error!(
+            "setting user ID after activating account: {}",
+            e.to_string()
+        );
+        AccountActivateResponseError::SessionError
+    })?;
 
     Ok(Nothing)
 }

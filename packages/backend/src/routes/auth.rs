@@ -1,9 +1,13 @@
 use actix_session::Session;
 use actix_web::{get, post, web, Responder};
-use bhw_types::{requests::{
-    check::CheckAuthResponse,
-    sign_in::{SignInRequest, SignInResponseError, SignInResult}, sign_out::SignOutResult,
-}, nothing::Nothing};
+use bhw_types::{
+    nothing::Nothing,
+    requests::{
+        check::CheckAuthResponse,
+        sign_in::{SignInRequest, SignInResponseError, SignInResult},
+        sign_out::SignOutResult,
+    },
+};
 use log::{error, warn};
 
 use crate::{
@@ -32,7 +36,10 @@ pub async fn sign_in_route(
         conn.build_transaction().serializable().run(
             |mut tx| -> Result<uuid::Uuid, SignInResponseError> {
                 let user = User::find_by_username(&mut tx, data.username.clone())
-                    .map_err(|_| SignInResponseError::DBError)?
+                    .map_err(|e| {
+                        error!("finding user by username: {}", e.to_string());
+                        SignInResponseError::DBError
+                    })?
                     .ok_or_else(|| {
                         PasswordManager::dummy_verify(&data.password);
                         SignInResponseError::UsernameOrPasswordIncorrect
@@ -62,9 +69,7 @@ pub async fn sign_in_route(
 }
 
 #[post("/auth/signout")]
-pub async fn sign_out_route(
-    session: Session,
-) -> SignOutResult {
+pub async fn sign_out_route(session: Session) -> SignOutResult {
     SessionUser::forget(&session);
     Ok(Nothing)
 }

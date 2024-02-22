@@ -57,10 +57,20 @@ impl SignupRequestObject {
         username: &String,
     ) -> Result<bool, diesel::result::Error> {
         use crate::schema::signup_request;
+
+        // delete existing expired signup requests in case user wants to start a new one
+        diesel::delete(
+            signup_request::table
+                .filter(signup_request::bath_username.eq(username))
+                .filter(signup_request::expires.le(Utc::now().naive_utc())),
+        )
+        .execute(conn)?;
+
         let resp: i64 = signup_request::table
             .count()
             .filter(signup_request::bath_username.eq(username))
             .get_result(conn)?;
+
         Ok(resp > 0)
     }
 
@@ -140,6 +150,9 @@ impl SignupRequestObject {
         return (self.bath_username.clone()) + "@bath.ac.uk";
     }
 
+    pub fn expired(&self) -> bool {
+        self.expires <= Utc::now().naive_utc()
+    }
     pub fn send_email<'a>(
         &self,
         config: &'a AppConfig,
