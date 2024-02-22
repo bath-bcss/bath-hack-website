@@ -1,3 +1,12 @@
 [workspace]
 members = ["packages/backend", "packages/frontend", "packages/types", "packages/macro-types"]
 resolver = "2"
+
+[profile.release]
+panic = 'unwind'
+opt-level = 3
+codegen-units = 1
+lto = true
+
+[profile.release.package.bhw-frontend]
+opt-level = 'z'

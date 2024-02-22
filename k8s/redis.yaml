@@ -12,6 +12,7 @@ metadata:
     app: bhw-redis
   annotations:
     secret-generator.v1.mittwald.de/autogenerate: redis-password
+    secret-generator.v1.mittwald.de/encoding: base64url
 ---
 apiVersion: helm.cattle.io/v1
 kind: HelmChart
