@@ -12,6 +12,8 @@ metadata:
   namespace: bhw-24
   annotations:
     secret-generator.v1.mittwald.de/autogenerate: value
+    secret-generator.v1.mittwald.de/length: "64"
+    secret-generator.v1.mittwald.de/encoding: "hex"
   labels:
     app: bhw
 ---
@@ -170,4 +172,14 @@ spec:
               kubernetes.io/metadata.name: bhw-24-redis
           podSelector:
             matchLabels:
-              app: bhw
+              app: bhw-redis
+      ports:
+        - protocol: TCP
+          port: 6379
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns

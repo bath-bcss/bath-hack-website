@@ -1,7 +1,7 @@
 use actix_cors::Cors;
 use actix_session::{
     config::{CookieContentSecurity, PersistentSession},
-    storage::RedisActorSessionStore,
+    storage::RedisSessionStore,
     SessionMiddleware,
 };
 use actix_web::{
@@ -14,7 +14,8 @@ use db::{init_db, DbPool};
 use middleware::csrf::Csrf;
 use routes::{
     auth::{check_signed_in_route, sign_in_route, sign_out_route},
-    sign_up::{account_activate_route, sign_up_route}, profile::{get_profile_route, update_profile_route},
+    profile::{get_profile_route, update_profile_route},
+    sign_up::{account_activate_route, sign_up_route},
 };
 
 mod app_config;
@@ -36,6 +37,9 @@ async fn main() -> std::io::Result<()> {
         env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
         let db_con = init_db(config.clone());
+        let store = RedisSessionStore::new(config.redis_string.clone())
+            .await
+            .expect("initialising redis session store");
 
         move || {
             let cors = Cors::default()
@@ -53,7 +57,7 @@ async fn main() -> std::io::Result<()> {
                 .wrap(csrf)
                 .wrap(
                     SessionMiddleware::builder(
-                        RedisActorSessionStore::new(config.redis_string.clone()),
+                        store.clone(),
                         Key::try_from(config.cookie_secret.as_bytes())
                             .expect("Parsing cookie secret"),
                     )

@@ -81,8 +81,9 @@ metadata:
 spec:
   ports:
     - port: 5432
+      targetPort: 5432
   selector:
-    app: postgres
+    app: bhw-postgres
 ---
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1

@@ -22,7 +22,7 @@ spec:
   repo: https://charts.bitnami.com/bitnami
   chart: redis
   targetNamespace: bhw-24-redis
-  version: 18.14.0
+  version: 18.16.0
   valuesContent: |-
     commonLabels:
       app: bhw-redis
@@ -33,6 +33,10 @@ spec:
     auth:
       enabled: true
       existingSecret: redis-creds
+    networkPolicy:
+      enabled: false
+    tls:
+      enabled: false
 ---
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
@@ -42,7 +46,9 @@ metadata:
   labels:
     app: bhw-redis
 spec:
-  podSelector: {}
+  podSelector:
+    matchLabels:
+      app: bhw-redis
   policyTypes:
     - Egress
     - Ingress
@@ -54,4 +60,7 @@ spec:
           podSelector:
             matchLabels:
               app: bhw
+      ports:
+        - protocol: TCP
+          port: 6379
   egress: []
