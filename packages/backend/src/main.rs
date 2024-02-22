@@ -86,6 +86,54 @@ async fn main() -> std::io::Result<()> {
         }
     };
 
+    #[cfg(ldap)]
+    {
+        use log::error;
+        use crate::ldap::{check_pending_users, connect_ldap, Ldap, PendingUserCheckError};
+
+        let ldap_task_config = config.clone();
+
+        tokio::task::spawn(async move {
+            let mut db_con = init_db(ldap_task_config.clone());
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(60));
+            let mut ldap: Option<Ldap> = None;
+            loop {
+                interval.tick().await;
+                let unwrapped_ldap = match ldap {
+                    None => {
+                        ldap = connect_ldap(ldap_task_config.clone()).await.inspect_err(|e| error!("ldap reinit {}", e)).ok();
+                        match ldap {
+                            None => { continue; }
+                            Some(ref v) => { v }
+                        }
+                    }
+                    Some(ref v) => { v }
+                };
+                let r = check_pending_users(unwrapped_ldap.clone(), db_con.clone()).await;
+                match r {
+                    Ok(_) => {}
+                    Err(e) => {
+                        error!("error in ldap loop {}", e);
+                        match e {
+                            PendingUserCheckError::DBPoolError(e) => {
+                                error!("{}", e);
+                                db_con = init_db(ldap_task_config.clone())
+                            }
+                            PendingUserCheckError::DBError(e) => {
+                                error!("{}", e);
+                                db_con = init_db(ldap_task_config.clone())
+                            }
+                            PendingUserCheckError::LdapError(e) => {
+                                error!("{}", e);
+                                ldap = None
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     HttpServer::new(http_factory)
         .bind((config.bind_address, config.bind_port))?
         .run()

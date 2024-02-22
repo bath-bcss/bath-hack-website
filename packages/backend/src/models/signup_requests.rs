@@ -11,7 +11,6 @@ use sea_orm::{
     QueryFilter, QuerySelect, Set
 };
 use thiserror::Error;
-
 use crate::app_config::AppConfig;
 use crate::data::mail::Mailer;
 use crate::data::mail::SendInstruction;
@@ -81,6 +80,12 @@ impl SignupRequestHelper {
         Ok(resp)
     }
 
+    pub fn find_usernames_by_ldap_status<C: ConnectionTrait>(
+        conn: &C,
+        status: &i16,
+    ) -> Result<Vec<String>, todo!()> {
+        todo!()
+    }
     pub fn verify_hash(
         signup_request: &signup_request::Model,
         secret: &String,
@@ -91,6 +96,7 @@ impl SignupRequestHelper {
     pub async fn create<C: ConnectionTrait>(
         conn: &C,
         username: &String,
+        status: &i16,
     ) -> Result<NewSignupRequestSecret, SignupRequestCreateError> {
         let already_exists = Self::exists_for_username(conn, &username).await?;
         if already_exists {
@@ -111,6 +117,7 @@ impl SignupRequestHelper {
                 Set(new_time.naive_utc())
             },
             secret_hash: Set(secret.hash),
+            ldap_check_status: status,
             ..Default::default()
         };
 
@@ -133,6 +140,7 @@ impl SignupRequestHelper {
     pub fn expired(signup_request: &signup_request::Model) -> bool {
         signup_request.expires_at <= Utc::now().naive_utc()
     }
+
     pub fn send_email<'a>(
         signup_request: &'a signup_request::Model,
         config: &'a AppConfig,
@@ -150,5 +158,13 @@ impl SignupRequestHelper {
             vars: &mail_vars,
         };
         mailer.send_template(&instruction)
+    }
+
+    pub fn set_ldap_status<C: ConnectionTrait>(
+        conn: &C,
+        username: &String,
+        new_status: &i16,
+    ) -> Result<(), todo!()> {
+        todo!()
     }
 }

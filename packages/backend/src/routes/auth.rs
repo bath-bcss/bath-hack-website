@@ -14,6 +14,7 @@ use sea_orm::DatabaseConnection;
 use crate::{
     data::session::SessionUser, models::users::UserHelper, util::passwords::PasswordManager,
 };
+use crate::models::ldap_status::BathUserStatus;
 
 #[get("/auth/check")]
 pub async fn check_signed_in_route(user: Option<SessionUser>) -> impl Responder {
@@ -47,6 +48,13 @@ pub async fn sign_in_route(
     if !password_correct {
         return Err(SignInResponseError::UsernameOrPasswordIncorrect);
     }
+
+    match user.ldap_check_status.try_into() {
+        Ok(BathUserStatus::UserIsStudent) => Ok(()),
+        Ok(BathUserStatus::UserIsNotStudent) => Err(SignInResponseError::UserNotStudentError),
+        Ok(BathUserStatus::UserNotExists) => Err(SignInResponseError::PhantomUserError),
+        Err(_) => Ok(()),
+    }?;
 
     SessionUser::set_id(&session, &user.id.to_string()).map_err(|e| {
         error!("setting session on login: {}", e.to_string());

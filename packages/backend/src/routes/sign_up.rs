@@ -16,9 +16,11 @@ use crate::{
     models::{
         signup_requests::{SignupRequestFromIdError, SignupRequestHelper},
         users::UserHelper,
+        ldap_status::BathUserStatus,
     },
     util::passwords::PasswordManager,
 };
+use crate::models::signup_requests::{NewSignupRequestSecret};
 
 #[post("/auth/signup")]
 pub async fn sign_up_route(
@@ -29,6 +31,23 @@ pub async fn sign_up_route(
     if !UserHelper::validate_username(&request.bath_username) {
         return Err(SignUpResponseError::UsernameInvalid.into());
     }
+
+    #[cfg(ldap)]
+    let status = match connect_ldap(config.get_ref().clone()).await {
+        Ok(ldap) => {
+            match get_bath_user_details(request.bath_username.clone(), ldap).await {
+                Ok(v) => match v {
+                    BathUserStatus::UserIsStudent => Ok(BathUserStatus::UserIsStudent as i16),
+                    BathUserStatus::UserNotExists => Err(SignUpResponseError::UsernameInvalid),
+                    BathUserStatus::UserIsNotStudent => Err(SignUpResponseError::UserIsNotStudent)
+                },
+                Err(_) => Ok(0),
+            }
+        }
+        Err(_) => Ok(0),
+    }?;
+    #[cfg(not(ldap))]
+    let status = 0;
 
     let txn = db
         .begin_with_config(
@@ -46,7 +65,7 @@ pub async fn sign_up_route(
         return Err(SignUpResponseError::UsernameAlreadyExists);
     }
 
-    let new_sr = SignupRequestHelper::create(&txn, &request.bath_username.clone())
+    let new_sr = SignupRequestHelper::create(&txn, &request.bath_username.clone(), status)
         .await
         .map_err(|e| SignUpResponseError::CreateError(e.to_string()))?;
 
@@ -101,13 +120,20 @@ pub async fn account_activate_route(
         return Err(AccountActivateResponseError::RequestExpired);
     }
 
+    match signup_request.ldap_check_status.try_into() {
+        Ok(BathUserStatus::UserIsStudent) => Ok(()),
+        Ok(BathUserStatus::UserIsNotStudent) => Err(AccountActivateResponseError::UserNotStudentError),
+        Ok(BathUserStatus::UserNotExists) => Err(AccountActivateResponseError::PhantomUserError),
+        Err(_) => Ok(()),
+    }?;
+
     if let Err(security_error) = PasswordManager::check_security(&request.password) {
         return Err(AccountActivateResponseError::InsecurePassword(
             security_error.to_string(),
         ));
     }
 
-    let new_user = UserHelper::create(&txn, &signup_request.bath_username, &request.password)
+    let new_user = UserHelper::create(&txn, &signup_request.bath_username, &request.password, &signup_request.ldap_check_status)
         .await
         .map_err(|e| AccountActivateResponseError::CreateUserError(e.to_string()))?;
 

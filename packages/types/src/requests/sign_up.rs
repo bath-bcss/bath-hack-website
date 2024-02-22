@@ -24,6 +24,8 @@ pub enum SignUpResponseError {
     UsernameAlreadyExists,
     #[error("That doesn't look like a valid UoB username. Please contact su-bcss@bath.ac.uk if we're wrong.")]
     UsernameInvalid,
+    #[error("Sorry, it looks like you aren't a student at UoB. Please contact su-bcss@bath.ac.uk if we're wrong.")]
+    UserIsNotStudent,
     #[error("{0}")]
     CreateError(String),
     #[error("Cannot send email: {0}")]

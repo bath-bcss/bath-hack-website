@@ -56,6 +56,13 @@ impl UserHelper {
         Ok(response)
     }
 
+    pub async fn find_usernames_by_ldap_status<C: ConnectionTrait>(
+        conn: &C,
+        status: &i16,
+    ) -> Result<Vec<String>, todo!()> {
+        todo!()
+    }
+
     pub async fn from_id<C: ConnectionTrait>(
         conn: &C,
         user_id: String,
@@ -74,6 +81,7 @@ impl UserHelper {
         conn: &C,
         username: &String,
         password: &String,
+        ldap_check_status: &i16,
     ) -> Result<user::Model, CreateUserError> {
         let password_hash =
             PasswordManager::hash(&password).map_err(|e| CreateUserError::PasswordHash(e))?;
@@ -82,6 +90,7 @@ impl UserHelper {
             id: Set(uuid::Uuid::new_v4()),
             bath_username: Set(username.to_owned()),
             password_hash: Set(password_hash),
+            ldap_check_status: Set(ldap_check_status),
             ..Default::default()
         };
 
@@ -113,6 +122,14 @@ impl UserHelper {
 
         updated_user.save(conn).await?;
         Ok(())
+    }
+
+    pub async fn set_ldap_status<C: ConnectionTrait>(
+        conn: &C,
+        username: &String,
+        new_status: &i16,
+    ) -> Result<(), DbErr> {
+        todo!()
     }
 
     pub fn verify_password(

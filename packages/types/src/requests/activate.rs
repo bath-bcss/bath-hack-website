@@ -38,6 +38,10 @@ pub enum AccountActivateResponseError {
     DeleteRequestError(String),
     #[error("SessionError")]
     SessionError,
+    #[error("User not a student")]
+    UserNotStudentError,
+    #[error("User not found in LDAP database")]
+    PhantomUserError,
 }
 
 pub type AccountActivateResult = Result<Nothing, AccountActivateResponseError>;

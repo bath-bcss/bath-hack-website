@@ -27,6 +27,10 @@ pub enum SignInResponseError {
     UsernameOrPasswordIncorrect,
     #[error("Session error")]
     SessionError,
+    #[error("User not a student")]
+    UserNotStudentError,
+    #[error("User not found in LDAP database")]
+    PhantomUserError,
 }
 
 pub type SignInResult = Result<Nothing, SignInResponseError>;
