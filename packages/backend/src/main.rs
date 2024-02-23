@@ -34,7 +34,10 @@ async fn main() -> std::io::Result<()> {
 
     let http_factory = {
         let config = config.clone();
-        env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+        env_logger::Builder::from_default_env()
+            .filter_level(log::LevelFilter::Info)
+            .filter_module("sqlx::query", log::LevelFilter::Warn)
+            .init();
 
         let db_con = init_db(&config).await;
         let store = RedisSessionStore::new(&config.redis_string)
