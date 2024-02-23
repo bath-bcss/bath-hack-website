@@ -88,8 +88,8 @@ async fn main() -> std::io::Result<()> {
 
     #[cfg(feature = "ldap")]
     {
-        use log::{error, warn};
         use crate::ldap::{check_pending_users, connect_ldap, Ldap, PendingUserCheckError};
+        use log::{error, warn};
 
         let ldap_task_config = config.clone();
 
@@ -101,13 +101,18 @@ async fn main() -> std::io::Result<()> {
                 interval.tick().await;
                 let unwrapped_ldap = match ldap {
                     None => {
-                        ldap = connect_ldap(ldap_task_config.clone()).await.inspect_err(|e| error!("ldap reinit {}", e)).ok();
+                        ldap = connect_ldap(ldap_task_config.clone())
+                            .await
+                            .inspect_err(|e| error!("ldap reinit {}", e))
+                            .ok();
                         match ldap {
-                            None => { continue; }
-                            Some(ref v) => { v }
+                            None => {
+                                continue;
+                            }
+                            Some(ref v) => v,
                         }
                     }
-                    Some(ref v) => { v }
+                    Some(ref v) => v,
                 };
                 let r = check_pending_users(unwrapped_ldap.clone(), db_con.clone()).await;
                 match r {

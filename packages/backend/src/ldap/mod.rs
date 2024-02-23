@@ -9,9 +9,9 @@ use crate::models::users::UserHelper;
 
 pub type Ldap = ldap3::Ldap;
 
-use sea_orm::{AccessMode, DatabaseConnection, DbErr, IsolationLevel, TransactionTrait};
 use crate::models::ldap_status::BathUserStatus;
 use crate::models::signup_requests::SignupRequestHelper;
+use sea_orm::{AccessMode, DatabaseConnection, DbErr, IsolationLevel, TransactionTrait};
 
 fn escape_ldap_input(input_val: String) -> String {
     input_val
@@ -22,9 +22,7 @@ fn escape_ldap_input(input_val: String) -> String {
         .replace("\0", "\\00")
 }
 
-pub async fn connect_ldap(
-    app_config: AppConfig
-) -> Result<Ldap, LdapError> {
+pub async fn connect_ldap(app_config: AppConfig) -> Result<Ldap, LdapError> {
     let settings = LdapConnSettings::new()
         .set_starttls(true)
         .set_no_tls_verify(true);
@@ -55,7 +53,7 @@ pub async fn get_bath_user_details(
         )
         .await?;
     match result.1.rc {
-        32 =>  { Ok(BathUserStatus::UserNotExists) }
+        32 => Ok(BathUserStatus::UserNotExists),
         0 => {
             if result.0.is_empty() {
                 Ok(BathUserStatus::UserIsNotStudent)
@@ -63,7 +61,7 @@ pub async fn get_bath_user_details(
                 Ok(BathUserStatus::UserIsStudent)
             }
         }
-        _ => { Err(LdapError::LdapResult { result: result.1 }) }
+        _ => Err(LdapError::LdapResult { result: result.1 }),
     }
 }
 
@@ -87,8 +85,6 @@ impl From<DbErr> for PendingUserCheckError {
     }
 }
 
-
-
 pub async fn check_pending_users(
     ldap: Ldap,
     db: DatabaseConnection,
@@ -99,7 +95,8 @@ pub async fn check_pending_users(
             Some(AccessMode::ReadOnly),
         )
         .await?;
-    let signup_request_usernames = SignupRequestHelper::find_usernames_by_ldap_status(&txn, 0).await?;
+    let signup_request_usernames =
+        SignupRequestHelper::find_usernames_by_ldap_status(&txn, 0).await?;
     let user_usernames = UserHelper::find_usernames_by_ldap_status(&txn, 0).await?;
 
     txn.commit().await?;
@@ -117,7 +114,6 @@ pub async fn check_pending_users(
             UserHelper::set_ldap_status(&txn, &username, status as i16).await?;
         }
 
-
         txn.commit().await?;
     }
     for username in user_usernames {
@@ -129,8 +125,7 @@ pub async fn check_pending_users(
             )
             .await?;
 
-        UserHelper::set_ldap_status(&txn, &username, status as i16)
-            .await?;
+        UserHelper::set_ldap_status(&txn, &username, status as i16).await?;
 
         txn.commit().await?;
     }

@@ -14,9 +14,9 @@ use crate::{
     app_config::AppConfig,
     data::session::SessionUser,
     models::{
+        ldap_status::BathUserStatus,
         signup_requests::{SignupRequestFromIdError, SignupRequestHelper},
         users::UserHelper,
-        ldap_status::BathUserStatus,
     },
     util::passwords::PasswordManager,
 };
@@ -36,16 +36,14 @@ pub async fn sign_up_route(
 
     #[cfg(feature = "ldap")]
     let status = match connect_ldap(config.get_ref().clone()).await {
-        Ok(ldap) => {
-            match get_bath_user_details(request.bath_username.clone(), ldap).await {
-                Ok(v) => match v {
-                    BathUserStatus::UserIsStudent => Ok(BathUserStatus::UserIsStudent as i16),
-                    BathUserStatus::UserNotExists => Err(SignUpResponseError::UsernameInvalid),
-                    BathUserStatus::UserIsNotStudent => Err(SignUpResponseError::UserIsNotStudent)
-                },
-                Err(_) => Ok(0),
-            }
-        }
+        Ok(ldap) => match get_bath_user_details(request.bath_username.clone(), ldap).await {
+            Ok(v) => match v {
+                BathUserStatus::UserIsStudent => Ok(BathUserStatus::UserIsStudent as i16),
+                BathUserStatus::UserNotExists => Err(SignUpResponseError::UsernameInvalid),
+                BathUserStatus::UserIsNotStudent => Err(SignUpResponseError::UserIsNotStudent),
+            },
+            Err(_) => Ok(0),
+        },
         Err(_) => Ok(0),
     }?;
     #[cfg(not(feature = "ldap"))]
@@ -124,7 +122,9 @@ pub async fn account_activate_route(
 
     match signup_request.ldap_check_status.try_into() {
         Ok(BathUserStatus::UserIsStudent) => Ok(()),
-        Ok(BathUserStatus::UserIsNotStudent) => Err(AccountActivateResponseError::UserNotStudentError),
+        Ok(BathUserStatus::UserIsNotStudent) => {
+            Err(AccountActivateResponseError::UserNotStudentError)
+        }
         Ok(BathUserStatus::UserNotExists) => Err(AccountActivateResponseError::PhantomUserError),
         Err(_) => Ok(()),
     }?;
@@ -135,9 +135,14 @@ pub async fn account_activate_route(
         ));
     }
 
-    let new_user = UserHelper::create(&txn, &signup_request.bath_username, &request.password, signup_request.ldap_check_status)
-        .await
-        .map_err(|e| AccountActivateResponseError::CreateUserError(e.to_string()))?;
+    let new_user = UserHelper::create(
+        &txn,
+        &signup_request.bath_username,
+        &request.password,
+        signup_request.ldap_check_status,
+    )
+    .await
+    .map_err(|e| AccountActivateResponseError::CreateUserError(e.to_string()))?;
 
     SignupRequestHelper::delete(&txn, signup_request.id)
         .await

@@ -1,4 +1,4 @@
-use bhw_macro_types::{ResponseError, FromSeaORMError};
+use bhw_macro_types::{FromSeaORMError, ResponseError};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
@@ -10,14 +10,7 @@ pub struct SignUpRequest {
 }
 
 #[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    Deserialize,
-    Serialize,
-    Error,
-    ResponseError,
-    FromSeaORMError,
+    Debug, Clone, PartialEq, Deserialize, Serialize, Error, ResponseError, FromSeaORMError,
 )]
 pub enum SignUpResponseError {
     #[error("Username already registered")]

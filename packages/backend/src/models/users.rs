@@ -1,6 +1,9 @@
 use bhw_models::{prelude::*, user};
 use bhw_types::requests::update_profile::UpdateProfileRequest;
-use sea_orm::{ActiveModelTrait, ColumnTrait, DbErr, EntityTrait, PaginatorTrait, QueryFilter, QuerySelect, Set, ConnectionTrait};
+use sea_orm::{
+    ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait,
+    QueryFilter, QuerySelect, Set,
+};
 use thiserror::Error;
 
 use crate::util::passwords::PasswordManager;
@@ -136,7 +139,17 @@ impl UserHelper {
         username: &String,
         new_status: i16,
     ) -> Result<u64, DbErr> {
-        Ok(conn.execute(sea_orm::Statement::from_sql_and_values(sea_orm::DatabaseBackend::Postgres, "UPDATE website_user SET ldap_check_status = $1 WHERE bath_username = $2;", [sea_orm::Value::SmallInt(Some(new_status)), sea_orm::Value::String(Some(Box::from(username.to_owned())))])).await?.rows_affected())
+        Ok(conn
+            .execute(sea_orm::Statement::from_sql_and_values(
+                sea_orm::DatabaseBackend::Postgres,
+                "UPDATE website_user SET ldap_check_status = $1 WHERE bath_username = $2;",
+                [
+                    sea_orm::Value::SmallInt(Some(new_status)),
+                    sea_orm::Value::String(Some(Box::from(username.to_owned()))),
+                ],
+            ))
+            .await?
+            .rows_affected())
     }
 
     pub fn verify_password(

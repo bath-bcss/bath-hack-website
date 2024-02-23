@@ -12,14 +12,7 @@ pub struct AccountActivateRequest {
 }
 
 #[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    Deserialize,
-    Serialize,
-    Error,
-    ResponseError,
-    FromSeaORMError,
+    Debug, Clone, PartialEq, Deserialize, Serialize, Error, ResponseError, FromSeaORMError,
 )]
 pub enum AccountActivateResponseError {
     #[error("ID or secret was wrong")]

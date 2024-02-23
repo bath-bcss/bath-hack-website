@@ -11,10 +11,10 @@ use bhw_types::{
 use log::{error, warn};
 use sea_orm::DatabaseConnection;
 
+use crate::models::ldap_status::BathUserStatus;
 use crate::{
     data::session::SessionUser, models::users::UserHelper, util::passwords::PasswordManager,
 };
-use crate::models::ldap_status::BathUserStatus;
 
 #[get("/auth/check")]
 pub async fn check_signed_in_route(user: Option<SessionUser>) -> impl Responder {

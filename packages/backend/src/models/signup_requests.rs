@@ -1,17 +1,20 @@
 use std::collections::HashMap;
 
+use crate::app_config::AppConfig;
+use crate::data::mail::Mailer;
+use crate::data::mail::SendInstruction;
+use crate::util::passwords::PasswordManager;
 use bhw_models::prelude::*;
 use bhw_models::signup_request;
 use chrono::Duration;
 use chrono::Utc;
 use mailgun_rs::SendResponse;
 use mailgun_rs::SendResult;
-use sea_orm::{ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait, QueryFilter, QuerySelect, Set};
+use sea_orm::{
+    ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait,
+    QueryFilter, QuerySelect, Set,
+};
 use thiserror::Error;
-use crate::app_config::AppConfig;
-use crate::data::mail::Mailer;
-use crate::data::mail::SendInstruction;
-use crate::util::passwords::PasswordManager;
 
 #[derive(Debug, Error)]
 pub enum SignupRequestCreateError {
@@ -172,6 +175,16 @@ impl SignupRequestHelper {
         username: &String,
         new_status: i16,
     ) -> Result<u64, DbErr> {
-        Ok(conn.execute(sea_orm::Statement::from_sql_and_values(sea_orm::DatabaseBackend::Postgres, "UPDATE signup_request SET ldap_check_status = $1 WHERE bath_username = $2;", [sea_orm::Value::SmallInt(Some(new_status)), sea_orm::Value::String(Some(Box::from(username.to_owned())))])).await?.rows_affected())
+        Ok(conn
+            .execute(sea_orm::Statement::from_sql_and_values(
+                sea_orm::DatabaseBackend::Postgres,
+                "UPDATE signup_request SET ldap_check_status = $1 WHERE bath_username = $2;",
+                [
+                    sea_orm::Value::SmallInt(Some(new_status)),
+                    sea_orm::Value::String(Some(Box::from(username.to_owned()))),
+                ],
+            ))
+            .await?
+            .rows_affected())
     }
 }
