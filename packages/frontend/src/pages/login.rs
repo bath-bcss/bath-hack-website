@@ -51,7 +51,7 @@ pub fn login_page() -> Html {
 
     html! {
     <HeroCenterContainer>
-        <GlassContainer>
+        <GlassContainer home_link={true}>
             <h1 class="text-3xl font-hero text-bcss-900 dark:text-bcss-200 mb-4">
                 {"Sign in"}
             </h1>
