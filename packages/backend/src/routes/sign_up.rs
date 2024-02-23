@@ -47,7 +47,7 @@ pub async fn sign_up_route(
         Err(_) => Ok(0),
     }?;
     #[cfg(not(ldap))]
-    let status = 0;
+    let status: i16 = 0;
 
     let txn = db
         .begin_with_config(
@@ -65,7 +65,7 @@ pub async fn sign_up_route(
         return Err(SignUpResponseError::UsernameAlreadyExists);
     }
 
-    let new_sr = SignupRequestHelper::create(&txn, &request.bath_username.clone(), status)
+    let new_sr = SignupRequestHelper::create(&txn, &request.bath_username.clone(), &status)
         .await
         .map_err(|e| SignUpResponseError::CreateError(e.to_string()))?;
 
