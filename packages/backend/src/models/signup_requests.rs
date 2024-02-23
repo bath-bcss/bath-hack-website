@@ -96,7 +96,7 @@ impl SignupRequestHelper {
     pub async fn create<C: ConnectionTrait>(
         conn: &C,
         username: &String,
-        status: &i16,
+        status: i16,
     ) -> Result<NewSignupRequestSecret, SignupRequestCreateError> {
         let already_exists = Self::exists_for_username(conn, &username).await?;
         if already_exists {
@@ -117,7 +117,7 @@ impl SignupRequestHelper {
                 Set(new_time.naive_utc())
             },
             secret_hash: Set(secret.hash),
-            ldap_check_status: status,
+            ldap_check_status: Set(status),
             ..Default::default()
         };
 

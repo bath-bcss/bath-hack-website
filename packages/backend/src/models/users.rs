@@ -81,7 +81,7 @@ impl UserHelper {
         conn: &C,
         username: &String,
         password: &String,
-        ldap_check_status: &i16,
+        ldap_check_status: i16,
     ) -> Result<user::Model, CreateUserError> {
         let password_hash =
             PasswordManager::hash(&password).map_err(|e| CreateUserError::PasswordHash(e))?;
