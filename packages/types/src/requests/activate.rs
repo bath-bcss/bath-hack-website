@@ -1,4 +1,4 @@
-use bhw_macro_types::{FromBlockingError, FromDieselError, ResponseError};
+use bhw_macro_types::{FromSeaORMError, ResponseError};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
@@ -18,9 +18,8 @@ pub struct AccountActivateRequest {
     Deserialize,
     Serialize,
     Error,
-    FromDieselError,
-    FromBlockingError,
     ResponseError,
+    FromSeaORMError,
 )]
 pub enum AccountActivateResponseError {
     #[error("ID or secret was wrong")]

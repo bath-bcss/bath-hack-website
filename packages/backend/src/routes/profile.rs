@@ -3,51 +3,47 @@ use bhw_types::{
     nothing::Nothing,
     requests::{
         profile::{ProfileResponse, ProfileResponseError, ProfileResult},
-        update_profile::{UpdateProfileRequest, UpdateProfileResponseError, UpdateProfileResult},
+        update_profile::{UpdateProfileRequest, UpdateProfileResult},
     },
 };
-use log::{error, warn};
+use log::warn;
+use sea_orm::{AccessMode, DatabaseConnection, IsolationLevel, TransactionTrait};
 
 use crate::{
     data::session::SessionUser,
-    db::DbPool,
-    models::users::{User, UserFromIdError},
+    models::users::{UserFromIdError, UserHelper},
 };
 
 #[get("/profile")]
-pub async fn get_profile_route(user: SessionUser, db: web::Data<DbPool>) -> ProfileResult {
-    let profile = web::block(move || -> ProfileResult {
-        let mut conn = db.get().map_err(|e| {
-            error!("get db from pool: {}", e.to_string());
-            ProfileResponseError::DBError
-        })?;
+pub async fn get_profile_route(
+    user: SessionUser,
+    db: web::Data<DatabaseConnection>,
+) -> ProfileResult {
+    let txn = db
+        .begin_with_config(
+            Some(IsolationLevel::Serializable),
+            Some(AccessMode::ReadOnly),
+        )
+        .await?;
+    let user = UserHelper::from_id(&txn, user.id.to_string())
+        .await
+        .map_err(|e| match e {
+            UserFromIdError::DBError(e) => {
+                warn!("finding user by ID: {}", e.to_string());
+                ProfileResponseError::DBError
+            }
+            UserFromIdError::InvalidID(e) => ProfileResponseError::InvalidID(e.to_string()),
+        })?
+        .ok_or(ProfileResponseError::NotFound)?;
 
-        conn.build_transaction()
-            .serializable()
-            .run(|mut tx| -> ProfileResult {
-                let user = User::from_id(&mut tx, user.id.to_string())
-                    .map_err(|e| match e {
-                        UserFromIdError::DBError(e) => {
-                            warn!("finding user by ID: {}", e.to_string());
-                            ProfileResponseError::DBError
-                        }
-                        UserFromIdError::InvalidID(e) => {
-                            ProfileResponseError::InvalidID(e.to_string())
-                        }
-                    })?
-                    .ok_or(ProfileResponseError::NotFound)?;
+    txn.commit().await?;
 
-                let profile = ProfileResponse {
-                    display_name: user.display_name,
-                    bath_username: user.bath_username,
-                    accessibility_requirements: user.accessibility_requirements,
-                    dietary_requirements: user.dietary_requirements,
-                };
-
-                Ok(profile)
-            })
-    })
-    .await??;
+    let profile = ProfileResponse {
+        display_name: user.display_name,
+        bath_username: user.bath_username,
+        accessibility_requirements: user.accessibility_requirements,
+        dietary_requirements: user.dietary_requirements,
+    };
 
     Ok(profile)
 }
@@ -55,23 +51,18 @@ pub async fn get_profile_route(user: SessionUser, db: web::Data<DbPool>) -> Prof
 #[post("/profile")]
 pub async fn update_profile_route(
     user: SessionUser,
-    db: web::Data<DbPool>,
+    db: web::Data<DatabaseConnection>,
     data: web::Json<UpdateProfileRequest>,
 ) -> UpdateProfileResult {
-    web::block(move || -> UpdateProfileResult {
-        let mut conn = db.get().map_err(|e| {
-            error!("get db from pool: {}", e.to_string());
-            UpdateProfileResponseError::DBError
-        })?;
+    let txn = db
+        .begin_with_config(
+            Some(IsolationLevel::Serializable),
+            Some(AccessMode::ReadWrite),
+        )
+        .await?;
 
-        conn.build_transaction()
-            .serializable()
-            .run(|mut tx| -> UpdateProfileResult {
-                User::update_property(&mut tx, user.id, data.into_inner())?;
-                Ok(Nothing)
-            })
-    })
-    .await??;
+    UserHelper::update_property(&txn, user.id, data.into_inner()).await?;
+    txn.commit().await?;
 
     Ok(Nothing)
 }

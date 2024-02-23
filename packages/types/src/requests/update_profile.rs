@@ -1,4 +1,4 @@
-use bhw_macro_types::{JsonResponder, ResponseError, FromDieselError, FromBlockingError};
+use bhw_macro_types::{FromSeaORMError, JsonResponder, ResponseError};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
@@ -11,10 +11,12 @@ pub enum UpdateProfileRequest {
     DietaryRequirements(Option<String>),
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Error, ResponseError, FromDieselError, FromBlockingError)]
+#[derive(
+    Debug, Clone, PartialEq, Serialize, Deserialize, Error, ResponseError, FromSeaORMError,
+)]
 pub enum UpdateProfileResponseError {
     #[error("Database error")]
-    DBError
+    DBError,
 }
 
 pub type UpdateProfileResult = Result<Nothing, UpdateProfileResponseError>;

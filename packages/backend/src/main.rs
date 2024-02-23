@@ -11,7 +11,7 @@ use actix_web::{
     web, App, HttpServer,
 };
 use app_config::parse_config;
-use db::{init_db, DbPool};
+use db::init_db;
 use middleware::csrf::Csrf;
 use routes::{
     auth::{check_signed_in_route, sign_in_route, sign_out_route},
@@ -26,7 +26,6 @@ mod ldap;
 mod middleware;
 mod models;
 mod routes;
-mod schema;
 mod util;
 
 #[actix_web::main]
@@ -37,8 +36,8 @@ async fn main() -> std::io::Result<()> {
         let config = config.clone();
         env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
-        let db_con = init_db(config.clone());
-        let store = RedisSessionStore::new(config.redis_string.clone())
+        let db_con = init_db(&config).await;
+        let store = RedisSessionStore::new(&config.redis_string)
             .await
             .expect("initialising redis session store");
 
@@ -72,8 +71,8 @@ async fn main() -> std::io::Result<()> {
                     .cookie_same_site(SameSite::Lax)
                     .build(),
                 )
-                .app_data(web::Data::new(config.to_owned()))
-                .app_data(web::Data::<DbPool>::new(db_con.to_owned()))
+                .app_data(web::Data::new(config.clone()))
+                .app_data(web::Data::new(db_con.clone()))
                 .service(sign_up_route)
                 .service(account_activate_route)
                 .service(check_signed_in_route)

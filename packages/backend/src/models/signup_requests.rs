@@ -1,29 +1,21 @@
 use std::collections::HashMap;
 
+use bhw_models::prelude::*;
+use bhw_models::signup_request;
 use chrono::Duration;
-use chrono::NaiveDateTime;
 use chrono::Utc;
-use diesel::prelude::*;
-use diesel::PgConnection;
 use mailgun_rs::SendResponse;
 use mailgun_rs::SendResult;
+use sea_orm::{
+    ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait,
+    QueryFilter, QuerySelect, Set
+};
 use thiserror::Error;
 
 use crate::app_config::AppConfig;
 use crate::data::mail::Mailer;
 use crate::data::mail::SendInstruction;
 use crate::util::passwords::PasswordManager;
-
-#[derive(Debug, Queryable, Selectable, Insertable, Clone)]
-#[diesel(table_name = crate::schema::signup_request)]
-#[diesel(check_for_backend(diesel::pg::Pg))]
-pub struct SignupRequestObject {
-    pub id: uuid::Uuid,
-    pub bath_username: String,
-    pub created_at: NaiveDateTime,
-    pub expires: NaiveDateTime,
-    secret_hash: String,
-}
 
 #[derive(Debug, Error)]
 pub enum SignupRequestCreateError {
@@ -34,13 +26,13 @@ pub enum SignupRequestCreateError {
     #[error("Password hashing failed: {0}")]
     PasswordError(argon2::password_hash::Error),
     #[error("Inserting SignupRequest failed: {0}")]
-    DBError(diesel::result::Error),
+    DBError(#[from] DbErr),
 }
 
 #[derive(Debug)]
 pub struct NewSignupRequestSecret {
     pub secret: String,
-    pub request: SignupRequestObject,
+    pub request: signup_request::Model,
 }
 
 #[derive(Debug, Error)]
@@ -48,62 +40,59 @@ pub enum SignupRequestFromIdError {
     #[error("Could not parse ID: {0}")]
     InvalidID(uuid::Error),
     #[error("Finding SignupRequest failed: {0}")]
-    DBError(diesel::result::Error),
+    DBError(#[from] DbErr),
 }
 
-impl SignupRequestObject {
-    pub fn exists_for_username(
-        conn: &mut PgConnection,
+pub struct SignupRequestHelper;
+
+impl SignupRequestHelper {
+    pub async fn exists_for_username<C: ConnectionTrait>(
+        conn: &C,
         username: &String,
-    ) -> Result<bool, diesel::result::Error> {
-        use crate::schema::signup_request;
-
+    ) -> Result<bool, DbErr> {
         // delete existing expired signup requests in case user wants to start a new one
-        diesel::delete(
-            signup_request::table
-                .filter(signup_request::bath_username.eq(username))
-                .filter(signup_request::expires.le(Utc::now().naive_utc())),
-        )
-        .execute(conn)?;
+        SignupRequest::delete_many()
+            .filter(signup_request::Column::BathUsername.eq(username))
+            .filter(signup_request::Column::ExpiresAt.lte(Utc::now().naive_utc()))
+            .exec(conn)
+            .await?;
 
-        let resp: i64 = signup_request::table
-            .count()
-            .filter(signup_request::bath_username.eq(username))
-            .get_result(conn)?;
+        let resp = SignupRequest::find()
+            .filter(signup_request::Column::BathUsername.eq(username))
+            .limit(1)
+            .count(conn)
+            .await?;
 
         Ok(resp > 0)
     }
 
-    pub fn from_id(
-        conn: &mut PgConnection,
+    pub async fn from_id<C: ConnectionTrait>(
+        conn: &C,
         id: &String,
-    ) -> Result<Option<SignupRequestObject>, SignupRequestFromIdError> {
-        use crate::schema::signup_request;
+    ) -> Result<Option<signup_request::Model>, SignupRequestFromIdError> {
         let parsed_id =
             uuid::Uuid::parse_str(id).map_err(|e| SignupRequestFromIdError::InvalidID(e))?;
 
-        let resp: Vec<SignupRequestObject> = signup_request::table
-            .select(SignupRequestObject::as_select())
-            .filter(signup_request::id.eq(parsed_id))
-            .load(conn)
-            .map_err(|e| SignupRequestFromIdError::DBError(e))?;
+        let resp = SignupRequest::find()
+            .filter(signup_request::Column::Id.eq(parsed_id))
+            .one(conn)
+            .await?;
 
-        let first = resp.first().cloned();
-        Ok(first)
+        Ok(resp)
     }
 
-    pub fn verify_hash(&self, secret: &String) -> Result<bool, argon2::password_hash::Error> {
-        PasswordManager::verify(&secret, &self.secret_hash)
+    pub fn verify_hash(
+        signup_request: &signup_request::Model,
+        secret: &String,
+    ) -> Result<bool, argon2::password_hash::Error> {
+        PasswordManager::verify(&secret, &signup_request.secret_hash)
     }
 
-    pub fn create(
-        conn: &mut PgConnection,
-        username: String,
+    pub async fn create<C: ConnectionTrait>(
+        conn: &C,
+        username: &String,
     ) -> Result<NewSignupRequestSecret, SignupRequestCreateError> {
-        use crate::schema::signup_request;
-
-        let already_exists = SignupRequestObject::exists_for_username(conn, &username)
-            .map_err(|e| SignupRequestCreateError::DBError(e))?;
+        let already_exists = Self::exists_for_username(conn, &username).await?;
         if already_exists {
             return Err(SignupRequestCreateError::AlreadyExists);
         }
@@ -111,60 +100,51 @@ impl SignupRequestObject {
         let secret = PasswordManager::hash_random()
             .map_err(|e| SignupRequestCreateError::PasswordError(e))?;
 
-        let new_signup_request = SignupRequestObject {
-            id: uuid::Uuid::new_v4(),
-            bath_username: username,
-            created_at: Utc::now().naive_utc(),
-            expires: {
+        let new_signup_request = signup_request::ActiveModel {
+            id: Set(uuid::Uuid::new_v4()),
+            bath_username: Set(username.clone()),
+            expires_at: {
                 let now = Utc::now();
                 let new_time = now
                     .checked_add_signed(Duration::minutes(15))
                     .ok_or(SignupRequestCreateError::Duration)?;
-                new_time.naive_utc()
+                Set(new_time.naive_utc())
             },
-            secret_hash: secret.hash,
+            secret_hash: Set(secret.hash),
+            ..Default::default()
         };
 
-        diesel::insert_into(signup_request::table)
-            .values(&new_signup_request)
-            .execute(conn)
-            .map_err(|e| SignupRequestCreateError::DBError(e))?;
-
+        let model = new_signup_request.insert(conn).await?;
         Ok(NewSignupRequestSecret {
             secret: secret.random_password,
-            request: new_signup_request,
+            request: model,
         })
     }
 
-    pub fn delete(&self, conn: &mut PgConnection) -> Result<(), diesel::result::Error> {
-        use crate::schema::signup_request;
-
-        diesel::delete(signup_request::table)
-            .filter(signup_request::id.eq(self.id))
-            .execute(conn)?;
-
+    pub async fn delete<C: ConnectionTrait>(conn: &C, id: uuid::Uuid) -> Result<(), DbErr> {
+        SignupRequest::delete_by_id(id).exec(conn).await?;
         Ok(())
     }
 
-    fn email_address(&self) -> String {
-        return (self.bath_username.clone()) + "@bath.ac.uk";
+    fn email_address(signup_request: &signup_request::Model) -> String {
+        return (signup_request.bath_username.clone()) + "@bath.ac.uk";
     }
 
-    pub fn expired(&self) -> bool {
-        self.expires <= Utc::now().naive_utc()
+    pub fn expired(signup_request: &signup_request::Model) -> bool {
+        signup_request.expires_at <= Utc::now().naive_utc()
     }
     pub fn send_email<'a>(
-        &self,
+        signup_request: &'a signup_request::Model,
         config: &'a AppConfig,
         secret: &'a String,
     ) -> SendResult<SendResponse> {
         let mailer = Mailer::<'a>::client(config);
         let mut mail_vars = HashMap::new();
-        mail_vars.insert("request_id".to_string(), self.id.to_string());
+        mail_vars.insert("request_id".to_string(), signup_request.id.to_string());
         mail_vars.insert("secret".to_string(), secret.clone());
 
         let instruction = SendInstruction {
-            to: &self.email_address(),
+            to: &Self::email_address(signup_request),
             subject: &"Welcome to Bath Hack!".to_string(),
             template_key: &"bhw-welcome".to_string(),
             vars: &mail_vars,

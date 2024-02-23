@@ -19,15 +19,15 @@ pub fn json_responder_macro_derive(input: TokenStream) -> TokenStream {
     gen.into()
 }
 
-#[proc_macro_derive(FromDieselError)]
-pub fn from_diesel_error_macro_derive(input: TokenStream) -> TokenStream {
+#[proc_macro_derive(FromSeaORMError)]
+pub fn from_sea_orm_error_macro_derive(input: TokenStream) -> TokenStream {
     let ast: syn::DeriveInput = syn::parse(input).unwrap();
     let name = &ast.ident;
 
     let gen = quote! {
         #[cfg(target_family = "unix")]
-        impl From<diesel::result::Error> for #name {
-            fn from(_: diesel::result::Error) -> Self {
+        impl From<sea_orm::DbErr> for #name {
+            fn from(_: sea_orm::DbErr) -> Self {
                 #name::DBError
             }
         }
@@ -35,24 +35,6 @@ pub fn from_diesel_error_macro_derive(input: TokenStream) -> TokenStream {
 
     gen.into()
 }
-
-#[proc_macro_derive(FromBlockingError)]
-pub fn from_blocking_error_macro_derive(input: TokenStream) -> TokenStream {
-    let ast: syn::DeriveInput = syn::parse(input).unwrap();
-    let name = &ast.ident;
-
-    let gen = quote! {
-        #[cfg(target_family = "unix")]
-        impl From<actix_web::error::BlockingError> for #name {
-            fn from(_: actix_web::error::BlockingError) -> Self {
-                Self::DBError
-            }
-        }
-    };
-
-    gen.into()
-}
-
 
 #[proc_macro_derive(ResponseError)]
 pub fn response_error_macro_derive(input: TokenStream) -> TokenStream {

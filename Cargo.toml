@@ -1,5 +1,5 @@
 [workspace]
-members = ["packages/backend", "packages/frontend", "packages/types", "packages/macro-types"]
+members = ["packages/backend", "packages/frontend", "packages/types", "packages/macro-types", "packages/migration", "packages/models"]
 resolver = "2"
 
 [profile.release]

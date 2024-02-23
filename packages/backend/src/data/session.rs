@@ -1,21 +1,20 @@
 use actix_session::{Session, SessionExt, SessionInsertError};
 use actix_web::{http::header::ContentType, web, FromRequest, HttpResponse, ResponseError};
-use diesel::prelude::*;
+use bhw_models::{prelude::*, user};
+use sea_orm::{
+    AccessMode, ColumnTrait, ConnectionTrait, DatabaseConnection, EntityTrait, IsolationLevel,
+    QueryFilter, QuerySelect, TransactionTrait,
+};
 use serde::Serialize;
 use thiserror::Error;
-
-use crate::db::DbPool;
 
 static USER_SESSION_KEY: &str = "authenticated_user";
 
 /// A smaller subset of the User fields.
 /// These are retrieved from the database for all authenticated user requests.
-#[derive(Queryable, Selectable, Debug, Clone)]
-#[diesel(table_name = crate::schema::users)]
-#[diesel(check_for_backend(diesel::pg::Pg))]
+#[derive(Debug, Clone)]
 pub struct SessionUser {
     pub id: uuid::Uuid,
-    pub display_name: Option<String>,
     pub bath_username: String,
 }
 
@@ -31,8 +30,6 @@ pub enum AuthSessionError {
     IDNotValid(String),
     #[error("From DB: {0}")]
     DBError(String),
-    #[error("Blocking: {0}")]
-    BlockingError(String),
 }
 
 impl ResponseError for AuthSessionError {
@@ -48,7 +45,7 @@ impl FromRequest for SessionUser {
     type Future = futures_util::future::LocalBoxFuture<'static, Result<Self, Self::Error>>;
 
     fn from_request(req: &actix_web::HttpRequest, _: &mut actix_web::dev::Payload) -> Self::Future {
-        let db_pool = req.app_data::<web::Data<DbPool>>().cloned();
+        let db = req.app_data::<web::Data<DatabaseConnection>>().cloned();
         let session = req.get_session();
 
         Box::pin(async move {
@@ -57,17 +54,23 @@ impl FromRequest for SessionUser {
                 .map_err(|e| AuthSessionError::ReadingSession(e.to_string()))?
                 .ok_or(AuthSessionError::NotAuthenticated)?;
 
-            let db = db_pool.ok_or(AuthSessionError::NotConnected)?;
+            let db = db.ok_or(AuthSessionError::NotConnected)?;
 
-            let user = web::block(move || -> Result<Self, Self::Error> {
-                let mut conn = db.get().map_err(|_| AuthSessionError::NotConnected)?;
-                let user = Self::from_id(&mut conn, &user_id)?
-                    .ok_or(AuthSessionError::NotAuthenticated)?;
+            let txn = db
+                .begin_with_config(
+                    Some(IsolationLevel::RepeatableRead),
+                    Some(AccessMode::ReadOnly),
+                )
+                .await
+                .map_err(|e| AuthSessionError::DBError(e.to_string()))?;
 
-                Ok(user)
-            })
-            .await
-            .map_err(|e| AuthSessionError::BlockingError(e.to_string()))??;
+            let user = Self::from_id(&txn, &user_id)
+                .await?
+                .ok_or(AuthSessionError::NotAuthenticated)?;
+
+            txn.commit()
+                .await
+                .map_err(|e| AuthSessionError::DBError(e.to_string()))?;
 
             Ok(user)
         })
@@ -75,20 +78,27 @@ impl FromRequest for SessionUser {
 }
 
 impl SessionUser {
-    fn from_id(conn: &mut PgConnection, id: &String) -> Result<Option<Self>, AuthSessionError> {
-        use crate::schema::users;
-
+    async fn from_id<C: ConnectionTrait>(
+        conn: &C,
+        id: &String,
+    ) -> Result<Option<Self>, AuthSessionError> {
         let parsed_id =
             uuid::Uuid::parse_str(id).map_err(|e| AuthSessionError::IDNotValid(e.to_string()))?;
 
-        let users: Vec<SessionUser> = users::table
-            .select(SessionUser::as_select())
-            .filter(users::id.eq(parsed_id))
+        let user = User::find()
+            .select_only()
+            .column(user::Column::Id)
+            .column(user::Column::BathUsername)
+            .filter(user::Column::Id.eq(parsed_id))
             .limit(1)
-            .load(conn)
+            .one(conn)
+            .await
             .map_err(|e| AuthSessionError::DBError(e.to_string()))?;
 
-        Ok(users.first().cloned())
+        Ok(user.map(|v| SessionUser {
+            id: v.id,
+            bath_username: v.bath_username,
+        }))
     }
 
     pub fn set_id(session: &Session, new_user_id: &String) -> Result<(), SessionInsertError> {

@@ -1,4 +1,4 @@
-use bhw_macro_types::{FromDieselError, ResponseError, FromBlockingError};
+use bhw_macro_types::{ResponseError, FromSeaORMError};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
@@ -9,7 +9,16 @@ pub struct SignUpRequest {
     pub bath_username: String,
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, Error, FromDieselError, FromBlockingError, ResponseError)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    Deserialize,
+    Serialize,
+    Error,
+    ResponseError,
+    FromSeaORMError,
+)]
 pub enum SignUpResponseError {
     #[error("Username already registered")]
     UsernameAlreadyExists,
@@ -21,6 +30,8 @@ pub enum SignUpResponseError {
     EmailError(String),
     #[error("Database failure")]
     DBError,
+    #[error("Blocking error")]
+    BlockingError,
 }
 
 pub type SignUpResult = Result<Nothing, SignUpResponseError>;

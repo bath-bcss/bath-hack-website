@@ -1,4 +1,4 @@
-use bhw_macro_types::{FromDieselError, ResponseError, FromBlockingError};
+use bhw_macro_types::{ResponseError, FromSeaORMError};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
@@ -10,7 +10,16 @@ pub struct SignInRequest {
     pub password: String,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Error, FromDieselError, FromBlockingError, ResponseError)]
+#[derive(
+    Debug,
+    Serialize,
+    Deserialize,
+    Clone,
+    PartialEq,
+    Error,
+    ResponseError,
+    FromSeaORMError,
+)]
 pub enum SignInResponseError {
     #[error("Database error")]
     DBError,

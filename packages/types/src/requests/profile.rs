@@ -1,4 +1,4 @@
-use bhw_macro_types::{FromDieselError, ResponseError, JsonResponder, FromBlockingError};
+use bhw_macro_types::{ResponseError, JsonResponder, FromSeaORMError};
 use serde::{Serialize, Deserialize};
 use thiserror::Error;
 
@@ -10,7 +10,7 @@ pub struct ProfileResponse {
     pub dietary_requirements: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Error, FromDieselError, FromBlockingError, ResponseError)]
+#[derive(Debug, Serialize, Deserialize, Error, FromSeaORMError, ResponseError)]
 pub enum ProfileResponseError {
     #[error("Database error")]
     DBError,

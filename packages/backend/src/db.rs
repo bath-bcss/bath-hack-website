@@ -1,12 +1,12 @@
-use diesel::{r2d2, PgConnection};
+use sea_orm::{Database, DatabaseConnection};
+use bhw_migration::{Migrator, MigratorTrait};
 
 use crate::app_config::AppConfig;
 
-pub type DbPool = r2d2::Pool<r2d2::ConnectionManager<PgConnection>>;
-
-pub fn init_db(config: AppConfig) -> DbPool {
-    let manager = r2d2::ConnectionManager::<PgConnection>::new(config.database_url);
-    r2d2::Pool::builder()
-        .build(manager)
-        .expect("failed to build DB pool")
+pub async fn init_db(config: &AppConfig) -> DatabaseConnection {
+    let manager = Database::connect(&config.database_url)
+        .await
+        .expect("Connecting to DB");
+    Migrator::up(&manager, None).await.expect("Performing migrations");
+    manager
 }
