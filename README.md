@@ -21,23 +21,21 @@ podman run -d --name redis -p 63790:6379 docker.io/redis/redis-stack-server:late
 
 Copy `.env.example` to be `.env` and make sure all the variables have sensible values.
 
-Then, `cd` into `packages/backend` to run the migrations:
-
-```
-diesel migration run --database-url $BHW_DATABASE_URL
-```
-
 Then, `cd` into `packages/frontend` and run:
 
 ```
-trunk server --config packages/frontend/Trunk.toml
+trunk serve
 ```
 
-And in a new/parallel terminal, `cd` into the project root and run:
+This command will start up a live-reloading server for the frontend.
+
+In a new/parallel terminal, `cd` into the project root and run:
 
 ```
 cargo run -p bhw-backend
 ```
+
+This last command will run the migrations on your database and then start up the backend server (this doesn't live-reload).
 
 ## Deploying
 This can be done in a couple of ways. If you're using Kubernetes, see the `k8s` directory for a `kustomize`-compatible configuration. You'll need to set some secrets manually, so make sure to look through the files before deploying them.
