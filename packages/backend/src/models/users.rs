@@ -65,7 +65,7 @@ impl UserHelper {
             .filter(user::Column::LdapCheckStatus.eq(status))
             .select_only()
             .column(user::Column::BathUsername)
-            .into_values()
+            .into_tuple()
             .all(conn)
             .await?;
 
@@ -138,7 +138,7 @@ impl UserHelper {
         username: &String,
         new_status: i16,
     ) -> Result<(), DbErr> {
-        let mut updated_user = user::ActiveModel {
+        let updated_user = user::ActiveModel {
             bath_username: Unchanged(username.to_owned()),
             ldap_check_status: Set(new_status),
             ..Default::default()

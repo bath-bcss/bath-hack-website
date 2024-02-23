@@ -1,18 +1,18 @@
-#![cfg(ldap)]
+#![cfg(feature = "ldap")]
 
 use ldap3::{LdapConnAsync, LdapConnSettings, LdapError, Scope};
 use log::error;
-use r2d2::Error;
 use thiserror::Error;
 
 use crate::app_config::AppConfig;
-use crate::db::DbPool;
-use crate::models::signup_requests::SignupRequestObject;
-use crate::models::users::User;
+use crate::models::users::UserHelper;
 
 pub type Ldap = ldap3::Ldap;
 
 use std::convert::TryFrom;
+use sea_orm::{AccessMode, DatabaseConnection, DbErr, IsolationLevel, TransactionTrait};
+use crate::models::ldap_status::BathUserStatus;
+use crate::models::signup_requests::SignupRequestHelper;
 
 fn escape_ldap_input(input_val: String) -> String {
     input_val
@@ -71,17 +71,9 @@ pub async fn get_bath_user_details(
 #[derive(Debug, Error)]
 pub enum PendingUserCheckError {
     #[error("Database error")]
-    DBError(diesel::result::Error),
-    #[error("Database pool error")]
-    DBPoolError(Error),
+    DBError(DbErr),
     #[error("LDAP error")]
     LdapError(LdapError),
-}
-
-impl From<diesel::result::Error> for PendingUserCheckError {
-    fn from(error: diesel::result::Error) -> Self {
-        PendingUserCheckError::DBError(error)
-    }
 }
 
 impl From<LdapError> for PendingUserCheckError {
@@ -90,43 +82,59 @@ impl From<LdapError> for PendingUserCheckError {
     }
 }
 
-impl From<r2d2::Error> for PendingUserCheckError {
-    fn from(error: r2d2::Error) -> Self {
-        PendingUserCheckError::DBPoolError(error)
+impl From<DbErr> for PendingUserCheckError {
+    fn from(error: DbErr) -> Self {
+        PendingUserCheckError::DBError(error)
     }
 }
 
 
+
 pub async fn check_pending_users(
     ldap: Ldap,
-    db_con: DbPool,
+    db: DatabaseConnection,
 ) -> Result<(), PendingUserCheckError> {
-    let mut conn = db_con.get()?;
+    let txn = db
+        .begin_with_config(
+            Some(IsolationLevel::Serializable),
+            Some(AccessMode::ReadOnly),
+        )
+        .await?;
+    let signup_request_usernames = SignupRequestHelper::find_usernames_by_ldap_status(&txn, 0).await?;
+    let user_usernames = UserHelper::find_usernames_by_ldap_status(&txn, 0).await?;
 
-    let (user_usernames, signup_request_usernames) = conn.build_transaction().serializable().read_only().deferrable().run(
-        |mut tx| -> Result<(Vec<String>, Vec<String>), PendingUserCheckError> {
-            Ok((User::find_usernames_by_ldap_status(&mut tx, 0)?, SignupRequestObject::find_usernames_by_ldap_status(&mut tx, 0)?))
-        }
-    )?;
+    txn.commit().await?;
+
     for username in signup_request_usernames {
         let status = get_bath_user_details(username.clone(), ldap.clone()).await?;
+        let txn = db
+            .begin_with_config(
+                Some(IsolationLevel::Serializable),
+                Some(AccessMode::ReadWrite),
+            )
+            .await?;
 
-        conn.build_transaction().serializable().run(
-            |mut tx| -> Result<(), diesel::result::Error> {
-                SignupRequestObject::set_ldap_status(&mut tx, username.clone(), status as i16).or_else(|_| {
-                    User::set_ldap_status(&mut tx, username, status as i16)
-                })
-            }
-        )?;
+        if let Err(_) = SignupRequestHelper::set_ldap_status(&txn, &username, status as i16).await {
+            UserHelper::set_ldap_status(&txn, &username, status as i16)
+                .await?;
+        }
+
+
+        txn.commit().await?;
     }
     for username in user_usernames {
         let status = get_bath_user_details(username.clone(), ldap.clone()).await?;
+        let txn = db
+            .begin_with_config(
+                Some(IsolationLevel::Serializable),
+                Some(AccessMode::ReadWrite),
+            )
+            .await?;
 
-        conn.build_transaction().serializable().run(
-            |mut tx| -> Result<(), diesel::result::Error> {
-                User::set_ldap_status(&mut tx, username, status as i16)
-            }
-        )?;
+        UserHelper::set_ldap_status(&txn, &username, status as i16)
+            .await?;
+
+        txn.commit().await?;
     }
     Ok(())
 }

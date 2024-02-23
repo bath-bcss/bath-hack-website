@@ -22,6 +22,9 @@ use crate::{
 };
 use crate::models::signup_requests::{NewSignupRequestSecret};
 
+#[cfg(feature = "ldap")]
+use crate::ldap::{connect_ldap, get_bath_user_details};
+
 #[post("/auth/signup")]
 pub async fn sign_up_route(
     request: web::Json<SignUpRequest>,
@@ -32,7 +35,7 @@ pub async fn sign_up_route(
         return Err(SignUpResponseError::UsernameInvalid.into());
     }
 
-    #[cfg(ldap)]
+    #[cfg(feature = "ldap")]
     let status = match connect_ldap(config.get_ref().clone()).await {
         Ok(ldap) => {
             match get_bath_user_details(request.bath_username.clone(), ldap).await {
@@ -46,8 +49,8 @@ pub async fn sign_up_route(
         }
         Err(_) => Ok(0),
     }?;
-    #[cfg(not(ldap))]
-    let status: i16 = 0;
+    #[cfg(not(feature = "ldap"))]
+    let status = 0i16;
 
     let txn = db
         .begin_with_config(
@@ -65,7 +68,7 @@ pub async fn sign_up_route(
         return Err(SignUpResponseError::UsernameAlreadyExists);
     }
 
-    let new_sr = SignupRequestHelper::create(&txn, &request.bath_username.clone(), &status)
+    let new_sr = SignupRequestHelper::create(&txn, &request.bath_username.clone(), status)
         .await
         .map_err(|e| SignUpResponseError::CreateError(e.to_string()))?;
 
@@ -133,7 +136,7 @@ pub async fn account_activate_route(
         ));
     }
 
-    let new_user = UserHelper::create(&txn, &signup_request.bath_username, &request.password, &signup_request.ldap_check_status)
+    let new_user = UserHelper::create(&txn, &signup_request.bath_username, &request.password, signup_request.ldap_check_status)
         .await
         .map_err(|e| AccountActivateResponseError::CreateUserError(e.to_string()))?;
 

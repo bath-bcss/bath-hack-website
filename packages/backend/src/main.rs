@@ -86,7 +86,7 @@ async fn main() -> std::io::Result<()> {
         }
     };
 
-    #[cfg(ldap)]
+    #[cfg(feature = "ldap")]
     {
         use log::error;
         use crate::ldap::{check_pending_users, connect_ldap, Ldap, PendingUserCheckError};
@@ -94,7 +94,7 @@ async fn main() -> std::io::Result<()> {
         let ldap_task_config = config.clone();
 
         tokio::task::spawn(async move {
-            let mut db_con = init_db(ldap_task_config.clone());
+            let mut db_con = init_db(&ldap_task_config.clone()).await;
             let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(60));
             let mut ldap: Option<Ldap> = None;
             loop {
@@ -115,13 +115,8 @@ async fn main() -> std::io::Result<()> {
                     Err(e) => {
                         error!("error in ldap loop {}", e);
                         match e {
-                            PendingUserCheckError::DBPoolError(e) => {
-                                error!("{}", e);
-                                db_con = init_db(ldap_task_config.clone())
-                            }
                             PendingUserCheckError::DBError(e) => {
                                 error!("{}", e);
-                                db_con = init_db(ldap_task_config.clone())
                             }
                             PendingUserCheckError::LdapError(e) => {
                                 error!("{}", e);
