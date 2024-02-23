@@ -10,7 +10,6 @@ use actix_web::{
     middleware::Logger,
     web, App, HttpServer,
 };
-use log::warn;
 use app_config::parse_config;
 use db::init_db;
 use middleware::csrf::Csrf;
@@ -89,7 +88,7 @@ async fn main() -> std::io::Result<()> {
 
     #[cfg(feature = "ldap")]
     {
-        use log::error;
+        use log::{error, warn};
         use crate::ldap::{check_pending_users, connect_ldap, Ldap, PendingUserCheckError};
 
         let ldap_task_config = config.clone();
