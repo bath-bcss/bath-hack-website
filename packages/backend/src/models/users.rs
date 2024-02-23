@@ -4,6 +4,7 @@ use sea_orm::{
     ActiveModelTrait, ColumnTrait, DbErr, EntityTrait, PaginatorTrait,
     QueryFilter, QuerySelect, Set, ConnectionTrait,
 };
+use sea_orm::ActiveValue::Unchanged;
 use thiserror::Error;
 
 use crate::util::passwords::PasswordManager;
@@ -58,9 +59,17 @@ impl UserHelper {
 
     pub async fn find_usernames_by_ldap_status<C: ConnectionTrait>(
         conn: &C,
-        status: &i16,
-    ) -> Result<Vec<String>, todo!()> {
-        todo!()
+        status: i16,
+    ) -> Result<Vec<String>, DbErr> {
+        let response = User::find()
+            .filter(user::Column::LdapCheckStatus.eq(status))
+            .select_only()
+            .column(user::Column::BathUsername)
+            .into_values()
+            .all(conn)
+            .await?;
+
+        Ok(response)
     }
 
     pub async fn from_id<C: ConnectionTrait>(
@@ -127,9 +136,15 @@ impl UserHelper {
     pub async fn set_ldap_status<C: ConnectionTrait>(
         conn: &C,
         username: &String,
-        new_status: &i16,
+        new_status: i16,
     ) -> Result<(), DbErr> {
-        todo!()
+        let mut updated_user = user::ActiveModel {
+            bath_username: Unchanged(username.to_owned()),
+            ldap_check_status: Set(new_status),
+            ..Default::default()
+        };
+        updated_user.update(conn).await?;
+        Ok(())
     }
 
     pub fn verify_password(

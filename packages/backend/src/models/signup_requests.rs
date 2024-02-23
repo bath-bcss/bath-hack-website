@@ -10,6 +10,7 @@ use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait,
     QueryFilter, QuerySelect, Set
 };
+use sea_orm::ActiveValue::Unchanged;
 use thiserror::Error;
 use crate::app_config::AppConfig;
 use crate::data::mail::Mailer;
@@ -80,11 +81,19 @@ impl SignupRequestHelper {
         Ok(resp)
     }
 
-    pub fn find_usernames_by_ldap_status<C: ConnectionTrait>(
+    pub async fn find_usernames_by_ldap_status<C: ConnectionTrait>(
         conn: &C,
-        status: &i16,
-    ) -> Result<Vec<String>, todo!()> {
-        todo!()
+        status: i16,
+    ) -> Result<Vec<String>, DbErr> {
+        let response = User::find()
+            .filter(signup_request::Column::LdapCheckStatus.eq(status))
+            .select_only()
+            .column(signup_request::Column::BathUsername)
+            .into_values()
+            .all(conn)
+            .await?;
+
+        Ok(response)
     }
     pub fn verify_hash(
         signup_request: &signup_request::Model,
@@ -160,11 +169,17 @@ impl SignupRequestHelper {
         mailer.send_template(&instruction)
     }
 
-    pub fn set_ldap_status<C: ConnectionTrait>(
+    pub async fn set_ldap_status<C: ConnectionTrait>(
         conn: &C,
         username: &String,
-        new_status: &i16,
-    ) -> Result<(), todo!()> {
-        todo!()
+        new_status: i16,
+    ) -> Result<(), DbErr> {
+        let mut updated_signup_request = signup_request::ActiveModel {
+            bath_username: Unchanged(username.to_owned()),
+            ldap_check_status: Set(new_status),
+            ..Default::default()
+        };
+        updated_signup_request.update(conn).await?;
+        Ok(())
     }
 }
