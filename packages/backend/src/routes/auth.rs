@@ -9,7 +9,7 @@ use bhw_types::{
     },
 };
 use log::{error, warn};
-use sea_orm::{DatabaseConnection, TransactionTrait, IsolationLevel, AccessMode};
+use sea_orm::DatabaseConnection;
 
 use crate::{
     data::session::SessionUser, models::users::UserHelper, util::passwords::PasswordManager,
@@ -28,8 +28,7 @@ pub async fn sign_in_route(
     db: web::Data<DatabaseConnection>,
     session: Session,
 ) -> SignInResult {
-    let txn = db.begin_with_config(Some(IsolationLevel::Serializable), Some(AccessMode::ReadOnly)).await?;
-    let user = UserHelper::find_by_username(&txn, data.username.clone())
+    let user = UserHelper::find_by_username(db.get_ref(), data.username.clone())
         .await
         .map_err(|e| {
             error!("finding user by username: {}", e.to_string());
@@ -39,8 +38,6 @@ pub async fn sign_in_route(
             PasswordManager::dummy_verify(&data.password);
             SignInResponseError::UsernameOrPasswordIncorrect
         })?;
-
-    txn.commit().await?;
 
     let password_correct = UserHelper::verify_password(&user, &data.password).map_err(|e| {
         warn!("verifying user password: {}", e.to_string());

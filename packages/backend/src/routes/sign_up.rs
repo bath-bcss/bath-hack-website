@@ -123,5 +123,7 @@ pub async fn account_activate_route(
         AccountActivateResponseError::SessionError
     })?;
 
+    txn.commit().await?;
+
     Ok(Nothing)
 }

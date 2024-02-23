@@ -7,7 +7,7 @@ use bhw_types::{
     },
 };
 use log::warn;
-use sea_orm::{AccessMode, DatabaseConnection, IsolationLevel, TransactionTrait};
+use sea_orm::DatabaseConnection;
 
 use crate::{
     data::session::SessionUser,
@@ -19,13 +19,7 @@ pub async fn get_profile_route(
     user: SessionUser,
     db: web::Data<DatabaseConnection>,
 ) -> ProfileResult {
-    let txn = db
-        .begin_with_config(
-            Some(IsolationLevel::Serializable),
-            Some(AccessMode::ReadOnly),
-        )
-        .await?;
-    let user = UserHelper::from_id(&txn, user.id.to_string())
+    let user = UserHelper::from_id(db.get_ref(), user.id.to_string())
         .await
         .map_err(|e| match e {
             UserFromIdError::DBError(e) => {
@@ -35,8 +29,6 @@ pub async fn get_profile_route(
             UserFromIdError::InvalidID(e) => ProfileResponseError::InvalidID(e.to_string()),
         })?
         .ok_or(ProfileResponseError::NotFound)?;
-
-    txn.commit().await?;
 
     let profile = ProfileResponse {
         display_name: user.display_name,
@@ -54,15 +46,6 @@ pub async fn update_profile_route(
     db: web::Data<DatabaseConnection>,
     data: web::Json<UpdateProfileRequest>,
 ) -> UpdateProfileResult {
-    let txn = db
-        .begin_with_config(
-            Some(IsolationLevel::Serializable),
-            Some(AccessMode::ReadWrite),
-        )
-        .await?;
-
-    UserHelper::update_property(&txn, user.id, data.into_inner()).await?;
-    txn.commit().await?;
-
+    UserHelper::update_property(db.get_ref(), user.id, data.into_inner()).await?;
     Ok(Nothing)
 }
