@@ -2,8 +2,7 @@ use actix_session::{Session, SessionExt, SessionInsertError};
 use actix_web::{http::header::ContentType, web, FromRequest, HttpResponse, ResponseError};
 use bhw_models::{prelude::*, user};
 use sea_orm::{
-    AccessMode, ColumnTrait, ConnectionTrait, DatabaseConnection, EntityTrait, IsolationLevel,
-    QueryFilter, QuerySelect, TransactionTrait,
+    ColumnTrait, ConnectionTrait, DatabaseConnection, EntityTrait, QueryFilter, QuerySelect,
 };
 use serde::Serialize;
 use thiserror::Error;
@@ -56,21 +55,9 @@ impl FromRequest for SessionUser {
 
             let db = db.ok_or(AuthSessionError::NotConnected)?;
 
-            let txn = db
-                .begin_with_config(
-                    Some(IsolationLevel::RepeatableRead),
-                    Some(AccessMode::ReadOnly),
-                )
-                .await
-                .map_err(|e| AuthSessionError::DBError(e.to_string()))?;
-
-            let user = Self::from_id(&txn, &user_id)
+            let user = Self::from_id(db.get_ref(), &user_id)
                 .await?
                 .ok_or(AuthSessionError::NotAuthenticated)?;
-
-            txn.commit()
-                .await
-                .map_err(|e| AuthSessionError::DBError(e.to_string()))?;
 
             Ok(user)
         })
@@ -89,6 +76,8 @@ impl SessionUser {
             .select_only()
             .column(user::Column::Id)
             .column(user::Column::BathUsername)
+            .column(user::Column::PasswordHash)
+            .column(user::Column::CreatedAt)
             .filter(user::Column::Id.eq(parsed_id))
             .limit(1)
             .one(conn)

@@ -111,7 +111,7 @@ pub async fn account_activate_route(
         .await
         .map_err(|e| AccountActivateResponseError::CreateUserError(e.to_string()))?;
 
-    SignupRequestHelper::delete(&txn, new_user.id)
+    SignupRequestHelper::delete(&txn, signup_request.id)
         .await
         .map_err(|e| AccountActivateResponseError::DeleteRequestError(e.to_string()))?;
 

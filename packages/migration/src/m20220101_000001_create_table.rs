@@ -9,10 +9,10 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(Group::Table)
+                    .table(CompetitionGroup::Table)
                     .if_not_exists()
-                    .col(ColumnDef::new(Group::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Group::JoinCode).string().not_null())
+                    .col(ColumnDef::new(CompetitionGroup::Id).uuid().not_null().primary_key())
+                    .col(ColumnDef::new(CompetitionGroup::JoinCode).string().not_null())
                     .to_owned(),
             )
             .await?;
@@ -20,35 +20,35 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(User::Table)
+                    .table(WebsiteUser::Table)
                     .if_not_exists()
-                    .col(ColumnDef::new(User::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(User::DisplayName).string().null())
+                    .col(ColumnDef::new(WebsiteUser::Id).uuid().not_null().primary_key())
+                    .col(ColumnDef::new(WebsiteUser::DisplayName).string().null())
                     .col(
-                        ColumnDef::new(User::BathUsername)
+                        ColumnDef::new(WebsiteUser::BathUsername)
                             .string()
                             .not_null()
                             .unique_key(),
                     )
-                    .col(ColumnDef::new(User::PasswordHash).string().not_null())
+                    .col(ColumnDef::new(WebsiteUser::PasswordHash).string().not_null())
                     .col(
-                        ColumnDef::new(User::CreatedAt)
+                        ColumnDef::new(WebsiteUser::CreatedAt)
                             .timestamp()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
-                    .col(ColumnDef::new(User::DietaryRequirements).text().null())
+                    .col(ColumnDef::new(WebsiteUser::DietaryRequirements).text().null())
                     .col(
-                        ColumnDef::new(User::AccessibilityRequirements)
+                        ColumnDef::new(WebsiteUser::AccessibilityRequirements)
                             .text()
                             .null(),
                     )
-                    .col(ColumnDef::new(User::GroupId).uuid().null())
+                    .col(ColumnDef::new(WebsiteUser::GroupId).uuid().null())
                     .foreign_key(
                         ForeignKey::create()
-                            .name("fk_user_group")
-                            .from(User::Table, User::GroupId)
-                            .to(Group::Table, Group::Id),
+                            .name("fk_user_competition_group")
+                            .from(WebsiteUser::Table, WebsiteUser::GroupId)
+                            .to(CompetitionGroup::Table, CompetitionGroup::Id),
                     )
                     .to_owned(),
             )
@@ -94,10 +94,10 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(Group::Table).to_owned())
+            .drop_table(Table::drop().table(CompetitionGroup::Table).to_owned())
             .await?;
         manager
-            .drop_table(Table::drop().table(User::Table).to_owned())
+            .drop_table(Table::drop().table(WebsiteUser::Table).to_owned())
             .await?;
         manager
             .drop_table(Table::drop().table(SignupRequest::Table).to_owned())
@@ -106,43 +106,14 @@ impl MigrationTrait for Migration {
 }
 
 #[derive(DeriveIden)]
-enum Group {
+enum CompetitionGroup {
     Table,
     Id,
     JoinCode,
 }
-/**
-*
-CREATE TABLE groups (
-id uuid primary key not null,
-join_code char(8) unique
-);
-
-CREATE TABLE users (
-id uuid primary key not null,
-display_name text not null,
-bath_username text unique not null,
-password_hash text not null,
-created_at timestamp not null default now(),
-dietary_requirements text not null,
-accessibility_requirements text not null,
-group_id uuid,
-constraint fk_group
-foreign key(group_id)
-references groups(id)
-);
-
-CREATE TABLE signup_request (
-id uuid primary key not null,
-bath_username text unique not null,
-created_at Timestamp not null default now(),
-expires Timestamp not null,
-secret_hash text not null
-);
-*/
 
 #[derive(DeriveIden)]
-enum User {
+enum WebsiteUser {
     Table,
     Id,
     DisplayName,
