@@ -10,6 +10,7 @@ use actix_web::{
     middleware::Logger,
     web, App, HttpServer,
 };
+use log::warn;
 use app_config::parse_config;
 use db::init_db;
 use middleware::csrf::Csrf;
@@ -94,7 +95,7 @@ async fn main() -> std::io::Result<()> {
         let ldap_task_config = config.clone();
 
         tokio::task::spawn(async move {
-            let mut db_con = init_db(&ldap_task_config.clone()).await;
+            let db_con = init_db(&ldap_task_config.clone()).await;
             let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(60));
             let mut ldap: Option<Ldap> = None;
             loop {
@@ -113,13 +114,13 @@ async fn main() -> std::io::Result<()> {
                 match r {
                     Ok(_) => {}
                     Err(e) => {
-                        error!("error in ldap loop {}", e);
+                        warn!("error in ldap loop {}", e);
                         match e {
                             PendingUserCheckError::DBError(e) => {
-                                error!("{}", e);
+                                warn!("{}", e);
                             }
                             PendingUserCheckError::LdapError(e) => {
-                                error!("{}", e);
+                                warn!("{}", e);
                                 ldap = None
                             }
                         }

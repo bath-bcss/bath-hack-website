@@ -20,7 +20,6 @@ use crate::{
     },
     util::passwords::PasswordManager,
 };
-use crate::models::signup_requests::{NewSignupRequestSecret};
 
 #[cfg(feature = "ldap")]
 use crate::ldap::{connect_ldap, get_bath_user_details};

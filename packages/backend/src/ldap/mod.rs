@@ -9,7 +9,6 @@ use crate::models::users::UserHelper;
 
 pub type Ldap = ldap3::Ldap;
 
-use std::convert::TryFrom;
 use sea_orm::{AccessMode, DatabaseConnection, DbErr, IsolationLevel, TransactionTrait};
 use crate::models::ldap_status::BathUserStatus;
 use crate::models::signup_requests::SignupRequestHelper;

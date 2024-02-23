@@ -6,7 +6,7 @@ use chrono::Duration;
 use chrono::Utc;
 use mailgun_rs::SendResponse;
 use mailgun_rs::SendResult;
-use sea_orm::{ActiveModelTrait, ColumnTrait, ConnectionTrait, DatabaseBackend, DbErr, EntityTrait, PaginatorTrait, QueryFilter, QuerySelect, Set, Statement};
+use sea_orm::{ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait, QueryFilter, QuerySelect, Set};
 use thiserror::Error;
 use crate::app_config::AppConfig;
 use crate::data::mail::Mailer;
@@ -77,6 +77,7 @@ impl SignupRequestHelper {
         Ok(resp)
     }
 
+    #[cfg(feature = "ldap")]
     pub async fn find_usernames_by_ldap_status<C: ConnectionTrait>(
         conn: &C,
         status: i16,
@@ -165,11 +166,12 @@ impl SignupRequestHelper {
         mailer.send_template(&instruction)
     }
 
+    #[cfg(feature = "ldap")]
     pub async fn set_ldap_status<C: ConnectionTrait>(
         conn: &C,
         username: &String,
         new_status: i16,
     ) -> Result<u64, DbErr> {
-        Ok(conn.execute(Statement::from_sql_and_values(DatabaseBackend::Postgres, "UPDATE signup_request SET ldap_check_status = $1 WHERE bath_username = $2;", [sea_orm::Value::SmallInt(Some(new_status)), sea_orm::Value::String(Some(Box::from(username.to_owned())))])).await?.rows_affected())
+        Ok(conn.execute(sea_orm::Statement::from_sql_and_values(sea_orm::DatabaseBackend::Postgres, "UPDATE signup_request SET ldap_check_status = $1 WHERE bath_username = $2;", [sea_orm::Value::SmallInt(Some(new_status)), sea_orm::Value::String(Some(Box::from(username.to_owned())))])).await?.rows_affected())
     }
 }

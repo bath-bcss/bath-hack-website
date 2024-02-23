@@ -1,6 +1,6 @@
 use bhw_models::{prelude::*, user};
 use bhw_types::requests::update_profile::UpdateProfileRequest;
-use sea_orm::{ActiveModelTrait, ColumnTrait, DbErr, EntityTrait, PaginatorTrait, QueryFilter, QuerySelect, Set, ConnectionTrait, DatabaseBackend, Statement};
+use sea_orm::{ActiveModelTrait, ColumnTrait, DbErr, EntityTrait, PaginatorTrait, QueryFilter, QuerySelect, Set, ConnectionTrait};
 use thiserror::Error;
 
 use crate::util::passwords::PasswordManager;
@@ -53,6 +53,7 @@ impl UserHelper {
         Ok(response)
     }
 
+    #[cfg(feature = "ldap")]
     pub async fn find_usernames_by_ldap_status<C: ConnectionTrait>(
         conn: &C,
         status: i16,
@@ -129,12 +130,13 @@ impl UserHelper {
         Ok(())
     }
 
+    #[cfg(feature = "ldap")]
     pub async fn set_ldap_status<C: ConnectionTrait>(
         conn: &C,
         username: &String,
         new_status: i16,
     ) -> Result<u64, DbErr> {
-        Ok(conn.execute(Statement::from_sql_and_values(DatabaseBackend::Postgres, "UPDATE website_user SET ldap_check_status = $1 WHERE bath_username = $2;", [sea_orm::Value::SmallInt(Some(new_status)), sea_orm::Value::String(Some(Box::from(username.to_owned())))])).await?.rows_affected())
+        Ok(conn.execute(sea_orm::Statement::from_sql_and_values(sea_orm::DatabaseBackend::Postgres, "UPDATE website_user SET ldap_check_status = $1 WHERE bath_username = $2;", [sea_orm::Value::SmallInt(Some(new_status)), sea_orm::Value::String(Some(Box::from(username.to_owned())))])).await?.rows_affected())
     }
 
     pub fn verify_password(
