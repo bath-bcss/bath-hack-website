@@ -114,9 +114,8 @@ pub async fn check_pending_users(
             )
             .await?;
 
-        if let Err(_) = SignupRequestHelper::set_ldap_status(&txn, &username, status as i16).await {
-            UserHelper::set_ldap_status(&txn, &username, status as i16)
-                .await?;
+        if SignupRequestHelper::set_ldap_status(&txn, &username, status as i16).await? == 0 {
+            UserHelper::set_ldap_status(&txn, &username, status as i16).await?;
         }
 
 

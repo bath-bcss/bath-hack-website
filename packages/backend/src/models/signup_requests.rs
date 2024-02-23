@@ -6,11 +6,7 @@ use chrono::Duration;
 use chrono::Utc;
 use mailgun_rs::SendResponse;
 use mailgun_rs::SendResult;
-use sea_orm::{
-    ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait,
-    QueryFilter, QuerySelect, Set
-};
-use sea_orm::ActiveValue::Unchanged;
+use sea_orm::{ActiveModelTrait, ColumnTrait, ConnectionTrait, DatabaseBackend, DbErr, EntityTrait, PaginatorTrait, QueryFilter, QuerySelect, Set, Statement};
 use thiserror::Error;
 use crate::app_config::AppConfig;
 use crate::data::mail::Mailer;
@@ -173,13 +169,7 @@ impl SignupRequestHelper {
         conn: &C,
         username: &String,
         new_status: i16,
-    ) -> Result<(), DbErr> {
-        let updated_signup_request = signup_request::ActiveModel {
-            bath_username: Unchanged(username.to_owned()),
-            ldap_check_status: Set(new_status),
-            ..Default::default()
-        };
-        updated_signup_request.update(conn).await?;
-        Ok(())
+    ) -> Result<u64, DbErr> {
+        Ok(conn.execute(Statement::from_sql_and_values(DatabaseBackend::Postgres, "UPDATE signup_request SET ldap_check_status = $1 WHERE bath_username = $2;", [sea_orm::Value::SmallInt(Some(new_status)), sea_orm::Value::String(Some(Box::from(username.to_owned())))])).await?.rows_affected())
     }
 }
