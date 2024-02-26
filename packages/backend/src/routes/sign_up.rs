@@ -36,8 +36,9 @@ pub async fn sign_up_route(
 
     #[cfg(feature = "ldap")]
     let status = match connect_ldap(config.get_ref().clone()).await {
-        Ok(ldap) => match get_bath_user_details(request.bath_username.clone(), ldap).await {
+        Ok(ldap) => match get_bath_user_details(&request.bath_username, ldap).await {
             Ok(v) => match v {
+                BathUserStatus::None => Ok(0),
                 BathUserStatus::UserIsStudent => Ok(BathUserStatus::UserIsStudent as i16),
                 BathUserStatus::UserNotExists => Err(SignUpResponseError::UsernameInvalid),
                 BathUserStatus::UserIsNotStudent => Err(SignUpResponseError::UserIsNotStudent),
@@ -121,6 +122,7 @@ pub async fn account_activate_route(
     }
 
     match signup_request.ldap_check_status.try_into() {
+        Ok(BathUserStatus::None) => Ok(()),
         Ok(BathUserStatus::UserIsStudent) => Ok(()),
         Ok(BathUserStatus::UserIsNotStudent) => {
             Err(AccountActivateResponseError::UserNotStudentError)

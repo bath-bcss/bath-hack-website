@@ -4,7 +4,7 @@ WORKDIR /usr/src/bhw
 
 COPY . .
 
-RUN cargo install --path packages/backend --root /usr
+RUN cargo install --path packages/backend --root /usr --no-default-features
 
 FROM docker.io/debian:bookworm-slim
 

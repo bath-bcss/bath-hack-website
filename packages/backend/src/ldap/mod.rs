@@ -35,10 +35,10 @@ pub async fn connect_ldap(app_config: AppConfig) -> Result<Ldap, LdapError> {
 }
 
 pub async fn get_bath_user_details(
-    username: String,
+    username: &String,
     mut ldap: Ldap,
 ) -> Result<BathUserStatus, LdapError> {
-    let username = escape_ldap_input(username);
+    let username = escape_ldap_input(username.clone());
 
     let result = ldap
         .search(
@@ -68,21 +68,9 @@ pub async fn get_bath_user_details(
 #[derive(Debug, Error)]
 pub enum PendingUserCheckError {
     #[error("Database error")]
-    DBError(DbErr),
+    DBError(#[from] DbErr),
     #[error("LDAP error")]
-    LdapError(LdapError),
-}
-
-impl From<LdapError> for PendingUserCheckError {
-    fn from(error: LdapError) -> Self {
-        PendingUserCheckError::LdapError(error)
-    }
-}
-
-impl From<DbErr> for PendingUserCheckError {
-    fn from(error: DbErr) -> Self {
-        PendingUserCheckError::DBError(error)
-    }
+    LdapError(#[from] LdapError),
 }
 
 pub async fn check_pending_users(
@@ -95,39 +83,23 @@ pub async fn check_pending_users(
             Some(AccessMode::ReadOnly),
         )
         .await?;
+
     let signup_request_usernames =
-        SignupRequestHelper::find_usernames_by_ldap_status(&txn, 0).await?;
-    let user_usernames = UserHelper::find_usernames_by_ldap_status(&txn, 0).await?;
+        SignupRequestHelper::find_usernames_by_ldap_status(&txn, BathUserStatus::None as i16)
+            .await?;
+    let user_usernames =
+        UserHelper::find_usernames_by_ldap_status(&txn, BathUserStatus::None as i16).await?;
+
+    for (id, username) in &signup_request_usernames {
+        let status = get_bath_user_details(username, ldap.clone()).await?;
+        SignupRequestHelper::set_ldap_status(&txn, id, status as i16).await?;
+    }
+
+    for (id, username) in &user_usernames {
+        let status = get_bath_user_details(username, ldap.clone()).await?;
+        UserHelper::set_ldap_status(&txn, id, status as i16).await?;
+    }
 
     txn.commit().await?;
-
-    for username in signup_request_usernames {
-        let status = get_bath_user_details(username.clone(), ldap.clone()).await?;
-        let txn = db
-            .begin_with_config(
-                Some(IsolationLevel::Serializable),
-                Some(AccessMode::ReadWrite),
-            )
-            .await?;
-
-        if SignupRequestHelper::set_ldap_status(&txn, &username, status as i16).await? == 0 {
-            UserHelper::set_ldap_status(&txn, &username, status as i16).await?;
-        }
-
-        txn.commit().await?;
-    }
-    for username in user_usernames {
-        let status = get_bath_user_details(username.clone(), ldap.clone()).await?;
-        let txn = db
-            .begin_with_config(
-                Some(IsolationLevel::Serializable),
-                Some(AccessMode::ReadWrite),
-            )
-            .await?;
-
-        UserHelper::set_ldap_status(&txn, &username, status as i16).await?;
-
-        txn.commit().await?;
-    }
     Ok(())
 }

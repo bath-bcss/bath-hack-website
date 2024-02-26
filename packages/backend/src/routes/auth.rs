@@ -50,6 +50,7 @@ pub async fn sign_in_route(
     }
 
     match user.ldap_check_status.try_into() {
+        Ok(BathUserStatus::None) => Ok(()),
         Ok(BathUserStatus::UserIsStudent) => Ok(()),
         Ok(BathUserStatus::UserIsNotStudent) => Err(SignInResponseError::UserNotStudentError),
         Ok(BathUserStatus::UserNotExists) => Err(SignInResponseError::PhantomUserError),

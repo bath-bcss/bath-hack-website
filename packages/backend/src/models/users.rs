@@ -60,10 +60,11 @@ impl UserHelper {
     pub async fn find_usernames_by_ldap_status<C: ConnectionTrait>(
         conn: &C,
         status: i16,
-    ) -> Result<Vec<String>, DbErr> {
+    ) -> Result<Vec<(uuid::Uuid, String)>, DbErr> {
         let response = User::find()
             .filter(user::Column::LdapCheckStatus.eq(status))
             .select_only()
+            .column(user::Column::Id)
             .column(user::Column::BathUsername)
             .into_tuple()
             .all(conn)
@@ -136,20 +137,17 @@ impl UserHelper {
     #[cfg(feature = "ldap")]
     pub async fn set_ldap_status<C: ConnectionTrait>(
         conn: &C,
-        username: &String,
+        id: &uuid::Uuid,
         new_status: i16,
-    ) -> Result<u64, DbErr> {
-        Ok(conn
-            .execute(sea_orm::Statement::from_sql_and_values(
-                sea_orm::DatabaseBackend::Postgres,
-                "UPDATE website_user SET ldap_check_status = $1 WHERE bath_username = $2;",
-                [
-                    sea_orm::Value::SmallInt(Some(new_status)),
-                    sea_orm::Value::String(Some(Box::from(username.to_owned()))),
-                ],
-            ))
-            .await?
-            .rows_affected())
+    ) -> Result<(), DbErr> {
+        let updated_user = user::ActiveModel {
+            id: Set(id.clone()),
+            ldap_check_status: new_status,
+            ..Default::default()
+        };
+
+        updated_user.save(conn).await?;
+        Ok(())
     }
 
     pub fn verify_password(

@@ -36,4 +36,5 @@ bhw-types = { path = "../types" }
 
 
 [features]
+default = ["ldap"]
 ldap = ["dep:ldap3"]

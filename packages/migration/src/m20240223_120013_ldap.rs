@@ -13,6 +13,7 @@ impl MigrationTrait for Migration {
                     .add_column_if_not_exists(
                         ColumnDef::new(WebsiteUser::LdapCheckStatus)
                             .small_integer()
+                            .default(0)
                             .not_null(),
                     )
                     .to_owned(),
@@ -26,6 +27,7 @@ impl MigrationTrait for Migration {
                     .add_column_if_not_exists(
                         ColumnDef::new(SignupRequest::LdapCheckStatus)
                             .small_integer()
+                            .default(0)
                             .not_null(),
                     )
                     .to_owned(),

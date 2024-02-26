@@ -72,22 +72,18 @@ impl SessionUser {
         let parsed_id =
             uuid::Uuid::parse_str(id).map_err(|e| AuthSessionError::IDNotValid(e.to_string()))?;
 
-        let user = User::find()
+        let user: Option<(uuid::Uuid, String)> = User::find()
             .select_only()
             .column(user::Column::Id)
             .column(user::Column::BathUsername)
-            .column(user::Column::PasswordHash)
-            .column(user::Column::CreatedAt)
             .filter(user::Column::Id.eq(parsed_id))
             .limit(1)
+            .into_tuple()
             .one(conn)
             .await
             .map_err(|e| AuthSessionError::DBError(e.to_string()))?;
 
-        Ok(user.map(|v| SessionUser {
-            id: v.id,
-            bath_username: v.bath_username,
-        }))
+        Ok(user.map(|(id, bath_username)| SessionUser { id, bath_username }))
     }
 
     pub fn set_id(session: &Session, new_user_id: &String) -> Result<(), SessionInsertError> {
