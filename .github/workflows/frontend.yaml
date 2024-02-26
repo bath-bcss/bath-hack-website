@@ -26,7 +26,7 @@ jobs:
         working-directory: ./packages/frontend
         env:
           BHW_FRONTEND_API_URL: "https://hack-api.bathcs.com"
-      - name: Deploy to Netlify
+      - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
