@@ -9,3 +9,4 @@ pub mod sidebar;
 pub mod nav;
 pub mod flashy_homepage;
 pub mod hero;
+pub mod modal;

@@ -4,16 +4,19 @@ use yew_router::prelude::*;
 use crate::router::{switch, Route};
 
 mod components;
+mod data;
 mod pages;
 mod router;
-mod data;
 
 #[function_component]
 fn App() -> Html {
     html! {
-    <BrowserRouter>
-        <Switch<Route> render={switch} />
-    </BrowserRouter>
+    <>
+        <div id="modal_host" />
+        <BrowserRouter>
+            <Switch<Route> render={switch} />
+        </BrowserRouter>
+    </>
     }
 }
 

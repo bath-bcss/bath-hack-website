@@ -723,6 +723,7 @@ dependencies = [
  "bhw-types",
  "gloo-console 0.3.0",
  "gloo-net 0.5.0",
+ "gloo-utils 0.2.0",
  "serde",
  "thiserror",
  "uuid",
