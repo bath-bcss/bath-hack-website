@@ -79,8 +79,8 @@ pub async fn check_pending_users(
 ) -> Result<(), PendingUserCheckError> {
     let txn = db
         .begin_with_config(
-            Some(IsolationLevel::Serializable),
-            Some(AccessMode::ReadOnly),
+            Some(IsolationLevel::ReadCommitted),
+            Some(AccessMode::ReadWrite),
         )
         .await?;
 

@@ -7,7 +7,7 @@ use bhw_types::{
         sign_up::{SignUpRequest, SignUpResponseError, SignUpResult},
     },
 };
-use log::error;
+use log::{error, warn};
 use sea_orm::{AccessMode, DatabaseConnection, IsolationLevel, TransactionTrait};
 
 use crate::{
@@ -38,7 +38,10 @@ pub async fn sign_up_route(
     let status = match connect_ldap(config.get_ref().clone()).await {
         Ok(ldap) => match get_bath_user_details(&request.bath_username, ldap).await {
             Ok(v) => match v {
-                BathUserStatus::None => Ok(0),
+                BathUserStatus::None => {
+                    warn!("invalid return value from get_bath_user_details");
+                    Ok(BathUserStatus::None as i16)
+                }
                 BathUserStatus::UserIsStudent => Ok(BathUserStatus::UserIsStudent as i16),
                 BathUserStatus::UserNotExists => Err(SignUpResponseError::UsernameInvalid),
                 BathUserStatus::UserIsNotStudent => Err(SignUpResponseError::UserIsNotStudent),
