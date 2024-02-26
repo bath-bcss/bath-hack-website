@@ -43,9 +43,15 @@ pub async fn sign_up_route(
                 BathUserStatus::UserNotExists => Err(SignUpResponseError::UsernameInvalid),
                 BathUserStatus::UserIsNotStudent => Err(SignUpResponseError::UserIsNotStudent),
             },
-            Err(_) => Ok(0),
+            Err(e) => {
+                error!("get user details from ldap: {}", e);
+                Ok(0)
+            }
         },
-        Err(_) => Ok(0),
+        Err(e) => {
+            error!("connection to ldap: {}", e);
+            Ok(0)
+        }
     }?;
     #[cfg(not(feature = "ldap"))]
     let status = 0i16;

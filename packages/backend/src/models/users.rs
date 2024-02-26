@@ -142,7 +142,7 @@ impl UserHelper {
     ) -> Result<(), DbErr> {
         let updated_user = user::ActiveModel {
             id: Set(id.clone()),
-            ldap_check_status: new_status,
+            ldap_check_status: Set(new_status),
             ..Default::default()
         };
 
