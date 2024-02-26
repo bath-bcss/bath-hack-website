@@ -86,6 +86,54 @@ async fn main() -> std::io::Result<()> {
         }
     };
 
+    #[cfg(feature = "ldap")]
+    {
+        use crate::ldap::{check_pending_users, connect_ldap, Ldap, PendingUserCheckError};
+        use log::{error, warn};
+
+        let ldap_task_config = config.clone();
+
+        tokio::task::spawn(async move {
+            let db_con = init_db(&ldap_task_config.clone()).await;
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(60));
+            let mut ldap: Option<Ldap> = None;
+            loop {
+                interval.tick().await;
+                let unwrapped_ldap = match ldap {
+                    None => {
+                        ldap = connect_ldap(ldap_task_config.clone())
+                            .await
+                            .inspect_err(|e| error!("ldap reinit {}", e))
+                            .ok();
+                        match ldap {
+                            None => {
+                                continue;
+                            }
+                            Some(ref v) => v,
+                        }
+                    }
+                    Some(ref v) => v,
+                };
+                let r = check_pending_users(unwrapped_ldap.clone(), db_con.clone()).await;
+                match r {
+                    Ok(_) => {}
+                    Err(e) => {
+                        warn!("error in ldap loop {}", e);
+                        match e {
+                            PendingUserCheckError::DBError(e) => {
+                                warn!("{}", e);
+                            }
+                            PendingUserCheckError::LdapError(e) => {
+                                warn!("{}", e);
+                                ldap = None
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     HttpServer::new(http_factory)
         .bind((config.bind_address, config.bind_port))?
         .run()

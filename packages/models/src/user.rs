@@ -18,6 +18,7 @@ pub struct Model {
     #[sea_orm(column_type = "Text", nullable)]
     pub accessibility_requirements: Option<String>,
     pub group_id: Option<Uuid>,
+    pub ldap_check_status: i16,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

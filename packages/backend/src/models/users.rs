@@ -1,8 +1,8 @@
 use bhw_models::{prelude::*, user};
 use bhw_types::requests::update_profile::UpdateProfileRequest;
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, DbErr, EntityTrait, PaginatorTrait,
-    QueryFilter, QuerySelect, Set, ConnectionTrait,
+    ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait,
+    QueryFilter, QuerySelect, Set,
 };
 use thiserror::Error;
 
@@ -56,6 +56,23 @@ impl UserHelper {
         Ok(response)
     }
 
+    #[cfg(feature = "ldap")]
+    pub async fn find_usernames_by_ldap_status<C: ConnectionTrait>(
+        conn: &C,
+        status: i16,
+    ) -> Result<Vec<(uuid::Uuid, String)>, DbErr> {
+        let response = User::find()
+            .filter(user::Column::LdapCheckStatus.eq(status))
+            .select_only()
+            .column(user::Column::Id)
+            .column(user::Column::BathUsername)
+            .into_tuple()
+            .all(conn)
+            .await?;
+
+        Ok(response)
+    }
+
     pub async fn from_id<C: ConnectionTrait>(
         conn: &C,
         user_id: String,
@@ -74,6 +91,7 @@ impl UserHelper {
         conn: &C,
         username: &String,
         password: &String,
+        ldap_check_status: i16,
     ) -> Result<user::Model, CreateUserError> {
         let password_hash =
             PasswordManager::hash(&password).map_err(|e| CreateUserError::PasswordHash(e))?;
@@ -82,6 +100,7 @@ impl UserHelper {
             id: Set(uuid::Uuid::new_v4()),
             bath_username: Set(username.to_owned()),
             password_hash: Set(password_hash),
+            ldap_check_status: Set(ldap_check_status),
             ..Default::default()
         };
 
@@ -109,6 +128,22 @@ impl UserHelper {
             UpdateProfileRequest::DietaryRequirements(dietary_requirements) => {
                 updated_user.dietary_requirements = Set(dietary_requirements);
             }
+        };
+
+        updated_user.save(conn).await?;
+        Ok(())
+    }
+
+    #[cfg(feature = "ldap")]
+    pub async fn set_ldap_status<C: ConnectionTrait>(
+        conn: &C,
+        id: &uuid::Uuid,
+        new_status: i16,
+    ) -> Result<(), DbErr> {
+        let updated_user = user::ActiveModel {
+            id: Set(id.clone()),
+            ldap_check_status: Set(new_status),
+            ..Default::default()
         };
 
         updated_user.save(conn).await?;

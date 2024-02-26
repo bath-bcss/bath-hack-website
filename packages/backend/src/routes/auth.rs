@@ -11,6 +11,7 @@ use bhw_types::{
 use log::{error, warn};
 use sea_orm::DatabaseConnection;
 
+use crate::models::ldap_status::BathUserStatus;
 use crate::{
     data::session::SessionUser, models::users::UserHelper, util::passwords::PasswordManager,
 };
@@ -47,6 +48,14 @@ pub async fn sign_in_route(
     if !password_correct {
         return Err(SignInResponseError::UsernameOrPasswordIncorrect);
     }
+
+    match user.ldap_check_status.try_into() {
+        Ok(BathUserStatus::None) => Ok(()),
+        Ok(BathUserStatus::UserIsStudent) => Ok(()),
+        Ok(BathUserStatus::UserIsNotStudent) => Err(SignInResponseError::UserNotStudentError),
+        Ok(BathUserStatus::UserNotExists) => Err(SignInResponseError::PhantomUserError),
+        Err(_) => Ok(()),
+    }?;
 
     SessionUser::set_id(&session, &user.id.to_string()).map_err(|e| {
         error!("setting session on login: {}", e.to_string());

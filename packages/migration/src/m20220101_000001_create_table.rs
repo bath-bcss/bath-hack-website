@@ -11,8 +11,17 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(CompetitionGroup::Table)
                     .if_not_exists()
-                    .col(ColumnDef::new(CompetitionGroup::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(CompetitionGroup::JoinCode).string().not_null())
+                    .col(
+                        ColumnDef::new(CompetitionGroup::Id)
+                            .uuid()
+                            .not_null()
+                            .primary_key(),
+                    )
+                    .col(
+                        ColumnDef::new(CompetitionGroup::JoinCode)
+                            .string()
+                            .not_null(),
+                    )
                     .to_owned(),
             )
             .await?;
@@ -22,7 +31,12 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(WebsiteUser::Table)
                     .if_not_exists()
-                    .col(ColumnDef::new(WebsiteUser::Id).uuid().not_null().primary_key())
+                    .col(
+                        ColumnDef::new(WebsiteUser::Id)
+                            .uuid()
+                            .not_null()
+                            .primary_key(),
+                    )
                     .col(ColumnDef::new(WebsiteUser::DisplayName).string().null())
                     .col(
                         ColumnDef::new(WebsiteUser::BathUsername)
@@ -30,14 +44,22 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .unique_key(),
                     )
-                    .col(ColumnDef::new(WebsiteUser::PasswordHash).string().not_null())
+                    .col(
+                        ColumnDef::new(WebsiteUser::PasswordHash)
+                            .string()
+                            .not_null(),
+                    )
                     .col(
                         ColumnDef::new(WebsiteUser::CreatedAt)
                             .timestamp()
                             .not_null()
                             .default(Expr::current_timestamp()),
                     )
-                    .col(ColumnDef::new(WebsiteUser::DietaryRequirements).text().null())
+                    .col(
+                        ColumnDef::new(WebsiteUser::DietaryRequirements)
+                            .text()
+                            .null(),
+                    )
                     .col(
                         ColumnDef::new(WebsiteUser::AccessibilityRequirements)
                             .text()

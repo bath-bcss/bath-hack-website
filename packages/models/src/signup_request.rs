@@ -12,6 +12,7 @@ pub struct Model {
     pub created_at: DateTime,
     pub expires_at: DateTime,
     pub secret_hash: String,
+    pub ldap_check_status: i16,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

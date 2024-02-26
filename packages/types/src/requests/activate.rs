@@ -12,14 +12,7 @@ pub struct AccountActivateRequest {
 }
 
 #[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    Deserialize,
-    Serialize,
-    Error,
-    ResponseError,
-    FromSeaORMError,
+    Debug, Clone, PartialEq, Deserialize, Serialize, Error, ResponseError, FromSeaORMError,
 )]
 pub enum AccountActivateResponseError {
     #[error("ID or secret was wrong")]
@@ -38,6 +31,10 @@ pub enum AccountActivateResponseError {
     DeleteRequestError(String),
     #[error("SessionError")]
     SessionError,
+    #[error("User not a student")]
+    UserNotStudentError,
+    #[error("User not found in LDAP database")]
+    PhantomUserError,
 }
 
 pub type AccountActivateResult = Result<Nothing, AccountActivateResponseError>;
