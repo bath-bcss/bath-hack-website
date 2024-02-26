@@ -7,8 +7,11 @@ use bhw_types::{
         sign_up::{SignUpRequest, SignUpResponseError, SignUpResult},
     },
 };
-use log::{error, warn};
+use log::error;
 use sea_orm::{AccessMode, DatabaseConnection, IsolationLevel, TransactionTrait};
+
+#[cfg(feature = "ldap")]
+use log::warn;
 
 use crate::{
     app_config::AppConfig,

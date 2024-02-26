@@ -50,7 +50,7 @@ pub fn home_page() -> Html {
 
         <div class="space-y-32 mt-32">
             <FlashyHomepageSection icon={SectionIcon::Emoji("👋".to_string())} title="Welcome to Bath Hack!"
-                anchor="welcome">
+                anchor="welcome" image="home_section1.webp">
                 <FlashyHomepageSectionParagraph>
                     {"The official BCSS Hackathon is back for 2024 — another exciting year of projects, prizes, and (most
                     importantly) pizza! As per usual, it's open to "}

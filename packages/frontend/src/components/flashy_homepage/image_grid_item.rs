@@ -1,5 +1,7 @@
 use yew::prelude::*;
 
+use crate::data::image_url::get_image_url;
+
 #[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub src: String,
@@ -10,15 +12,7 @@ pub struct Props {
 #[function_component(ImageGridItem)]
 pub fn image_grid_item(props: &Props) -> Html {
     let src = use_memo((props.src.clone(),), |(src,)| {
-        let mut src = (*src).clone();
-        let using_cdn = env!("BHW_FRONTEND_USE_NETLIFY_IMAGE_CDN") == "true";
-
-        if using_cdn {
-            src.insert_str(0, "/home-page-imgs/")
-        } else {
-            src.insert_str(0, "/img/");
-        }
-        src
+        get_image_url(src.clone())
     });
 
     let (width, height) = if props.is_portrait {
