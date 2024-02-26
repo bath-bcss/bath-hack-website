@@ -32,7 +32,7 @@ This command will start up a live-reloading server for the frontend.
 In a new/parallel terminal, `cd` into the project root and run:
 
 ```
-cargo run -p bhw-backend
+cargo run -p bhw-backend --no-default-features
 ```
 
 This last command will run the migrations on your database and then start up the backend server (this doesn't live-reload).

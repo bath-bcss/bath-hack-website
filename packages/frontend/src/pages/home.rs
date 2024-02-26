@@ -7,9 +7,12 @@ use crate::{
         button::Button,
         flashy_homepage::{
             footer::HomepageFooter,
-            image_grid::ImageGrid,
-            section::{FlashyHomepageSection, SectionIcon},
-            section_paragraph::FlashyHomepageSectionParagraph,
+            image_grid::image_grid_container::ImageGrid,
+            section::{
+                page_section::FlashyHomepageSection,
+                section_paragraph::FlashyHomepageSectionParagraph, heading::SectionIcon,
+            },
+            tracks::track_grid::TrackGrid,
         },
         hero::gradient::HeroGradientContainer,
         nav::ScrollingNavbar,
@@ -51,7 +54,7 @@ pub fn home_page() -> Html {
         <div class="space-y-32 mt-32">
             <FlashyHomepageSection icon={SectionIcon::Emoji("👋".to_string())} title="Welcome to Bath Hack!"
                 anchor="welcome" image="home_section1.webp">
-                <FlashyHomepageSectionParagraph>
+                <FlashyHomepageSectionParagraph full_width={true}>
                     {"The official BCSS Hackathon is back for 2024 — another exciting year of projects, prizes, and (most
                     importantly) pizza! As per usual, it's open to "}
                     <strong>
@@ -59,12 +62,12 @@ pub fn home_page() -> Html {
                     </strong>
                     {"; not just Computer Scientists."}
                 </FlashyHomepageSectionParagraph>
-                <FlashyHomepageSectionParagraph>
+                <FlashyHomepageSectionParagraph full_width={true}>
                     {"You'll have exactly one day to build an innovative project with your team and impress the judges. It's
                 a fun,
                 inclusive, and beginner-friendly atmosphere with a wide range of tracks and talks."}
                 </FlashyHomepageSectionParagraph>
-                <FlashyHomepageSectionParagraph>
+                <FlashyHomepageSectionParagraph full_width={true}>
                     {"Are you ready for the most exciting 24 hours of your life?"}
                 </FlashyHomepageSectionParagraph>
                 <Button onclick={on_sign_up_click.clone()} dark_mode={false} class={classes!("mt-4")}>
@@ -73,11 +76,10 @@ pub fn home_page() -> Html {
             </FlashyHomepageSection>
 
             <FlashyHomepageSection icon={SectionIcon::Icon(IconId::FontAwesomeSolidShuffle)} title="Tracks" anchor="tracks"
-                child_is_paragraph={true}>
-                {"hi"}
+                child_is_paragraph={false}>
+                <TrackGrid />
             </FlashyHomepageSection>
         </div>
-
         <HomepageFooter />
     </>
     }

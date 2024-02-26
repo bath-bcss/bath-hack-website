@@ -1,6 +1,6 @@
 use yew::prelude::*;
 
-use crate::components::flashy_homepage::image_grid_item::ImageGridItem;
+use crate::components::flashy_homepage::image_grid::image_grid_item::ImageGridItem;
 
 #[function_component(ImageGrid)]
 pub fn image_grid() -> Html {
