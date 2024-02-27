@@ -16,6 +16,7 @@ pub struct AppConfig {
     pub ldap_url: String,
 
     pub allowed_origin: String,
+    pub dev_weak_passwords: bool,
 }
 
 pub fn parse_config() -> AppConfig {

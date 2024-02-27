@@ -16,7 +16,7 @@ use middleware::csrf::Csrf;
 use routes::{
     auth::{check_signed_in_route, sign_in_route, sign_out_route},
     profile::{get_profile_route, update_profile_route},
-    sign_up::{account_activate_route, sign_up_route},
+    sign_up::{account_activate_route, sign_up_route}, group::{create_group_route, join_group_route},
 };
 
 mod app_config;
@@ -83,6 +83,8 @@ async fn main() -> std::io::Result<()> {
                 .service(sign_out_route)
                 .service(get_profile_route)
                 .service(update_profile_route)
+                .service(create_group_route)
+                .service(join_group_route)
         }
     };
 

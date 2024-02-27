@@ -100,6 +100,7 @@ pub async fn account_activate_route(
     request: web::Json<AccountActivateRequest>,
     db: web::Data<DatabaseConnection>,
     session: Session,
+    config: web::Data<AppConfig>,
 ) -> AccountActivateResult {
     let txn = db
         .begin_with_config(
@@ -143,10 +144,12 @@ pub async fn account_activate_route(
         Err(_) => Ok(()),
     }?;
 
-    if let Err(security_error) = PasswordManager::check_security(&request.password) {
-        return Err(AccountActivateResponseError::InsecurePassword(
-            security_error.to_string(),
-        ));
+    if !config.dev_weak_passwords {
+        if let Err(security_error) = PasswordManager::check_security(&request.password) {
+            return Err(AccountActivateResponseError::InsecurePassword(
+                security_error.to_string(),
+            ));
+        }
     }
 
     let new_user = UserHelper::create(

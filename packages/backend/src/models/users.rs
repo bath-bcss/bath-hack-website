@@ -134,6 +134,21 @@ impl UserHelper {
         Ok(())
     }
 
+    pub async fn set_group_id<C: ConnectionTrait>(
+        conn: &C,
+        user_id: uuid::Uuid,
+        group_id: uuid::Uuid,
+    ) -> Result<(), DbErr> {
+        let updated_user = user::ActiveModel {
+            id: Set(user_id),
+            group_id: Set(Some(group_id)),
+            ..Default::default()
+        };
+
+        updated_user.save(conn).await?;
+        Ok(())
+    }
+
     #[cfg(feature = "ldap")]
     pub async fn set_ldap_status<C: ConnectionTrait>(
         conn: &C,

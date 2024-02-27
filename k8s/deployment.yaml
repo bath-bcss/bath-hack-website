@@ -79,6 +79,8 @@ spec:
               value: ldap://example.com
             - name: BHW_ALLOWED_ORIGIN
               value: https://hack.bathcs.com
+            - name: BHW_DEV_WEAK_PASSWORDS
+              value: "false"
 ---
 apiVersion: v1
 kind: Service
