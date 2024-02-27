@@ -6,11 +6,12 @@ use crate::{
     components::{
         button::Button,
         flashy_homepage::{
+            faqs::FAQs,
             footer::HomepageFooter,
             image_grid::image_grid_container::ImageGrid,
             section::{
-                page_section::FlashyHomepageSection,
-                section_paragraph::FlashyHomepageSectionParagraph, heading::SectionIcon,
+                heading::SectionIcon, page_section::FlashyHomepageSection,
+                section_paragraph::FlashyHomepageSectionParagraph,
             },
             tracks::track_grid::TrackGrid,
         },
@@ -75,9 +76,37 @@ pub fn home_page() -> Html {
                 </Button>
             </FlashyHomepageSection>
 
-            <FlashyHomepageSection icon={SectionIcon::Icon(IconId::FontAwesomeSolidShuffle)} title="Tracks" anchor="tracks"
-                child_is_paragraph={false}>
+            <FlashyHomepageSection icon={SectionIcon::Icon(IconId::FontAwesomeSolidShuffle)} title="Tracks" anchor="tracks">
+                <FlashyHomepageSectionParagraph>
+                    {"The competition's split into \"tracks\", to give your project ideas a general guiding theme. Don't
+                worry — you won't need to choose a track at the start, as your entry will automatically be considered
+                for all of them. So even if your project might fall into the scope of multiple tracks, you won't need to
+                pick which you run for."}
+                </FlashyHomepageSectionParagraph>
                 <TrackGrid />
+            </FlashyHomepageSection>
+
+            <FlashyHomepageSection icon={SectionIcon::Icon(IconId::FontAwesomeSolidComments)} title="Talks" anchor="talks"
+                image="home_section3.webp">
+                <FlashyHomepageSectionParagraph full_width={true}>
+                    {"Bath Hack is about more than just coding: come along to our interesting series of talks from various
+                    industry experts and University academics."}
+                </FlashyHomepageSectionParagraph>
+                <FlashyHomepageSectionParagraph full_width={true}>
+                    {"Some might provide inspiration for your projects (or even your career), but others will be more
+                    light-hearted, providing a fun break from the work."}
+                </FlashyHomepageSectionParagraph>
+                <FlashyHomepageSectionParagraph full_width={true}>
+                    {"We'll announce the full series of talks soon. Do you want to give one yourself? Get in touch at "}
+                    <a href="mailto:su-bcss@bath.ac.uk" target="_blank" class="underline">
+                        {"su-bcss@bath.ac.uk"}
+                    </a>
+                    {"!"}
+                </FlashyHomepageSectionParagraph>
+            </FlashyHomepageSection>
+
+            <FlashyHomepageSection icon={SectionIcon::Icon(IconId::FontAwesomeSolidQuestion)} title="FAQs" anchor="faqs">
+                <FAQs />
             </FlashyHomepageSection>
         </div>
         <HomepageFooter />

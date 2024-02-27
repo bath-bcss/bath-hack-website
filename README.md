@@ -40,6 +40,15 @@ This last command will run the migrations on your database and then start up the
 ## Deploying
 This can be done in a couple of ways. If you're using Kubernetes, see the `k8s` directory for a `kustomize`-compatible configuration. You'll need to set some secrets manually, so make sure to look through the files before deploying them.
 
+### Images
+The frontend landing page has a lot of images, and we serve these in the efficient [webp](https://en.wikipedia.org/wiki/WebP) format at the smallest reasonable scale.
+
+You can easily generate these images (in `packages/frontend/img`) using the `mogrify` CLI (part of ImageMagick):
+
+```
+mogrify -format webp -resize 400 packages/frontend/img/*.JPG
+```
+
 ## License
 Project created by Pal Kerecsenyi.
 
