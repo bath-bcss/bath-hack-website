@@ -2,6 +2,8 @@ use bhw_macro_types::{FromSeaORMError, JsonResponder, ResponseError};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
+use crate::models::group::GroupMember;
+
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct JoinGroupRequest {
     pub join_code: String,
@@ -11,6 +13,7 @@ pub struct JoinGroupRequest {
 pub struct JoinGroupResponse {
     pub group_id: String,
     pub group_name: String,
+    pub group_members: Vec<GroupMember>,
 }
 
 #[derive(
