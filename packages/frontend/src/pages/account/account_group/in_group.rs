@@ -27,16 +27,16 @@ group_handle.",
             {"You're currently a member of a group, which you either created or joined with a code."}
         </PageControlParagraph>
 
-        <div class="mt-4 py-6 px-8 bg-bcss-50 shadow-md shadow-bcss-200 rounded-2xl inline-block">
-            <p class="text-xl font-bold text-bcss-800">
+        <div class="mt-4 py-6 px-8 bg-bcss-50 dark:bg-bcss-900 shadow-md shadow-bcss-200 dark:shadow-bcss-800 rounded-2xl block sm:inline-block">
+            <p class="text-xl font-bold text-bcss-800 dark:text-bcss-200">
                 {current_group.name}
             </p>
-            <p class="mt-1 text-bcss-900">
+            <p class="mt-1 text-bcss-900 dark:text-bcss-200">
                 {"Join code: "}
                 <code>{current_group.join_code}</code>
             </p>
 
-            <div class="mt-4 flex items-start gap-x-4">
+            <div class="mt-4 flex flex-col sm:flex-row items-start gap-y-4 sm:gap-y-0 sm:gap-x-4">
                 {current_group.members.into_iter().map(|m| member_card(m)).collect::<Html>()}
             </div>
 
