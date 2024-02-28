@@ -1,9 +1,15 @@
 use bhw_types::requests::{
     create_group::{CreateGroupError, CreateGroupRequest, CreateGroupResponse},
     join_group::{JoinGroupError, JoinGroupRequest, JoinGroupResponse},
+    my_group::{MyGroupResponse, MyGroupResponseError},
 };
 
-use super::api::{send_post, FrontendRequestError};
+use super::api::{send_get, send_post, FrontendRequestError};
+
+pub async fn get_my_group(
+) -> Result<Option<MyGroupResponse>, FrontendRequestError<MyGroupResponseError>> {
+    send_get("/groups/me".to_string()).await
+}
 
 pub async fn create_group(
     group_name: String,

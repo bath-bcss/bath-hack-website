@@ -764,6 +764,7 @@ version = "0.1.0"
 dependencies = [
  "actix-web",
  "bhw-macro-types",
+ "log",
  "sea-orm",
  "serde",
  "serde_json",

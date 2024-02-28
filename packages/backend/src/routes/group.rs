@@ -1,15 +1,38 @@
-use actix_web::{post, web};
+use actix_web::{get, post, web};
 use bhw_types::requests::{
     create_group::{CreateGroupError, CreateGroupRequest, CreateGroupResponse, CreateGroupResult},
     join_group::{JoinGroupError, JoinGroupRequest, JoinGroupResponse, JoinGroupResult},
+    my_group::{MyGroupResponse, MyGroupResponseError, MyGroupResult},
 };
 use log::warn;
 use sea_orm::{AccessMode, DatabaseConnection, IsolationLevel, TransactionTrait};
 
 use crate::{
     data::session::SessionUser,
-    models::groups::{GroupsHelper, JoinGroupByCodeError},
+    models::groups::{GetGroupError, GroupsHelper, JoinGroupByCodeError},
 };
+
+#[get("/groups/me")]
+pub async fn get_my_group_route(
+    user: SessionUser,
+    db: web::Data<DatabaseConnection>,
+) -> MyGroupResult {
+    let current_group = GroupsHelper::get_current_group(db.get_ref(), user.id)
+        .await
+        .map_err(|e| match e {
+            GetGroupError::UserNotFound => MyGroupResponseError::UserNotFound,
+            GetGroupError::DBError(e) => {
+                warn!("getting group of user: {}", e);
+                MyGroupResponseError::DBError
+            }
+        })?;
+
+    Ok(current_group.map(|g| MyGroupResponse {
+        id: g.id.to_string(),
+        name: g.group_name,
+        join_code: g.join_code,
+    }))
+}
 
 #[post("/groups")]
 pub async fn create_group_route(
@@ -29,12 +52,13 @@ pub async fn create_group_route(
         return Err(CreateGroupError::AlreadyInGroup);
     }
 
-    let new_group_id = GroupsHelper::create(&txn, user.id, data.group_name.clone()).await?;
+    let new_group = GroupsHelper::create(&txn, user.id, data.group_name.clone()).await?;
 
     txn.commit().await?;
 
     Ok(CreateGroupResponse {
-        new_group_id: new_group_id.to_string(),
+        new_group_id: new_group.id.to_string(),
+        new_group_join_code: new_group.join_code,
     })
 }
 

@@ -10,6 +10,7 @@ pub struct CreateGroupRequest {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, JsonResponder)]
 pub struct CreateGroupResponse {
     pub new_group_id: String,
+    pub new_group_join_code: String,
 }
 
 #[derive(

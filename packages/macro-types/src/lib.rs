@@ -27,7 +27,8 @@ pub fn from_sea_orm_error_macro_derive(input: TokenStream) -> TokenStream {
     let gen = quote! {
         #[cfg(target_family = "unix")]
         impl From<sea_orm::DbErr> for #name {
-            fn from(_: sea_orm::DbErr) -> Self {
+            fn from(e: sea_orm::DbErr) -> Self {
+                log::warn!("db error: {}", e.to_string());
                 #name::DBError
             }
         }

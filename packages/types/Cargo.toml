@@ -12,3 +12,4 @@ bhw-macro-types = { path = "../macro-types" }
 [target.'cfg(target_family = "unix")'.dependencies]
 actix-web = "4"
 sea-orm = { version = "0.12" }
+log = "0.4.20"

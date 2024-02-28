@@ -1,4 +1,5 @@
 use bhw_types::requests::{profile::ProfileResponse, update_profile::UpdateProfileRequest};
+use gloo_console::error;
 use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
 use yew_router::hooks::use_navigator;
@@ -6,6 +7,7 @@ use yew_router::hooks::use_navigator;
 use crate::{
     components::{
         input::Input,
+        loading_spinner::LoadingSpinner,
         page_container::PageContainer,
         page_title::PageTitle,
         profile_datapoint::{ProfileDatapoint, ProfileKey},
@@ -18,9 +20,6 @@ use crate::{
 pub fn account_home_page() -> Html {
     let profile_handle = use_state_eq(|| None::<ProfileResponse>);
     let profile = (*profile_handle).clone();
-
-    let error_handle = use_state_eq(|| None::<String>);
-    let error = (*error_handle).clone();
 
     let loading_handle = use_state_eq(|| false);
     let loading = (*loading_handle).clone();
@@ -38,7 +37,7 @@ pub fn account_home_page() -> Html {
                 loading_handle.set(false);
 
                 match response {
-                    Err(e) => error_handle.set(Some(e.to_string())),
+                    Err(e) => error!("getting profile: ", e.to_string()),
                     Ok(d) => profile_handle.set(Some(d)),
                 }
             });
@@ -78,6 +77,10 @@ pub fn account_home_page() -> Html {
             {"Your profile"}
         </PageTitle>
 
+        if loading.clone() {
+        <LoadingSpinner />
+        }
+
         if let Some(profile) = profile {
         <div class="space-y-4 mt-4">
             <Input static_value={profile.bath_username} readonly={true} input_label="Bath Username" />
@@ -86,8 +89,8 @@ pub fn account_home_page() -> Html {
                 on_value_change={on_datapoint_change.clone()} />
             <ProfileDatapoint data_key={ProfileKey::AccessibilityRequirements}
                 current_value={profile.accessibility_requirements} on_value_change={on_datapoint_change.clone()} />
-            <ProfileDatapoint data_key={ProfileKey::DietaryRequirements}
-                current_value={profile.dietary_requirements} on_value_change={on_datapoint_change.clone()} />
+            <ProfileDatapoint data_key={ProfileKey::DietaryRequirements} current_value={profile.dietary_requirements}
+                on_value_change={on_datapoint_change.clone()} />
         </div>
         }
     </PageContainer>

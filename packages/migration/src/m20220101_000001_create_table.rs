@@ -20,6 +20,7 @@ impl MigrationTrait for Migration {
                     .col(
                         ColumnDef::new(CompetitionGroup::JoinCode)
                             .string()
+                            .unique_key()
                             .not_null(),
                     )
                     .to_owned(),
@@ -70,7 +71,8 @@ impl MigrationTrait for Migration {
                         ForeignKey::create()
                             .name("fk_user_competition_group")
                             .from(WebsiteUser::Table, WebsiteUser::GroupId)
-                            .to(CompetitionGroup::Table, CompetitionGroup::Id),
+                            .to(CompetitionGroup::Table, CompetitionGroup::Id)
+                            .on_delete(ForeignKeyAction::SetNull),
                     )
                     .to_owned(),
             )

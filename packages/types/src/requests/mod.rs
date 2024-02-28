@@ -7,3 +7,4 @@ pub mod profile;
 pub mod update_profile;
 pub mod create_group;
 pub mod join_group;
+pub mod my_group;
