@@ -1,3 +1,5 @@
+use gloo_utils::window;
+use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
 use yew_icons::IconId;
 use yew_router::prelude::*;
@@ -23,10 +25,18 @@ use crate::{
 
 #[function_component(HomePage)]
 pub fn home_page() -> Html {
-    let navigator = use_navigator().unwrap();
+    let navigator = use_navigator().expect_throw("Navigator not found");
 
-    let on_sign_up_click = use_callback(navigator.clone(), move |_e, _| {
+    let on_sign_up_click = use_callback(navigator.clone(), move |_, _| {
         navigator.push(&Route::Signup);
+    });
+
+    let on_find_out_more_click = use_callback((), |e: MouseEvent, _| {
+        e.prevent_default();
+        window()
+            .location()
+            .set_href("https://thesubath.com/bcss")
+            .expect_throw("Setting location.href");
     });
 
     html! {
@@ -107,6 +117,24 @@ pub fn home_page() -> Html {
 
             <FlashyHomepageSection icon={SectionIcon::Icon(IconId::FontAwesomeSolidQuestion)} title="FAQs" anchor="faqs">
                 <FAQs />
+            </FlashyHomepageSection>
+
+            <FlashyHomepageSection icon={SectionIcon::Icon(IconId::FontAwesomeSolidCircleInfo)} title="About BCSS"
+                anchor="about">
+                <FlashyHomepageSectionParagraph>
+                    {"This event has been organised by the Committee of the Bath Computer Science Society. We put lots of
+                    effort into organising it each year and aim to make it bigger and better every time."}
+                </FlashyHomepageSectionParagraph>
+                <FlashyHomepageSectionParagraph>
+                    {"BCSS is a member society of the University of Bath Student Union and is also a student chapter of the
+                British Computer Society. We are a society for anyone with any interest in Computing, open to any
+                student
+                studying any degree. Our key aim is to encourage more people into the field, as well as to teach
+                important industry skills to help encourage our members to grow."}
+                </FlashyHomepageSectionParagraph>
+                <Button onclick={on_find_out_more_click.clone()} dark_mode={false} class={classes!("mt-4")}>
+                    {"Find out more"}
+                </Button>
             </FlashyHomepageSection>
         </div>
         <HomepageFooter />
