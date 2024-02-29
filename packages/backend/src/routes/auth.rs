@@ -29,7 +29,12 @@ pub async fn sign_in_route(
     db: web::Data<DatabaseConnection>,
     session: Session,
 ) -> SignInResult {
-    let user = UserHelper::find_by_username(db.get_ref(), data.username.clone())
+    let mut username = data.username.clone();
+    if let Some(at_pos) = username.find('@') {
+        username = username[0..at_pos].to_string();
+    }
+
+    let user = UserHelper::find_by_username(db.get_ref(), username)
         .await
         .map_err(|e| {
             error!("finding user by username: {}", e.to_string());
