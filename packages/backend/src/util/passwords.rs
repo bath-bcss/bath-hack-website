@@ -16,8 +16,9 @@ pub enum PasswordSecurityError {
     TooShort,
     #[error("That password is too commonly used; please try something more unique")]
     TooCommon,
-    #[error("Password was too weak; you need a score of at least 80 (current score {0}). Try adding numbers, symbols, upper/lowercase characters, etc.")]
-    LowScore(f64),
+    #[error("Password was too weak; you need a score of at least 80 (current score {0}). Try adding numbers, symbols,
+upper/lowercase characters, etc.")]
+    LowScore(i64),
 }
 
 impl PasswordManager {
@@ -32,7 +33,7 @@ impl PasswordManager {
         }
         let score = scorer::score(&analyzed_password);
         if score < 80.0 {
-            return Err(PasswordSecurityError::LowScore(score));
+            return Err(PasswordSecurityError::LowScore(score.floor() as i64));
         }
         Ok(())
     }
