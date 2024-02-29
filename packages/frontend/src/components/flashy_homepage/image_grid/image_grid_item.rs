@@ -11,9 +11,7 @@ pub struct Props {
 
 #[function_component(ImageGridItem)]
 pub fn image_grid_item(props: &Props) -> Html {
-    let src = use_memo((props.src.clone(),), |(src,)| {
-        get_image_url(src.clone())
-    });
+    let src = use_memo((props.src.clone(),), |(src,)| get_image_url(src.clone()));
 
     let (width, height) = if props.is_portrait {
         (400, 650)
@@ -24,6 +22,6 @@ pub fn image_grid_item(props: &Props) -> Html {
     html! {
     <img src={(*src).clone()}
         class="w-full h-auto rounded-2xl shadow-2xl shadow-bcss-400 dark:shadow-bcss-700 dark:brightness-90 bg-bcss-400"
-        loading="lazy" width={width.to_string()} height={height.to_string()} />
+        loading="lazy" width={width.to_string()} height={height.to_string()} role="presentation" />
     }
 }
