@@ -9,7 +9,7 @@ pub fn homepage_footer() -> Html {
                 {"Website copyright © Pal Kerecsenyi 2024; licensed under GNU GPL 3.0."}
             </p>
             <p class="text-bcss-800 dark:text-bcss-200">
-                {"Images and other assets © BCSS Committee 2023-2024."}
+                {"Images, some text, and other assets © BCSS Committee 2023/24 and 2022/23."}
             </p>
             <p class="text-bcss-800 dark:text-bcss-200">
                 {"Source code and license details available on "}
