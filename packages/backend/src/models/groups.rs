@@ -32,6 +32,16 @@ enum GetGroupByIdError {
     GroupNotFound,
 }
 
+#[derive(Debug, Error)]
+pub enum RemoveUserFromGroupError {
+    #[error("database error: {0}")]
+    DBError(#[from] DbErr),
+    #[error("User does not exist")]
+    UserNotFound,
+    #[error("User is not in a group")]
+    UserNotInGroup,
+}
+
 pub struct GroupsHelper;
 impl GroupsHelper {
     pub async fn check_is_in_group<T: ConnectionTrait>(
@@ -108,7 +118,7 @@ impl GroupsHelper {
         };
 
         let new_group: group::Model = new_group.insert(conn).await?;
-        UserHelper::set_group_id(conn, initial_user_id, new_group.id).await?;
+        UserHelper::set_group_id(conn, initial_user_id, Some(new_group.id)).await?;
 
         Ok(new_group)
     }
@@ -127,7 +137,7 @@ impl GroupsHelper {
             .await?
             .ok_or(JoinGroupByCodeError::NoJoinCode)?;
 
-        UserHelper::set_group_id(conn, user_id, group_id).await?;
+        UserHelper::set_group_id(conn, user_id, Some(group_id)).await?;
 
         Self::get_group_by_id_with_members(conn, group_id)
             .await
@@ -135,5 +145,28 @@ impl GroupsHelper {
                 GetGroupByIdError::GroupNotFound => JoinGroupByCodeError::NoJoinCode,
                 GetGroupByIdError::DBError(e) => JoinGroupByCodeError::DBError(e),
             })
+    }
+
+    pub async fn remove_user_from_group<T: ConnectionTrait>(
+        conn: &T,
+        user_id: uuid::Uuid,
+    ) -> Result<(), RemoveUserFromGroupError> {
+        let (group, group_members) = Self::get_current_group(conn, user_id)
+            .await
+            .map_err(|e| match e {
+                GetUserGroupError::DBError(e) => RemoveUserFromGroupError::DBError(e),
+                GetUserGroupError::UserNotFound => RemoveUserFromGroupError::UserNotFound,
+            })?
+            .ok_or(RemoveUserFromGroupError::UserNotInGroup)?;
+
+        UserHelper::set_group_id(conn, user_id, None).await?;
+
+        // The last person in the group just left, so we should delete it
+        // to avoid orphaned groups
+        if group_members.len() == 1 {
+            Group::delete_by_id(group.id).exec(conn).await?;
+        }
+
+        Ok(())
     }
 }

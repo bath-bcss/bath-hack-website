@@ -137,11 +137,11 @@ impl UserHelper {
     pub async fn set_group_id<C: ConnectionTrait>(
         conn: &C,
         user_id: uuid::Uuid,
-        group_id: uuid::Uuid,
+        group_id: Option<uuid::Uuid>,
     ) -> Result<(), DbErr> {
         let updated_user = user::ActiveModel {
             id: Set(user_id),
-            group_id: Set(Some(group_id)),
+            group_id: Set(group_id),
             ..Default::default()
         };
 

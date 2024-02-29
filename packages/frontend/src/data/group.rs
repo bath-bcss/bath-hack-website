@@ -1,13 +1,17 @@
-use bhw_types::requests::{
-    create_group::{CreateGroupError, CreateGroupRequest, CreateGroupResponse},
-    join_group::{JoinGroupError, JoinGroupRequest, JoinGroupResponse},
-    my_group::{MyGroupResponse, MyGroupResponseError},
+use bhw_types::{
+    nothing::Nothing,
+    requests::{
+        create_group::{CreateGroupError, CreateGroupRequest, CreateGroupResponse},
+        join_group::{JoinGroupError, JoinGroupRequest, JoinGroupResponse},
+        leave_group::LeaveGroupResponseError,
+        my_group::{MyGroupResponse, MyGroupResponseError},
+    },
 };
 
 use super::api::{send_get, send_post, FrontendRequestError};
 
 pub async fn get_my_group(
-) -> Result<Option<MyGroupResponse>, FrontendRequestError<MyGroupResponseError>> {
+) -> Result<MyGroupResponse, FrontendRequestError<MyGroupResponseError>> {
     send_get("/groups/me".to_string()).await
 }
 
@@ -23,4 +27,8 @@ pub async fn join_group(
 ) -> Result<JoinGroupResponse, FrontendRequestError<JoinGroupError>> {
     let request = JoinGroupRequest { join_code };
     send_post("/groups/join".to_string(), &request).await
+}
+
+pub async fn leave_group() -> Result<Nothing, FrontendRequestError<LeaveGroupResponseError>> {
+    send_post("/groups/leave".to_string(), &Nothing {}).await
 }

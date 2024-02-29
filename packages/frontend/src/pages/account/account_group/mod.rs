@@ -1,3 +1,4 @@
+use bhw_types::requests::my_group::MyGroupResponse;
 use gloo_console::error;
 use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
@@ -45,12 +46,14 @@ pub fn account_group_page() -> Html {
                 match group {
                     Err(e) => error!("getting group: ", e.to_string()),
                     Ok(group) => match group {
-                        None => return,
-                        Some(group) => current_group_handle.set(Some(FrontendGroupState {
-                            name: group.name,
-                            join_code: group.join_code,
-                            members: group.members,
-                        })),
+                        MyGroupResponse::None => return,
+                        MyGroupResponse::Data(group) => {
+                            current_group_handle.set(Some(FrontendGroupState {
+                                name: group.name,
+                                join_code: group.join_code,
+                                members: group.members,
+                            }))
+                        }
                     },
                 }
             });

@@ -4,12 +4,18 @@ use thiserror::Error;
 
 use crate::models::group::GroupMember;
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonResponder)]
-pub struct MyGroupResponse {
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct MyGroupData {
     pub id: String,
     pub name: String,
     pub join_code: String,
     pub members: Vec<GroupMember>,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonResponder)]
+pub enum MyGroupResponse {
+    None,
+    Data(MyGroupData),
 }
 
 #[derive(
@@ -22,4 +28,4 @@ pub enum MyGroupResponseError {
     UserNotFound,
 }
 
-pub type MyGroupResult = Result<Option<MyGroupResponse>, MyGroupResponseError>;
+pub type MyGroupResult = Result<MyGroupResponse, MyGroupResponseError>;

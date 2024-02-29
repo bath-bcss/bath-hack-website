@@ -2,20 +2,23 @@ use actix_web::{get, post, web};
 use bhw_models::user;
 use bhw_types::{
     models::group::GroupMember,
+    nothing::Nothing,
     requests::{
         create_group::{
             CreateGroupError, CreateGroupRequest, CreateGroupResponse, CreateGroupResult,
         },
         join_group::{JoinGroupError, JoinGroupRequest, JoinGroupResponse, JoinGroupResult},
-        my_group::{MyGroupResponse, MyGroupResponseError, MyGroupResult},
+        leave_group::{LeaveGroupResponseError, LeaveGroupResult},
+        my_group::{MyGroupData, MyGroupResponse, MyGroupResponseError, MyGroupResult},
     },
 };
-use log::warn;
 use sea_orm::{AccessMode, DatabaseConnection, IsolationLevel, TransactionTrait};
 
 use crate::{
     data::session::SessionUser,
-    models::groups::{GetUserGroupError, GroupsHelper, JoinGroupByCodeError},
+    models::groups::{
+        GetUserGroupError, GroupsHelper, JoinGroupByCodeError, RemoveUserFromGroupError,
+    },
 };
 
 fn user_vec_to_members(user_vec: Vec<user::Model>) -> Vec<GroupMember> {
@@ -40,12 +43,18 @@ pub async fn get_my_group_route(
             GetUserGroupError::DBError(e) => e.into(),
         })?;
 
-    Ok(res.map(|(group, members)| MyGroupResponse {
+    let res = res.map(|(group, members)| MyGroupData {
         id: group.id.to_string(),
         name: group.group_name,
         join_code: group.join_code,
         members: user_vec_to_members(members),
-    }))
+    });
+
+    if let Some(res) = res {
+        Ok(MyGroupResponse::Data(res))
+    } else {
+        Ok(MyGroupResponse::None)
+    }
 }
 
 #[post("/groups")]
@@ -99,10 +108,7 @@ pub async fn join_group_route(
             .await
             .map_err(|e| match e {
                 JoinGroupByCodeError::NoJoinCode => JoinGroupError::CodeNotFound,
-                JoinGroupByCodeError::DBError(e) => {
-                    warn!("joining group: {}", e);
-                    JoinGroupError::DBError
-                }
+                JoinGroupByCodeError::DBError(e) => e.into(),
             })?;
 
     txn.commit().await?;
@@ -112,4 +118,29 @@ pub async fn join_group_route(
         group_name: group_details.group_name,
         group_members: user_vec_to_members(group_members),
     })
+}
+
+#[post("/groups/leave")]
+pub async fn leave_group_route(
+    user: SessionUser,
+    db: web::Data<DatabaseConnection>,
+) -> LeaveGroupResult {
+    let txn = db
+        .begin_with_config(
+            Some(IsolationLevel::Serializable),
+            Some(AccessMode::ReadWrite),
+        )
+        .await?;
+
+    GroupsHelper::remove_user_from_group(&txn, user.id)
+        .await
+        .map_err(|e| match e {
+            RemoveUserFromGroupError::DBError(e) => e.into(),
+            RemoveUserFromGroupError::UserNotFound => LeaveGroupResponseError::UserNotFound,
+            RemoveUserFromGroupError::UserNotInGroup => LeaveGroupResponseError::NotInGroup,
+        })?;
+
+    txn.commit().await?;
+
+    Ok(Nothing)
 }
