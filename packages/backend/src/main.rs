@@ -6,7 +6,11 @@ use actix_session::{
 };
 use actix_web::{
     cookie::{time, Key, SameSite},
-    http,
+    dev::Service,
+    http::{
+        self,
+        header::{self, HeaderValue},
+    },
     middleware::Logger,
     web, App, HttpServer,
 };
@@ -75,6 +79,26 @@ async fn main() -> std::io::Result<()> {
                     .cookie_same_site(SameSite::Lax)
                     .build(),
                 )
+                .wrap_fn(|req, srv| {
+                    let fut = srv.call(req);
+                    async {
+                        let mut res = fut.await?;
+                        let h = res.headers_mut();
+
+                        h.append(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));
+                        h.append(
+                            header::CONTENT_SECURITY_POLICY,
+                            HeaderValue::from_static("frame-ancestors 'none'"),
+                        );
+                        h.append(
+                            header::X_CONTENT_TYPE_OPTIONS,
+                            HeaderValue::from_static("nosniff"),
+                        );
+                        h.append(header::X_FRAME_OPTIONS, HeaderValue::from_static("DENY"));
+
+                        Ok(res)
+                    }
+                })
                 .app_data(web::Data::new(config.clone()))
                 .app_data(web::Data::new(db_con.clone()))
                 .service(sign_up_route)
