@@ -2,7 +2,6 @@ use bhw_types::requests::{profile::ProfileResponse, update_profile::UpdateProfil
 use gloo_console::error;
 use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
-use yew_router::hooks::use_navigator;
 
 use crate::{
     components::{
@@ -13,7 +12,6 @@ use crate::{
         profile_datapoint::{ProfileDatapoint, ProfileKey},
     },
     data::profile::get_profile,
-    redirect_if_not_authed,
 };
 
 #[function_component(AccountHomePage)]
@@ -24,13 +22,9 @@ pub fn account_home_page() -> Html {
     let loading_handle = use_state_eq(|| false);
     let loading = (*loading_handle).clone();
 
-    let navigator = use_navigator().expect_throw("Navigator not found");
     {
-        let navigator = navigator.clone();
         let profile_handle = profile_handle.clone();
         use_effect_with((), |_| {
-            redirect_if_not_authed!(navigator);
-
             wasm_bindgen_futures::spawn_local(async move {
                 loading_handle.set(true);
                 let response = get_profile().await;

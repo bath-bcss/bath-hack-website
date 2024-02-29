@@ -1,8 +1,6 @@
 use bhw_types::requests::my_group::MyGroupResponse;
 use gloo_console::error;
-use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
-use yew_router::hooks::use_navigator;
 
 use crate::{
     components::{
@@ -12,7 +10,6 @@ use crate::{
     pages::account::account_group::{
         in_group::AccountGroupManage, joining_group::AccountGroupJoining, types::FrontendGroupState,
     },
-    redirect_if_not_authed,
 };
 
 mod in_group;
@@ -22,12 +19,6 @@ mod types;
 
 #[function_component(AccountGroupPage)]
 pub fn account_group_page() -> Html {
-    let navigator = use_navigator().expect_throw("Navigator not found");
-    use_effect_with((), move |_| {
-        let navigator = navigator.clone();
-        redirect_if_not_authed!(navigator);
-    });
-
     let get_group_loading_handle = use_state_eq(|| false);
     let get_group_loading = (*get_group_loading_handle).clone();
 

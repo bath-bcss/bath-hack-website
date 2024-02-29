@@ -1,9 +1,14 @@
+use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
 use yew_icons::{Icon, IconId};
-use yew_router::{components::Link, hooks::use_route};
+use yew_router::{
+    components::Link,
+    hooks::{use_navigator, use_route},
+};
 
 use crate::{
     components::{button::Button, sidebar::sidebar_element::SidebarElement},
+    redirect_if_not_authed,
     router::{AccountRoute, Route},
 };
 
@@ -14,6 +19,11 @@ pub struct Props {
 
 #[function_component(AccountSidebar)]
 pub fn account_sidebar(props: &Props) -> Html {
+    let navigator = use_navigator().expect_throw("Navigator not found");
+    use_effect_with((), move |_| {
+        redirect_if_not_authed!(navigator);
+    });
+
     let small_screen_show_handle = use_state_eq(|| false);
     let small_screen_show = (*small_screen_show_handle).clone();
 
