@@ -13,15 +13,6 @@ use crate::models::ldap_status::BathUserStatus;
 use crate::models::signup_requests::SignupRequestHelper;
 use sea_orm::{AccessMode, DatabaseConnection, DbErr, IsolationLevel, TransactionTrait};
 
-fn escape_ldap_input(input_val: String) -> String {
-    input_val
-        .replace("*", "\\2a")
-        .replace("(", "\\28")
-        .replace(")", "\\29")
-        .replace("\\", "\\5c")
-        .replace("\0", "\\00")
-}
-
 pub async fn connect_ldap(app_config: AppConfig) -> Result<Ldap, LdapError> {
     let settings = LdapConnSettings::new()
         .set_starttls(true)
@@ -38,15 +29,13 @@ pub async fn get_bath_user_details(
     username: &String,
     mut ldap: Ldap,
 ) -> Result<BathUserStatus, LdapError> {
-    let username = escape_ldap_input(username.clone());
-
     let result = ldap
         .search(
-            format!("uid={},ou=people,o=bath.ac.uk", username).as_str(),
+            format!("uid={},ou=people,o=bath.ac.uk", ldap3::dn_escape(username)).as_str(),
             Scope::Subtree,
             format!(
                 "(&(objectClass=BathStudentRole)(roleOccupant=uid={},ou=people,o=bath.ac.uk))",
-                username
+                ldap3::ldap_escape(username)
             )
             .as_str(),
             Vec::<&str>::new(),
