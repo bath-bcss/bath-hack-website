@@ -108,6 +108,7 @@ pub async fn join_group_route(
             .await
             .map_err(|e| match e {
                 JoinGroupByCodeError::NoJoinCode => JoinGroupError::CodeNotFound,
+                JoinGroupByCodeError::MaxCapacity => JoinGroupError::MaxCapacity,
                 JoinGroupByCodeError::DBError(e) => e.into(),
             })?;
 

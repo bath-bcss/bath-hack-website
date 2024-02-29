@@ -24,6 +24,8 @@ pub enum JoinGroupError {
     AlreadyInGroup,
     #[error("That join code was not found")]
     CodeNotFound,
+    #[error("That group has already reached the maximum number of members")]
+    MaxCapacity,
     #[error("Database error")]
     DBError,
 }

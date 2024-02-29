@@ -8,12 +8,16 @@ use thiserror::Error;
 
 use super::users::UserHelper;
 
+const MAX_MEMBERS: u64 = 4;
+
 #[derive(Debug, Error)]
 pub enum JoinGroupByCodeError {
     #[error("database error: {0}")]
     DBError(#[from] DbErr),
     #[error("Join code not found")]
     NoJoinCode,
+    #[error("MaxCapacity")]
+    MaxCapacity,
 }
 
 #[derive(Debug, Error)]
@@ -136,6 +140,15 @@ impl GroupsHelper {
             .one(conn)
             .await?
             .ok_or(JoinGroupByCodeError::NoJoinCode)?;
+
+        let num_members = User::find()
+            .filter(user::Column::GroupId.eq(group_id))
+            .count(conn)
+            .await?;
+
+        if num_members == MAX_MEMBERS {
+            return Err(JoinGroupByCodeError::MaxCapacity);
+        }
 
         UserHelper::set_group_id(conn, user_id, Some(group_id)).await?;
 
