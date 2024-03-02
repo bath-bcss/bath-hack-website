@@ -40,9 +40,9 @@ pub fn faqs_component() -> Html {
             </FAQItemParagraph>
         </FAQItem>
         <FAQItem current_open={currently_open_index.clone()} i={FAQItemIndex::WhatIsPrizeTrack}
-            on_click={on_item_click.clone()} question="What is a prize track?">
+            on_click={on_item_click.clone()} question="What is a track?">
             <FAQItemParagraph>
-                {"A prize track is a problem that needs to be solved or a question that needs to be answered. It's a
+                {"A track is a problem that needs to be solved or a question that needs to be answered. It's a
                 specific
                 goal your solution should fulfil."}
             </FAQItemParagraph>
@@ -66,6 +66,10 @@ pub fn faqs_component() -> Html {
             <FAQItemParagraph>
                 {"Bath Hack 2024 will take place on-campus in the Chancellor's Building. The entire building will be
                 reserved for the event, with various rooms in use for talks, workshops, etc."}
+            </FAQItemParagraph>
+            <FAQItemParagraph>
+                {"Lifts, double-width doors, hearing loop support and water fountains are available in the building. If
+                you have any specific access requirements that we haven't thought of, please let us know!"}
             </FAQItemParagraph>
         </FAQItem>
         <FAQItem current_open={currently_open_index.clone()} i={FAQItemIndex::TwentyFour}

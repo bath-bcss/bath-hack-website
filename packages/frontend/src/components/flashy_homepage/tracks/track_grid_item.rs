@@ -33,9 +33,9 @@ pub fn track_grid_item(props: &Props) -> Html {
             class="w-full h-40 relative rounded-2xl overflow-hidden shadow-bcss-900/40 shadow-xl hover:scale-105 transition-transform">
             <div style={format!("background-image: url('{}');", props.background_image.clone())}
                 class="absolute top-0 left-0 w-full h-full bg-bcss-200 brightness-75 blur-sm" />
-            <a class="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center text-center drop-shadow cursor-pointer"
+            <a class="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center text-center drop-shadow cursor-pointer px-2"
                 onclick={on_open_click}>
-                <span class="text-2xl text-white font-bold">
+                <span class="text-2xl text-white font-bold leading-none">
                     {props.track_name.clone()}
                 </span>
                 <span class="text-gray-200">
@@ -45,7 +45,7 @@ pub fn track_grid_item(props: &Props) -> Html {
         </div>
 
         <Modal open={show_modal}>
-            <div class="flex items-center justify-between space-x-2">
+            <div class="flex items-center justify-between space-x-6">
                 <div>
                     <h1 class="text-bcss-800 dark:text-bcss-200 font-bold text-3xl">
                         {props.track_name.clone()}
