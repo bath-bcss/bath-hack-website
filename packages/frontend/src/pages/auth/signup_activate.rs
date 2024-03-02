@@ -10,7 +10,7 @@ use crate::{
         hero::center::HeroCenterContainer, input::Input,
     },
     data::sign_up::account_activate_request,
-    router::Route,
+    router::Route, pages::account::account_home::InitialSignupState,
 };
 
 #[derive(Debug, Deserialize)]
@@ -64,7 +64,7 @@ pub fn signup_activate_page() -> Html {
 
             match resp {
                 Err(e) => error_handle.set(Some(e.to_string())),
-                Ok(_) => navigator.push(&Route::AccountHome),
+                Ok(_) => navigator.push_with_state(&Route::AccountHome, InitialSignupState),
             }
         });
     });
