@@ -29,7 +29,7 @@ pub fn home_page() -> Html {
     let navigator = use_navigator().expect_throw("Navigator not found");
 
     let on_sign_up_click = use_callback(navigator.clone(), move |_, _| {
-        navigator.push(&Route::SignupPre);
+        navigator.push(&Route::Signup);
     });
 
     let on_find_out_more_click = use_callback((), |e: MouseEvent, _| {

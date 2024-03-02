@@ -102,7 +102,7 @@ pub fn scrolling_navbar() -> Html {
 
         <div class="flex items-center justify-start space-x-3">
             <NavLink dest={NavLinkDestination::Page("/login".to_string())} label="Log in" show_on_mobile={true} />
-            <NavLink dest={NavLinkDestination::Page("/signup/pre".to_string())} label="Sign up" show_on_mobile={true} />
+            <NavLink dest={NavLinkDestination::Page("/signup".to_string())} label="Sign up" show_on_mobile={true} />
         </div>
     </div>
     }
