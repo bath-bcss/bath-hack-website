@@ -10,7 +10,7 @@ pub struct Props {
 pub fn flashy_homepage_section_paragraph(props: &Props) -> Html {
     html! {
     <div class={if props.full_width { "w-full" } else { "md:max-w-[70%]" }}>
-        <p class="text-bcss-700 dark:text-bcss-300 text-lg mt-4">
+        <p class="text-bcss-800 dark:text-bcss-300 text-lg mt-4">
             {props.children.clone()}
         </p>
     </div>

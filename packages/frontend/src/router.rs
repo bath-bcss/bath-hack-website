@@ -8,7 +8,8 @@ use crate::{
         auth::{
             forgot_password::ForgotPasswordPage, forgot_password_pin::ForgotPasswordPINPage,
             login::LoginPage, logout::LogoutPage, signup::SignupPage,
-            signup_activate::SignupActivatePage, signup_success::SignupSuccessPage,
+            signup_activate::SignupActivatePage, signup_pre::SignupPrePage,
+            signup_success::SignupSuccessPage,
         },
         home::HomePage,
         not_found::NotFoundPage,
@@ -19,6 +20,8 @@ use crate::{
 pub enum Route {
     #[at("/")]
     Home,
+    #[at("/signup/pre")]
+    SignupPre,
     #[at("/signup")]
     Signup,
     #[at("/signup/success")]
@@ -62,6 +65,9 @@ pub fn switch(routes: Route) -> Html {
         },
         Route::Logout => html! {
         <LogoutPage />},
+        Route::SignupPre => html! {
+        <SignupPrePage />
+        },
         Route::Signup => html! {
         <SignupPage />
         },

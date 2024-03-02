@@ -55,7 +55,7 @@ pub fn forgot_password_page() -> Html {
 
     html! {
     <HeroCenterContainer>
-        <GlassContainer>
+        <GlassContainer home_link={true}>
             <GlassContainerHeading>
                 {"Reset your password"}
             </GlassContainerHeading>

@@ -4,8 +4,13 @@ use yew_router::{components::Link, hooks::use_navigator};
 
 use crate::{
     components::{
-        button::Button, error::ErrorMessage, glass_container::{GlassContainer, heading::GlassContainerHeading},
-        hero::center::HeroCenterContainer, input::Input,
+        button::Button,
+        error::ErrorMessage,
+        glass_container::{
+            heading::GlassContainerHeading, paragraph::GlassContainerParagraph, GlassContainer,
+        },
+        hero::center::HeroCenterContainer,
+        input::Input,
     },
     data::auth::sign_in,
     router::Route,
@@ -69,11 +74,11 @@ pub fn login_page() -> Html {
 
                 <ErrorMessage message={error} />
 
-                <p class="mt-4 dark:text-bcss-300 underline">
-                    <Link<Route> to={Route::ForgotPassword}>
+                <GlassContainerParagraph top_margin={true}>
+                    <Link<Route> to={Route::ForgotPassword} classes={classes!("underline")}>
                         {"Forgot your password?"}
                     </Link<Route>>
-                </p>
+                </GlassContainerParagraph>
             </form>
         </GlassContainer>
     </HeroCenterContainer>

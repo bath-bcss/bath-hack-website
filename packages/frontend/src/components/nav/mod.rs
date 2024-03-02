@@ -30,10 +30,7 @@ pub fn scrolling_navbar() -> Html {
 
         document
             .add_event_listener_with_callback("scroll", &cb.as_ref().unchecked_ref())
-            .expect_throw(
-                "adding
-    scroll listener",
-            );
+            .expect_throw("adding scroll listener");
 
         move || {
             document
@@ -91,7 +88,7 @@ pub fn scrolling_navbar() -> Html {
 
         <div class="flex items-center justify-start space-x-3">
             <NavLink dest={NavLinkDestination::Page("/login".to_string())} label="Log in" show_on_mobile={true} />
-            <NavLink dest={NavLinkDestination::Page("/signup".to_string())} label="Sign up" show_on_mobile={true} />
+            <NavLink dest={NavLinkDestination::Page("/signup/pre".to_string())} label="Sign up" show_on_mobile={true} />
         </div>
     </div>
     }
