@@ -1,4 +1,4 @@
-use bhw_models::{prelude::*, user};
+use bhw_models::{prelude::*, website_user};
 use bhw_types::requests::update_profile::UpdateProfileRequest;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait,
@@ -24,6 +24,14 @@ pub enum UserFromIdError {
     DBError(#[from] DbErr),
 }
 
+#[derive(Debug, Error)]
+pub enum UpdateUserPasswordError {
+    #[error("Hashing password: {0}")]
+    PasswordHash(argon2::password_hash::Error),
+    #[error("Updating user password: {0}")]
+    DBError(#[from] DbErr),
+}
+
 pub struct UserHelper;
 
 impl UserHelper {
@@ -36,8 +44,8 @@ impl UserHelper {
         conn: &C,
         username: &String,
     ) -> Result<bool, DbErr> {
-        let result_count = User::find()
-            .filter(user::Column::BathUsername.eq(username))
+        let result_count = WebsiteUser::find()
+            .filter(website_user::Column::BathUsername.eq(username))
             .limit(1)
             .count(conn)
             .await?;
@@ -47,9 +55,9 @@ impl UserHelper {
     pub async fn find_by_username<C: ConnectionTrait>(
         conn: &C,
         username: String,
-    ) -> Result<Option<user::Model>, DbErr> {
-        let response = User::find()
-            .filter(user::Column::BathUsername.eq(username))
+    ) -> Result<Option<website_user::Model>, DbErr> {
+        let response = WebsiteUser::find()
+            .filter(website_user::Column::BathUsername.eq(username))
             .one(conn)
             .await?;
 
@@ -61,11 +69,11 @@ impl UserHelper {
         conn: &C,
         status: i16,
     ) -> Result<Vec<(uuid::Uuid, String)>, DbErr> {
-        let response = User::find()
-            .filter(user::Column::LdapCheckStatus.eq(status))
+        let response = WebsiteUser::find()
+            .filter(website_user::Column::LdapCheckStatus.eq(status))
             .select_only()
-            .column(user::Column::Id)
-            .column(user::Column::BathUsername)
+            .column(website_user::Column::Id)
+            .column(website_user::Column::BathUsername)
             .into_tuple()
             .all(conn)
             .await?;
@@ -76,11 +84,11 @@ impl UserHelper {
     pub async fn from_id<C: ConnectionTrait>(
         conn: &C,
         user_id: String,
-    ) -> Result<Option<user::Model>, UserFromIdError> {
+    ) -> Result<Option<website_user::Model>, UserFromIdError> {
         let parsed_id = uuid::Uuid::parse_str(user_id.as_str())?;
 
-        let response = User::find()
-            .filter(user::Column::Id.eq(parsed_id))
+        let response = WebsiteUser::find()
+            .filter(website_user::Column::Id.eq(parsed_id))
             .one(conn)
             .await?;
 
@@ -92,11 +100,11 @@ impl UserHelper {
         username: &String,
         password: &String,
         ldap_check_status: i16,
-    ) -> Result<user::Model, CreateUserError> {
+    ) -> Result<website_user::Model, CreateUserError> {
         let password_hash =
             PasswordManager::hash(&password).map_err(|e| CreateUserError::PasswordHash(e))?;
 
-        let new_user = user::ActiveModel {
+        let new_user = website_user::ActiveModel {
             id: Set(uuid::Uuid::new_v4()),
             bath_username: Set(username.to_owned()),
             password_hash: Set(password_hash),
@@ -113,7 +121,7 @@ impl UserHelper {
         user_id: uuid::Uuid,
         request: UpdateProfileRequest,
     ) -> Result<(), DbErr> {
-        let mut updated_user = user::ActiveModel {
+        let mut updated_user = website_user::ActiveModel {
             id: Set(user_id),
             ..Default::default()
         };
@@ -139,7 +147,7 @@ impl UserHelper {
         user_id: uuid::Uuid,
         group_id: Option<uuid::Uuid>,
     ) -> Result<(), DbErr> {
-        let updated_user = user::ActiveModel {
+        let updated_user = website_user::ActiveModel {
             id: Set(user_id),
             group_id: Set(group_id),
             ..Default::default()
@@ -155,7 +163,7 @@ impl UserHelper {
         id: &uuid::Uuid,
         new_status: i16,
     ) -> Result<(), DbErr> {
-        let updated_user = user::ActiveModel {
+        let updated_user = website_user::ActiveModel {
             id: Set(id.clone()),
             ldap_check_status: Set(new_status),
             ..Default::default()
@@ -166,9 +174,26 @@ impl UserHelper {
     }
 
     pub fn verify_password(
-        user: &user::Model,
+        user: &website_user::Model,
         password: &String,
     ) -> Result<bool, argon2::password_hash::Error> {
         PasswordManager::verify(password, &user.password_hash)
+    }
+
+    pub async fn update_password<C: ConnectionTrait>(
+        conn: &C,
+        id: &uuid::Uuid,
+        new_password: &String,
+    ) -> Result<(), UpdateUserPasswordError> {
+        let password_hash = PasswordManager::hash(new_password)
+            .map_err(|e| UpdateUserPasswordError::PasswordHash(e))?;
+        let updated_user = website_user::ActiveModel {
+            id: Set(id.clone()),
+            password_hash: Set(password_hash),
+            ..Default::default()
+        };
+
+        updated_user.save(conn).await?;
+        Ok(())
     }
 }

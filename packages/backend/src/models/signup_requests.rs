@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use crate::app_config::AppConfig;
 use crate::data::mail::Mailer;
 use crate::data::mail::SendInstruction;
+use crate::util::email_address::email_address;
 use crate::util::passwords::PasswordManager;
 use bhw_models::prelude::*;
 use bhw_models::signup_request;
@@ -52,7 +53,7 @@ impl SignupRequestHelper {
         // delete existing expired signup requests in case user wants to start a new one
         SignupRequest::delete_many()
             .filter(signup_request::Column::BathUsername.eq(username))
-            .filter(signup_request::Column::ExpiresAt.lte(Utc::now().naive_utc()))
+            .filter(signup_request::Column::ExpiresAt.lt(Utc::now().naive_utc()))
             .exec(conn)
             .await?;
 
@@ -144,7 +145,7 @@ impl SignupRequestHelper {
     }
 
     fn email_address(signup_request: &signup_request::Model) -> String {
-        return (signup_request.bath_username.clone()) + "@bath.ac.uk";
+        email_address(signup_request.bath_username.clone())
     }
 
     pub fn expired(signup_request: &signup_request::Model) -> bool {
@@ -156,18 +157,18 @@ impl SignupRequestHelper {
         config: &'a AppConfig,
         secret: &'a String,
     ) -> SendResult<SendResponse> {
-        let mailer = Mailer::<'a>::client(config);
+        let mailer = Mailer::client(config);
         let mut mail_vars = HashMap::new();
         mail_vars.insert("request_id".to_string(), signup_request.id.to_string());
         mail_vars.insert("secret".to_string(), secret.clone());
 
         let instruction = SendInstruction {
-            to: &Self::email_address(signup_request),
-            subject: &"Welcome to Bath Hack!".to_string(),
-            template_key: &"bhw-welcome".to_string(),
-            vars: &mail_vars,
+            to: Self::email_address(signup_request),
+            subject: "Welcome to Bath Hack!".to_string(),
+            template_key: "bhw-welcome".to_string(),
+            vars: mail_vars,
         };
-        mailer.send_template(&instruction)
+        mailer.send_template(instruction)
     }
 
     #[cfg(feature = "ldap")]

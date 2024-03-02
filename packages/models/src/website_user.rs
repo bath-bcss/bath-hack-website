@@ -11,7 +11,6 @@ pub struct Model {
     #[sea_orm(unique)]
     pub bath_username: String,
     pub password_hash: String,
-    #[sea_orm(default_expr = "Expr::current_timestamp()")]
     pub created_at: DateTime,
     #[sea_orm(column_type = "Text", nullable)]
     pub dietary_requirements: Option<String>,
@@ -24,18 +23,26 @@ pub struct Model {
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
     #[sea_orm(
-        belongs_to = "super::group::Entity",
+        belongs_to = "super::competition_group::Entity",
         from = "Column::GroupId",
-        to = "super::group::Column::Id",
+        to = "super::competition_group::Column::Id",
         on_update = "NoAction",
         on_delete = "NoAction"
     )]
-    Group,
+    CompetitionGroup,
+    #[sea_orm(has_one = "super::password_reset::Entity")]
+    PasswordReset,
 }
 
-impl Related<super::group::Entity> for Entity {
+impl Related<super::competition_group::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Group.def()
+        Relation::CompetitionGroup.def()
+    }
+}
+
+impl Related<super::password_reset::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::PasswordReset.def()
     }
 }
 

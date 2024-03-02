@@ -5,13 +5,13 @@ use crate::{
     components::sidebar::account_sidebar::AccountSidebar,
     pages::{
         account::{account_group::AccountGroupPage, account_home::AccountHomePage},
+        auth::{
+            forgot_password::ForgotPasswordPage, forgot_password_pin::ForgotPasswordPINPage,
+            login::LoginPage, logout::LogoutPage, signup::SignupPage,
+            signup_activate::SignupActivatePage, signup_success::SignupSuccessPage,
+        },
         home::HomePage,
-        login::LoginPage,
-        logout::LogoutPage,
         not_found::NotFoundPage,
-        signup::SignupPage,
-        signup_activate::SignupActivatePage,
-        signup_success::SignupSuccessPage,
     },
 };
 
@@ -29,6 +29,11 @@ pub enum Route {
     Login,
     #[at("/logout")]
     Logout,
+    #[at("/reset/password")]
+    ForgotPassword,
+    #[at("/reset/password/pin")]
+    ForgotPasswordPIN,
+
     #[not_found]
     #[at("/404")]
     NotFound,
@@ -65,6 +70,12 @@ pub fn switch(routes: Route) -> Html {
         },
         Route::ActivateAccount => html! {
         <SignupActivatePage />
+        },
+        Route::ForgotPassword => html! {
+        <ForgotPasswordPage />
+        },
+        Route::ForgotPasswordPIN => html! {
+        <ForgotPasswordPINPage />
         },
         Route::NotFound => html! {
         <NotFoundPage />

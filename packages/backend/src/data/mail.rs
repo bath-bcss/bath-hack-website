@@ -4,23 +4,23 @@ use mailgun_rs::{EmailAddress, Mailgun, MailgunRegion, Message, SendResponse, Se
 
 use crate::app_config::AppConfig;
 
-pub struct Mailer<'a> {
-    pub api_key: &'a String,
-    pub domain: &'a String,
+pub struct Mailer {
+    pub api_key: String,
+    pub domain: String,
 }
 
-pub struct SendInstruction<'a> {
-    pub template_key: &'a String,
-    pub to: &'a String,
-    pub vars: &'a HashMap<String, String>,
-    pub subject: &'a String,
+pub struct SendInstruction {
+    pub template_key: String,
+    pub to: String,
+    pub vars: HashMap<String, String>,
+    pub subject: String,
 }
 
-impl<'a> Mailer<'a> {
-    pub fn client(config: &'a AppConfig) -> Self {
-        Mailer::<'a> {
-            api_key: &config.mailgun_api_key,
-            domain: &config.mailgun_domain,
+impl Mailer {
+    pub fn client(config: &AppConfig) -> Self {
+        Mailer {
+            api_key: config.mailgun_api_key.clone(),
+            domain: config.mailgun_domain.clone(),
         }
     }
 
@@ -32,8 +32,8 @@ impl<'a> Mailer<'a> {
         }
     }
 
-    pub fn send_template<'b>(&self, instruction: &'b SendInstruction) -> SendResult<SendResponse> {
-        let recipient = EmailAddress::address(instruction.to);
+    pub fn send_template<'b>(&self, instruction: SendInstruction) -> SendResult<SendResponse> {
+        let recipient = EmailAddress::address(&instruction.to);
 
         let message = Message {
             to: vec![recipient],

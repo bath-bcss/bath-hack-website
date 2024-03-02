@@ -1,4 +1,4 @@
-use uuid::Uuid;
+use rand::{distributions::{Alphanumeric, DistString}, rngs::OsRng};
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
 
@@ -61,7 +61,9 @@ pub fn input(props: &Props) -> Html {
 
     let label_class = classes!("mb-1", "block", "text-bcss-900", "dark:text-bcss-300");
 
-    let label_id = use_memo((), |_| Uuid::new_v4().to_string());
+    let label_id = use_memo((), |_| {
+        Alphanumeric.sample_string(&mut OsRng, 5)
+    });
 
     let handle_value = match props.handle.clone() {
         Some(h) => (*h).clone(),
@@ -92,8 +94,9 @@ pub fn input(props: &Props) -> Html {
         }
         <input class={(*input_class).clone()} id={(*label_id).clone()}
             placeholder={props.placeholder.clone()} type={props.input_type.clone()}
-            required={props.required.clone()} oninput={on_change_handler} value={handle_value}
-            disabled={props.disabled.clone()} readonly={props.readonly.clone()} />
+            required={props.required.clone()} oninput={on_change_handler}
+            value={handle_value} disabled={props.disabled.clone()}
+            readonly={props.readonly.clone()} />
     </div>
     }
 }

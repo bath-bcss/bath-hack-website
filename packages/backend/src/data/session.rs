@@ -1,6 +1,6 @@
 use actix_session::{Session, SessionExt, SessionInsertError};
 use actix_web::{http::header::ContentType, web, FromRequest, HttpResponse, ResponseError};
-use bhw_models::{prelude::*, user};
+use bhw_models::{prelude::*, website_user};
 use sea_orm::{
     ColumnTrait, ConnectionTrait, DatabaseConnection, EntityTrait, QueryFilter, QuerySelect,
 };
@@ -72,11 +72,11 @@ impl SessionUser {
         let parsed_id =
             uuid::Uuid::parse_str(id).map_err(|e| AuthSessionError::IDNotValid(e.to_string()))?;
 
-        let user: Option<(uuid::Uuid, String)> = User::find()
+        let user: Option<(uuid::Uuid, String)> = WebsiteUser::find()
             .select_only()
-            .column(user::Column::Id)
-            .column(user::Column::BathUsername)
-            .filter(user::Column::Id.eq(parsed_id))
+            .column(website_user::Column::Id)
+            .column(website_user::Column::BathUsername)
+            .filter(website_user::Column::Id.eq(parsed_id))
             .limit(1)
             .into_tuple()
             .one(conn)

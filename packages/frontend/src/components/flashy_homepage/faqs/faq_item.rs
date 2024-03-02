@@ -52,6 +52,7 @@ pub fn faq_item(props: &Props) -> Html {
             "dark:bg-bcss-800",
             "rounded-b-xl",
             "transition-[max-height,padding]",
+            "motion-reduce:transition-none",
             "origin-top",
             "max-h-0",
             "overflow-hidden",
@@ -60,7 +61,7 @@ pub fn faq_item(props: &Props) -> Html {
         );
 
         if is_open.clone() {
-            base_class.push(classes!("max-h-40", "py-4"));
+            base_class.push(classes!("max-h-80", "py-4"));
         }
 
         base_class

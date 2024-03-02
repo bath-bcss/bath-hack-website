@@ -11,7 +11,7 @@ yew-router = { version = "0.18.0" }
 gloo-console = "0.3.0"
 gloo-net = { version = "0.5.0", features = ["json"]}
 gloo-utils = "0.2.0"
-uuid = {version = "1.7.0", features = ["v4", "fast-rng"]}
+rand = "0.8.5"
 web-sys = "0.3.68"
 wasm-bindgen-futures = "0.4.41"
 serde = { version = "1.0", features = ["derive"]}

@@ -1,21 +1,26 @@
 use yew::prelude::*;
 
-use crate::components::{glass_container::GlassContainer, hero::center::HeroCenterContainer};
+use crate::components::{
+    glass_container::{
+        heading::GlassContainerHeading, paragraph::GlassContainerParagraph, GlassContainer,
+    },
+    hero::center::HeroCenterContainer,
+};
 
 #[function_component(SignupSuccessPage)]
 pub fn signup_success_page() -> Html {
     html! {
     <HeroCenterContainer>
         <GlassContainer>
-            <h1 class="text-2xl text-bcss-900 dark:text-bcss-100">
+            <GlassContainerHeading>
                 {"Awesome!"}
-            </h1>
-            <p class="dark:text-bcss-200">
+            </GlassContainerHeading>
+            <GlassContainerParagraph>
                 {"We've sent an email to your Uni inbox. Please follow the link to continue :)"}
-            </p>
-            <p class="dark:text-bcss-200">
+            </GlassContainerParagraph>
+            <GlassContainerParagraph>
                 {"It may take a while to arrive and it'll probably go to your Junk folder, so look out for it!"}
-            </p>
+            </GlassContainerParagraph>
         </GlassContainer>
     </HeroCenterContainer>
     }

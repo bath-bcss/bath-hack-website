@@ -2,6 +2,7 @@
 
 pub mod prelude;
 
-pub mod group;
+pub mod competition_group;
+pub mod password_reset;
 pub mod signup_request;
-pub mod user;
+pub mod website_user;

@@ -4,7 +4,7 @@ use yew_router::hooks::use_navigator;
 
 use crate::{
     components::{
-        button::Button, error::ErrorMessage, glass_container::GlassContainer,
+        button::Button, error::ErrorMessage, glass_container::{GlassContainer, heading::GlassContainerHeading},
         hero::center::HeroCenterContainer, input::Input,
     },
     data::sign_up::sign_up_request,
@@ -62,9 +62,9 @@ pub fn sign_up_page() -> Html {
     html! {
     <HeroCenterContainer>
         <GlassContainer home_link={true}>
-            <h1 class="text-3xl font-hero text-bcss-900 dark:text-bcss-200 mb-4">
+            <GlassContainerHeading>
                 {"Sign Up to Bath Hack"}
-            </h1>
+            </GlassContainerHeading>
 
             <form onsubmit={on_form_submit}>
                 <Input input_label="Bath Username" placeholder="E.g. pk760" handle={username_handle} required={true} />

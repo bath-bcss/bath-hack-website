@@ -1,5 +1,5 @@
 use actix_web::{get, post, web};
-use bhw_models::user;
+use bhw_models::website_user;
 use bhw_types::{
     models::group::GroupMember,
     nothing::Nothing,
@@ -21,7 +21,7 @@ use crate::{
     },
 };
 
-fn user_vec_to_members(user_vec: Vec<user::Model>) -> Vec<GroupMember> {
+fn user_vec_to_members(user_vec: Vec<website_user::Model>) -> Vec<GroupMember> {
     user_vec
         .iter()
         .map(|m| GroupMember {

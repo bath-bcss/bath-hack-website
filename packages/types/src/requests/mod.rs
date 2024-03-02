@@ -9,3 +9,5 @@ pub mod create_group;
 pub mod join_group;
 pub mod my_group;
 pub mod leave_group;
+pub mod forgot_password;
+pub mod forgot_password_pin;

@@ -11,7 +11,7 @@ pub fn error_message(props: &Props) -> Html {
 
     html! {
     if let Some(message) = message {
-        <p class="text-red-600 mt-4">{message}</p>
+        <p class="text-red-600 dark:text-red-300 mt-4">{message}</p>
     }
     }
 }

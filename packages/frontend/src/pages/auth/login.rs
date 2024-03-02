@@ -1,11 +1,11 @@
 use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
-use yew_router::hooks::use_navigator;
+use yew_router::{components::Link, hooks::use_navigator};
 
 use crate::{
     components::{
-        button::Button, error::ErrorMessage, glass_container::GlassContainer,
-        input::Input, hero::center::HeroCenterContainer,
+        button::Button, error::ErrorMessage, glass_container::{GlassContainer, heading::GlassContainerHeading},
+        hero::center::HeroCenterContainer, input::Input,
     },
     data::auth::sign_in,
     router::Route,
@@ -52,9 +52,9 @@ pub fn login_page() -> Html {
     html! {
     <HeroCenterContainer>
         <GlassContainer home_link={true}>
-            <h1 class="text-3xl font-hero text-bcss-900 dark:text-bcss-200 mb-4">
+            <GlassContainerHeading>
                 {"Sign in"}
-            </h1>
+            </GlassContainerHeading>
 
             <form onsubmit={on_sign_in_callback}>
                 <Input handle={username_handle} input_label="Bath Username" placeholder="E.g. pk760" required={true}
@@ -68,6 +68,12 @@ pub fn login_page() -> Html {
                 </Button>
 
                 <ErrorMessage message={error} />
+
+                <p class="mt-4 dark:text-bcss-300 underline">
+                    <Link<Route> to={Route::ForgotPassword}>
+                        {"Forgot your password?"}
+                    </Link<Route>>
+                </p>
             </form>
         </GlassContainer>
     </HeroCenterContainer>

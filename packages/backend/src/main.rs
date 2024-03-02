@@ -20,6 +20,7 @@ use middleware::csrf::Csrf;
 use routes::{
     auth::{check_signed_in_route, sign_in_route, sign_out_route},
     group::{create_group_route, get_my_group_route, join_group_route, leave_group_route},
+    password_reset::{forgot_password_route, forgot_password_pin_route},
     profile::{get_profile_route, update_profile_route},
     sign_up::{account_activate_route, sign_up_route},
 };
@@ -106,6 +107,8 @@ async fn main() -> std::io::Result<()> {
                 .service(check_signed_in_route)
                 .service(sign_in_route)
                 .service(sign_out_route)
+                .service(forgot_password_route)
+                .service(forgot_password_pin_route)
                 .service(get_profile_route)
                 .service(update_profile_route)
                 .service(create_group_route)

@@ -2,7 +2,10 @@ use bhw_types::{
     nothing::Nothing,
     requests::{
         check::CheckAuthResponse,
-        sign_in::{SignInRequest, SignInResponseError}, sign_out::SignOutResponseError,
+        forgot_password::{ForgotPasswordRequest, ForgotPasswordResponseError},
+        forgot_password_pin::{ForgotPasswordPINRequest, ForgotPasswordPINResponseError},
+        sign_in::{SignInRequest, SignInResponseError},
+        sign_out::SignOutResponseError,
     },
 };
 
@@ -37,4 +40,21 @@ pub async fn sign_in(
 
 pub async fn sign_out() -> Result<Nothing, FrontendRequestError<SignOutResponseError>> {
     send_post("/auth/signout".to_string(), &Nothing).await
+}
+
+pub async fn forgot_password(
+    username: String,
+) -> Result<Nothing, FrontendRequestError<ForgotPasswordResponseError>> {
+    let request = ForgotPasswordRequest {
+        bath_username: username,
+    };
+    send_post("/auth/reset/password".to_string(), &request).await
+}
+
+pub async fn forgot_password_pin(
+    pin: String,
+    new_password: String,
+) -> Result<Nothing, FrontendRequestError<ForgotPasswordPINResponseError>> {
+    let request = ForgotPasswordPINRequest { pin, new_password };
+    send_post("/auth/reset/password/pin".to_string(), &request).await
 }

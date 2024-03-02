@@ -6,7 +6,7 @@ use yew_router::hooks::{use_location, use_navigator};
 
 use crate::{
     components::{
-        button::Button, error::ErrorMessage, glass_container::GlassContainer,
+        button::Button, error::ErrorMessage, glass_container::{GlassContainer, heading::GlassContainerHeading, paragraph::GlassContainerParagraph},
         hero::center::HeroCenterContainer, input::Input,
     },
     data::sign_up::account_activate_request,
@@ -72,16 +72,16 @@ pub fn signup_activate_page() -> Html {
     html! {
     <HeroCenterContainer>
         <GlassContainer>
-            <h1 class="text-3xl font-hero text-bcss-900 dark:text-bcss-200">
+            <GlassContainerHeading>
                 {"Welcome to Bath Hack 24!"}
-            </h1>
+            </GlassContainerHeading>
 
-            <p class="mt-4 dark:text-bcss-300">
+            <GlassContainerParagraph top_margin={true}>
                 {"To get started, please create a password."}
-            </p>
-            <p class="dark:text-bcss-300">
+            </GlassContainerParagraph>
+            <GlassContainerParagraph>
                 {"This should be different to your Uni password."}
-            </p>
+            </GlassContainerParagraph>
 
             <form class="mt-4" onsubmit={on_activate_click}>
                 <Input input_label="New password" placeholder="NOT your uni password" input_type="password"
