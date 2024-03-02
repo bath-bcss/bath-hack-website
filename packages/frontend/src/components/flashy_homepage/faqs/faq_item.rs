@@ -5,7 +5,6 @@ pub enum FAQItemIndex {
     WhatIsHackathon,
     WhatIsPrizeTrack,
     WhoCanParticipate,
-    Where,
     TwentyFour,
     Food,
 }

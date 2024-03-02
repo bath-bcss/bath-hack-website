@@ -15,6 +15,7 @@ use crate::{
                 heading::SectionIcon, page_section::FlashyHomepageSection,
                 section_paragraph::FlashyHomepageSectionParagraph,
             },
+            sponsors::SponsorsGrid,
             tracks::track_grid::TrackGrid,
         },
         hero::gradient::HeroGradientContainer,
@@ -115,8 +116,32 @@ pub fn home_page() -> Html {
                 </FlashyHomepageSectionParagraph>
             </FlashyHomepageSection>
 
+            <FlashyHomepageSection icon={SectionIcon::Icon(IconId::FontAwesomeSolidHeart)} title="Sponsors"
+                anchor="sponsors">
+                <FlashyHomepageSectionParagraph>
+                    {"We'd never be able to run Bath Hack without these lovely people! Our sponsors financially support the
+                    event and make it possible for us to offer free meals, snacks, merch, and more."}
+                </FlashyHomepageSectionParagraph>
+                <SponsorsGrid />
+            </FlashyHomepageSection>
+
             <FlashyHomepageSection icon={SectionIcon::Icon(IconId::FontAwesomeSolidQuestion)} title="FAQs" anchor="faqs">
                 <FAQs />
+            </FlashyHomepageSection>
+
+            <FlashyHomepageSection icon={SectionIcon::Icon(IconId::FontAwesomeSolidUniversalAccess)} title="Accessibility"
+                anchor="accessibility">
+                <FlashyHomepageSectionParagraph>
+                    {"Bath Hack 2024 will take place on-campus in the Chancellor's Building. The entire building will be
+                    reserved for the event, with various rooms in use for talks, workshops, etc."}
+                </FlashyHomepageSectionParagraph>
+                <FlashyHomepageSectionParagraph>
+                    {"Lifts, double-width doors, hearing loop support and water fountains are available in the building. If
+                you have any specific access requirements that we haven't thought of, please let us know! You can either
+                get in touch at "}
+                    <a href="mailto:su-bcss@bath.ac.uk" class="underline">{"su-bcss@bath.ac.uk"}</a>
+                    {" or set your access requirements on our dashboard once you've made your account."}
+                </FlashyHomepageSectionParagraph>
             </FlashyHomepageSection>
 
             <FlashyHomepageSection icon={SectionIcon::Icon(IconId::FontAwesomeSolidCircleInfo)} title="About BCSS"

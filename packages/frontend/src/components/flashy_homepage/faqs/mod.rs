@@ -61,17 +61,6 @@ pub fn faqs_component() -> Html {
                 also be ways to participate without writing a single line of code."}
             </FAQItemParagraph>
         </FAQItem>
-        <FAQItem current_open={currently_open_index.clone()} i={FAQItemIndex::Where} on_click={on_item_click.clone()}
-            question="Where is Bath Hack?">
-            <FAQItemParagraph>
-                {"Bath Hack 2024 will take place on-campus in the Chancellor's Building. The entire building will be
-                reserved for the event, with various rooms in use for talks, workshops, etc."}
-            </FAQItemParagraph>
-            <FAQItemParagraph>
-                {"Lifts, double-width doors, hearing loop support and water fountains are available in the building. If
-                you have any specific access requirements that we haven't thought of, please let us know!"}
-            </FAQItemParagraph>
-        </FAQItem>
         <FAQItem current_open={currently_open_index.clone()} i={FAQItemIndex::TwentyFour}
             on_click={on_item_click.clone()} question="24 hours‽">
             <FAQItemParagraph>
