@@ -48,4 +48,8 @@ impl Mailer {
 
         client.send(MailgunRegion::EU, &from)
     }
+
+    pub async fn fake_send_email() {
+        tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
+    }
 }

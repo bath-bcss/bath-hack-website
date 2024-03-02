@@ -67,7 +67,7 @@ pub fn forgot_password_page() -> Html {
 
             <form class="mt-4" onsubmit={on_submit}>
                 <Input handle={username_handle} input_label="Bath Username" placeholder="E.g. pk760"
-                    disabled={loading} />
+                    disabled={loading} required={true} />
                 <Button button_type="submit" dark_mode={false} class={classes!("mt-4")} disabled={loading}>
                     {"Let's do this!"}
                 </Button>

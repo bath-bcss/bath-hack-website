@@ -15,10 +15,12 @@ use sea_orm::{AccessMode, DatabaseConnection, IsolationLevel, TransactionTrait};
 
 use crate::{
     app_config::AppConfig,
+    data::mail::Mailer,
     models::{
         password_reset::{CreatePasswordResetError, FindAndDeletePINError, PasswordResetHelper},
         users::{UpdateUserPasswordError, UserHelper},
-    }, util::passwords::PasswordManager,
+    },
+    util::passwords::PasswordManager,
 };
 
 #[post("/auth/reset/password")]
@@ -36,6 +38,7 @@ pub async fn forgot_password_route(
 
     if PasswordResetHelper::one_exists_for_username(&txn, data.bath_username.clone()).await? {
         info!("Not handling password reset request due to existing request for username; dropping silently.");
+        Mailer::fake_send_email().await;
         return Ok(Nothing);
     }
 
@@ -46,10 +49,11 @@ pub async fn forgot_password_route(
         return match e {
             CreatePasswordResetError::TimeError => {
                 error!("adding time failed");
-                Ok(Nothing)
+                Err(ForgotPasswordResponseError::DBError)
             }
             CreatePasswordResetError::UserNotFound => {
                 info!("requested user for password reset does not exist, dropping silently.");
+                Mailer::fake_send_email().await;
                 Ok(Nothing)
             }
             CreatePasswordResetError::DBError(e) => {
@@ -107,7 +111,9 @@ pub async fn forgot_password_pin_route(
         })?;
 
     if let Err(e) = PasswordManager::check_security(&data.new_password) {
-        return Err(ForgotPasswordPINResponseError::InsecurePassword(e.to_string()));
+        return Err(ForgotPasswordPINResponseError::InsecurePassword(
+            e.to_string(),
+        ));
     }
 
     UserHelper::update_password(&txn, &user_id, &data.new_password)
