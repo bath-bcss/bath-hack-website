@@ -22,7 +22,6 @@ module.exports = {
                 },
             },
             fontSize: {
-                hero: '4.5rem',
                 heroSubtitle: '1.5rem',
             },
             fontFamily: {

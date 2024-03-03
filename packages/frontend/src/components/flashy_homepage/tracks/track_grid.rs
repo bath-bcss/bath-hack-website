@@ -11,8 +11,15 @@ pub fn track_grid() -> Html {
             track_prize="TBA" track_company="BCSS" track_company_link="https://thesubath.com/bcss" />
 
         <TrackGridItem track_name="Most Technologically Impressive"
-            background_image="img/track_technologically_impressive.webp" track_caption="Think you can use deep learning to solve P=NP? Or how about a universal password hash cracker? We're looking for the most mind-bogglingly techy projects which manage to do something incredible in just 24 hours. The standards are always high, and this year will be no different!" track_prize="TBA"
-            track_company="BCSS" track_company_link="https://thesubath.com" />
+            background_image="img/track_technologically_impressive.webp"
+            track_caption="Think you can use deep learning to solve P=NP? Or how about a universal password hash cracker? We're looking for the most mind-bogglingly techy projects which manage to do something incredible in just 24 hours. The standards are always high, and this year will be no different!"
+            track_prize="TBA" track_company="BCSS" track_company_link="https://thesubath.com/bcss" />
+
+        <div class="h-full flex justify-center items-center border-2 border-gray-200 dark:border-bcss-800 rounded-2xl">
+            <p class="text-bcss-500 dark:text-bcss-400 font-light">
+                {"More tracks coming soon..."}
+            </p>
+        </div>
     </div>
     }
 }
