@@ -16,6 +16,7 @@ mod in_group;
 mod joining_group;
 mod member_card;
 mod types;
+mod joining;
 
 #[function_component(AccountGroupPage)]
 pub fn account_group_page() -> Html {

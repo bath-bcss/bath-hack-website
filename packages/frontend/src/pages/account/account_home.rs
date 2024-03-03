@@ -9,6 +9,7 @@ use crate::{
         input::Input,
         loading_spinner::LoadingSpinner,
         page_container::PageContainer,
+        page_control_paragraph::PageControlParagraph,
         page_title::PageTitle,
         profile_datapoint::{ProfileDatapoint, ProfileKey},
     },
@@ -98,6 +99,17 @@ pub fn account_home_page() -> Html {
         <PageTitle page_description="View or edit your profile and requirements">
             {"Your profile"}
         </PageTitle>
+
+        <PageControlParagraph>
+            {"All of the below fields are completely optional. Entering your name will help your group members
+                identify you, and adding your access or dietary requirements will help us provide everything you need at
+                the event."}
+        </PageControlParagraph>
+        <PageControlParagraph>
+            {"Your accessibility requirements will be stored securely and shared only with BCSS Committee members or
+                members of University staff as needed. Unless necessary, please do not disclose sensitive or medical
+                information."}
+        </PageControlParagraph>
 
         if loading.clone() {
         <LoadingSpinner />
