@@ -46,7 +46,7 @@ pub fn flashy_homepage_section(props: &Props) -> Html {
         if let Some(image_src) = (*image_src).clone() {
         <div class="md:max-w-[40%] mt-14 md:mt-20 md:ml-8">
             <img src={image_src} class="h-auto rounded-2xl shadow-xl shadow-bcss-900/40 dark:brightness-95"
-                loading="lazy" />
+                loading="lazy" role="presentation" />
         </div>
         }
     </div>

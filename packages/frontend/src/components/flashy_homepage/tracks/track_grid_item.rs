@@ -29,7 +29,7 @@ pub fn track_grid_item(props: &Props) -> Html {
 
     html! {
     <>
-        <div
+        <li
             class="w-full h-40 relative rounded-2xl overflow-hidden shadow-bcss-900/40 shadow-xl hover:scale-105 transition-transform">
             <div style={format!("background-image: url('{}');", props.background_image.clone())}
                 class="absolute top-0 left-0 w-full h-full bg-bcss-200 brightness-75 blur-sm" />
@@ -42,7 +42,7 @@ pub fn track_grid_item(props: &Props) -> Html {
                     {"from "}<strong>{props.track_company.clone()}</strong>
                 </span>
             </a>
-        </div>
+        </li>
 
         <Modal open={show_modal}>
             <div class="flex items-center justify-between space-x-6">
