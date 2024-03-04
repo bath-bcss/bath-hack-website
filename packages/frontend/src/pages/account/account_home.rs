@@ -112,7 +112,7 @@ pub fn account_home_page() -> Html {
         </PageControlParagraph>
 
         if loading.clone() {
-        <LoadingSpinner />
+        <LoadingSpinner class={classes!("mt-4")} />
         }
 
         if let Some(profile) = profile {

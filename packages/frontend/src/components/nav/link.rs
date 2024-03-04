@@ -50,13 +50,13 @@ pub fn nav_link(props: &Props) -> Html {
         if *show_on_mobile {
             classes!("block")
         } else {
-            classes!("hidden", "md:block")
+            classes!("hidden", "xl:block")
         }
     });
 
     html! {
     <p class={(*paragraph_classes).clone()}>
-        <a href={href} class={(*classes).clone()}>
+        <a href={href} class={(*classes).clone()} style="text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);">
             {props.label.clone()}
         </a>
     </p>

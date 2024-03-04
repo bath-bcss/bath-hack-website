@@ -105,7 +105,7 @@ pub fn account_sidebar(props: &Props) -> Html {
             </div>
         </div>
 
-        <div class="flex-1">
+        <div class="flex-1 pb-10">
             if !small_screen_show {
             <div class="md:hidden fixed pt-4 pl-4 z-0">
                 <Button dark_mode={false} onclick={on_small_screen_show_click}>
