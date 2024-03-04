@@ -24,16 +24,15 @@ pub fn sidebar_element(props: &Props) -> Html {
             "items-center",
             "px-4",
             "rounded-md",
-            "text-bcss-200",
             "font-medium",
-            "hover:bg-bcss-700",
+            "hover:bg-bcss-800",
             "dark:hover:bg-bcss-800",
-            "hover:text-white",
+            "text-white",
         );
 
         if let Some(route) = route {
             if route == link_to {
-                base_classes.push(classes!("bg-bcss-700", "dark:bg-bcss-800", "text-white"));
+                base_classes.push(classes!("bg-bcss-800", "dark:bg-bcss-800"));
             }
         }
 

@@ -47,7 +47,7 @@ pub fn account_sidebar(props: &Props) -> Html {
             "backdrop-blur",
             "md:backdrop-blur-none",
             "bg-bcss-700/70",
-            "md:bg-bcss-600",
+            "md:bg-bcss-700",
             "dark:bg-bcss-900/70",
             "dark:md:bg-bcss-900"
         );
@@ -95,7 +95,7 @@ pub fn account_sidebar(props: &Props) -> Html {
             </div>
 
             <p>
-                <Link<Route> to={Route::Logout} classes={classes!("text-bcss-100", "hover:underline")}>
+                <Link<Route> to={Route::Logout} classes={classes!("text-white", "hover:underline")}>
                     {"Log out"}
                 </Link<Route>>
             </p>
