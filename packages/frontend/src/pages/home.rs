@@ -44,7 +44,7 @@ pub fn home_page() -> Html {
     <>
         <ScrollingNavbar />
         <HeroGradientContainer>
-            <div class="w-full px-4 sm:px-6 md:px-8 lg:px-[10%] flex items-center">
+            <div class="w-full px-4 sm:px-6 md:px-8 lg:px-[5%] xl:px-[10%] flex items-center">
                 <div class="space-y-4 flex-1 md:mr-10">
                     <img src="img/logo.svg" role="presentation" class="lg:h-48 md:h-32 h-24" />
                     <h1 class="text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-hero text-bcss-100 leading-none">
@@ -54,7 +54,7 @@ pub fn home_page() -> Html {
                         {"The annual 24-hour hackathon for all Uni of Bath students"}
                     </p>
                     <p class="text-heroSubtitle text-bcss-100 font-bold italic">
-                        {"13th - 14th April. £0."}
+                        {"13th - 14th April. Free to enter."}
                     </p>
                     <Button dark_mode={true} onclick={on_sign_up_click.clone()}>
                         {"Sign up!"}
@@ -109,9 +109,9 @@ pub fn home_page() -> Html {
                     light-hearted, providing a fun break from the work."}
                 </FlashyHomepageSectionParagraph>
                 <FlashyHomepageSectionParagraph full_width={true}>
-                    {"We'll announce the full series of talks soon. Do you want to give one yourself? Get in touch at "}
+                    {"We'll announce the full series of talks soon. Do you want to give one yourself? "}
                     <a href="mailto:su-bcss@bath.ac.uk" target="_blank" class="underline">
-                        {"su-bcss@bath.ac.uk"}
+                        {"Get in touch at su-bcss@bath.ac.uk"}
                     </a>
                     {"!"}
                 </FlashyHomepageSectionParagraph>
@@ -139,8 +139,10 @@ pub fn home_page() -> Html {
                 <FlashyHomepageSectionParagraph>
                     {"Lifts, double-width doors, hearing loop support and water fountains are available in the building. If
                 you have any specific access requirements that we haven't thought of, please let us know! You can either
-                get in touch at "}
-                    <a href="mailto:su-bcss@bath.ac.uk" class="underline">{"su-bcss@bath.ac.uk"}</a>
+                "}
+                    <a href="mailto:su-bcss@bath.ac.uk" class="underline">
+                        {"get in touch at su-bcss@bath.ac.uk"}
+                    </a>
                     {" or set your access requirements on our dashboard once you've made your account."}
                 </FlashyHomepageSectionParagraph>
             </FlashyHomepageSection>

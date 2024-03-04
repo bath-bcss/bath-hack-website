@@ -59,7 +59,7 @@ pub fn account_group_page() -> Html {
         </PageTitle>
 
         if get_group_loading {
-        <LoadingSpinner />
+        <LoadingSpinner class={classes!("mt-4")} />
         } else {
         if let Some(_) = current_group {
         <AccountGroupManage group_handle={current_group_handle} />

@@ -1,7 +1,14 @@
 use bhw_types::models::group::GroupMember;
 use yew::prelude::*;
 
-use crate::{components::{page_control_heading::PageControlHeading, page_control_paragraph::PageControlParagraph, input::Input, button::Button, error::ErrorMessage}, pages::account::account_group::types::{AccountGroupSubpageProps, FrontendGroupState}, data::group::create_group};
+use crate::{
+    components::{
+        button::Button, error::ErrorMessage, input::Input,
+        page_control_heading::PageControlHeading, page_control_paragraph::PageControlParagraph,
+    },
+    data::group::create_group,
+    pages::account::account_group::types::{AccountGroupSubpageProps, FrontendGroupState},
+};
 
 #[function_component(CreateGroup)]
 pub fn create_group_component(props: &AccountGroupSubpageProps) -> Html {
@@ -59,10 +66,8 @@ pub fn create_group_component(props: &AccountGroupSubpageProps) -> Html {
             {"Create a new group"}
         </PageControlHeading>
         <PageControlParagraph>
-            {"You'll need a group to enter Bath Hack. Your group can have between 1 and 4 members. When you
-        create a
-        group,
-        you'll be given a join code that you can share with your other teammates."}
+            {"You'll need a group to enter Bath Hack. Your group can have between 1 and 4 members. When you create a
+            group, you'll be given a join code that you can share with your other teammates."}
         </PageControlParagraph>
         <form onsubmit={on_create_group_click}>
             <Input input_label="Group name" placeholder="E.g. The Cool Kids" handle={new_group_name_handle}

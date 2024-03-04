@@ -13,6 +13,8 @@ pub struct Props {
 
     #[prop_or_default]
     pub show_on_mobile: bool,
+
+    pub is_at_top: bool,
 }
 
 #[function_component(NavLink)]
@@ -28,8 +30,8 @@ pub fn nav_link(props: &Props) -> Html {
         }
     };
 
-    let classes = use_memo((), |_| {
-        let base_class = classes!(
+    let classes = use_memo((props.is_at_top,), |(is_at_top,)| {
+        let mut base_class = classes!(
             "text-bcss-200",
             "hover:text-white",
             "hover:bg-bcss-800",
@@ -43,6 +45,10 @@ pub fn nav_link(props: &Props) -> Html {
             "transition-all",
         );
 
+        if *is_at_top {
+            base_class.push("bg-bcss-800/80");
+        }
+
         base_class
     });
 
@@ -50,13 +56,13 @@ pub fn nav_link(props: &Props) -> Html {
         if *show_on_mobile {
             classes!("block")
         } else {
-            classes!("hidden", "md:block")
+            classes!("hidden", "xl:block")
         }
     });
 
     html! {
     <p class={(*paragraph_classes).clone()}>
-        <a href={href} class={(*classes).clone()}>
+        <a href={href} class={(*classes).clone()} style="text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);">
             {props.label.clone()}
         </a>
     </p>
