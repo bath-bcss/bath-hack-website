@@ -61,6 +61,13 @@ pub fn faqs_component() -> Html {
                 also be ways to participate without writing a single line of code."}
             </FAQItemParagraph>
         </FAQItem>
+        <FAQItem current_open={currently_open_index.clone()} i={FAQItemIndex::WhatCanBuild}
+            on_click={on_item_click.clone()} question="What can I build?">
+            <FAQItemParagraph>
+                {"Anything cool! In the past lots of projects have involved electronics or programming, but we'll also
+                have ways to participate without writing any code!"}
+            </FAQItemParagraph>
+        </FAQItem>
         <FAQItem current_open={currently_open_index.clone()} i={FAQItemIndex::TwentyFour}
             on_click={on_item_click.clone()} question="24 hours‽">
             <FAQItemParagraph>

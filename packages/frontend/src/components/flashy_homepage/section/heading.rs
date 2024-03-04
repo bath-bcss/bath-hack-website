@@ -18,7 +18,8 @@ pub struct Props {
 pub fn flashy_homepage_section_heading(props: &Props) -> Html {
     let icon_component = use_memo((props.icon.clone(),), |(icon,)| match icon {
         SectionIcon::Icon(id) => html! {
-        <Icon icon_id={id.clone()} class={classes!("text-bcss-800", "dark:text-bcss-300" )} width="48" height="48"/* role="presentation"*/ />
+        <Icon icon_id={id.clone()} class={classes!("text-bcss-800", "dark:text-bcss-300" )} width="48" height="48"
+            role="presentation" />
         },
         SectionIcon::Emoji(emoji) => html! {
         <p class="text-6xl" role="presentation">{emoji.clone()}</p>
