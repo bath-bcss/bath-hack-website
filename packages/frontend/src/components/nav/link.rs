@@ -35,7 +35,7 @@ pub fn nav_link(props: &Props) -> Html {
             "text-bcss-200",
             "hover:text-white",
             "hover:bg-bcss-800",
-            "sm:px-2",
+            "px-2",
             "py-2",
             "rounded-md",
             "active:bg-bcss-900/80",
