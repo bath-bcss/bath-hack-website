@@ -46,7 +46,7 @@ pub fn nav_link(props: &Props) -> Html {
         );
 
         if *is_at_top {
-            base_class.push("bg-bcss-800/80");
+            base_class.push(classes!("bg-bcss-800/70", "backdrop-blur"));
         }
 
         base_class
