@@ -109,9 +109,9 @@ pub fn home_page() -> Html {
                     light-hearted, providing a fun break from the work."}
                 </FlashyHomepageSectionParagraph>
                 <FlashyHomepageSectionParagraph full_width={true}>
-                    {"We'll announce the full series of talks soon. Do you want to give one yourself? Get in touch at "}
+                    {"We'll announce the full series of talks soon. Do you want to give one yourself? "}
                     <a href="mailto:su-bcss@bath.ac.uk" target="_blank" class="underline">
-                        {"su-bcss@bath.ac.uk"}
+                        {"Get in touch at su-bcss@bath.ac.uk"}
                     </a>
                     {"!"}
                 </FlashyHomepageSectionParagraph>
@@ -139,8 +139,10 @@ pub fn home_page() -> Html {
                 <FlashyHomepageSectionParagraph>
                     {"Lifts, double-width doors, hearing loop support and water fountains are available in the building. If
                 you have any specific access requirements that we haven't thought of, please let us know! You can either
-                get in touch at "}
-                    <a href="mailto:su-bcss@bath.ac.uk" class="underline">{"su-bcss@bath.ac.uk"}</a>
+                "}
+                    <a href="mailto:su-bcss@bath.ac.uk" class="underline">
+                        {"get in touch at su-bcss@bath.ac.uk"}
+                    </a>
                     {" or set your access requirements on our dashboard once you've made your account."}
                 </FlashyHomepageSectionParagraph>
             </FlashyHomepageSection>
