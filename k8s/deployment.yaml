@@ -161,16 +161,6 @@ spec:
     - to:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: bhw-24-db
-          podSelector:
-            matchLabels:
-              app: bhw-postgres
-      ports:
-        - protocol: TCP
-          port: 5432
-    - to:
-        - namespaceSelector:
-            matchLabels:
               kubernetes.io/metadata.name: bhw-24-redis
           podSelector:
             matchLabels:
@@ -188,3 +178,6 @@ spec:
     - to:
       - ipBlock:
           cidr: 34.64.0.0/10
+    - to:
+      - ipBlock:
+          cidr: 195.154.197.252/32
