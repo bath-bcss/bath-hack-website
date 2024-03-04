@@ -91,18 +91,21 @@ pub fn scrolling_navbar() -> Html {
                 </a>
             </h1>
 
-            <NavLink dest={NavLinkDestination::Anchor("welcome".to_string())} label="About" />
-            <NavLink dest={NavLinkDestination::Anchor("tracks".to_string())} label="Tracks " />
-            <NavLink dest={NavLinkDestination::Anchor("talks".to_string())} label="Talks" />
-            <NavLink dest={NavLinkDestination::Anchor("sponsors".to_string())} label="Sponsors" />
-            <NavLink dest={NavLinkDestination::Anchor("faqs".to_string())} label="FAQs" />
-            <NavLink dest={NavLinkDestination::Anchor("accessibility".to_string())} label="Accessibility" />
-            <NavLink dest={NavLinkDestination::Anchor("about".to_string())} label="BCSS" />
+            <NavLink dest={NavLinkDestination::Anchor("welcome".to_string())} label="About" is_at_top={is_at_top} />
+            <NavLink dest={NavLinkDestination::Anchor("tracks".to_string())} label="Tracks " is_at_top={is_at_top} />
+            <NavLink dest={NavLinkDestination::Anchor("talks".to_string())} label="Talks" is_at_top={is_at_top} />
+            <NavLink dest={NavLinkDestination::Anchor("sponsors".to_string())} label="Sponsors" is_at_top={is_at_top} />
+            <NavLink dest={NavLinkDestination::Anchor("faqs".to_string())} label="FAQs" is_at_top={is_at_top} />
+            <NavLink dest={NavLinkDestination::Anchor("accessibility".to_string())} label="Accessibility"
+                is_at_top={is_at_top} />
+            <NavLink dest={NavLinkDestination::Anchor("about".to_string())} label="BCSS" is_at_top={is_at_top} />
         </div>
 
         <div class="flex items-center justify-start space-x-3">
-            <NavLink dest={NavLinkDestination::Page("/login".to_string())} label="Log in" show_on_mobile={true} />
-            <NavLink dest={NavLinkDestination::Page("/signup".to_string())} label="Sign up" show_on_mobile={true} />
+            <NavLink dest={NavLinkDestination::Page("/login".to_string())} label="Log in" show_on_mobile={true}
+                is_at_top={is_at_top} />
+            <NavLink dest={NavLinkDestination::Page("/signup".to_string())} label="Sign up" show_on_mobile={true}
+                is_at_top={is_at_top} />
         </div>
     </div>
     }
