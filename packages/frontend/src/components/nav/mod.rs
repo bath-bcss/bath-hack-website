@@ -86,7 +86,7 @@ pub fn scrolling_navbar() -> Html {
     <div class={(*container_classes).clone()}>
         <div class="flex items-center justify-start space-x-3">
             <h1 class={(*logo_heading_classes).clone()}>
-                <a class="text-lg tracking-tighter font-bold text-bcss-200 hover:text-white" href="#">
+                <a class="text-lg tracking-tighter font-bold text-bcss-200 hover:text-white" href="#" tabindex="-1">
                     <img src="img/logo.svg" class="h-16 w-16" />
                 </a>
             </h1>
