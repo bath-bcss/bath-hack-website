@@ -46,15 +46,15 @@ pub fn home_page() -> Html {
         <HeroGradientContainer>
             <div class="w-full px-4 sm:px-6 md:px-8 lg:px-[5%] xl:px-[10%] flex items-center">
                 <div class="space-y-4 flex-1 md:mr-10">
-                    <img src="img/logo.svg" alt="Bath Hack 24 Logo" class="lg:h-48 md:h-32 h-28" />
-                    <h1 class="text-5xl md:text-6xl xl:text-7xl font-hero text-bcss-100 leading-none">
+                    <img src="img/logo.svg" alt="Bath Hack 24 Logo" class="lg:h-44 md:h-32 h-28" />
+                    <h1 class="text-4xl md:text-5xl xl:text-6xl font-hero text-bcss-100 leading-none">
                         { "Bath Hack 2024" }
                     </h1>
                     <p class="text-heroSubtitle text-bcss-100">
                         {"The annual 24-hour hackathon for all Uni of Bath students"}
                     </p>
                     <p class="text-heroSubtitle text-bcss-100 font-bold italic">
-                        {"13th - 14th April. £0."}
+                        {"13th - 14th April. Free to enter."}
                     </p>
                     <Button dark_mode={true} onclick={on_sign_up_click.clone()}>
                         {"Sign up!"}

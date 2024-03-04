@@ -10,7 +10,7 @@ pub fn track_grid() -> Html {
             track_caption="People are great, and we famously always make good decisions as a group. The biggest decision of your collective lives is now upon you! (Debatably) Who’s got the funniest project? Which project really tugs at your heart strings? Which project do you think is just the best (except your own, obviously). It really is up to you!"
             track_prize="TBA" track_company="BCSS" track_company_link="https://thesubath.com/bcss" />
 
-        <TrackGridItem track_name="Most Technologically Impressive"
+        <TrackGridItem track_name="Most Technically Impressive"
             background_image="img/track_technologically_impressive.webp"
             track_caption="Think you can use deep learning to solve P=NP? Or how about a universal password hash cracker? We're looking for the most mind-bogglingly techy projects which manage to do something incredible in just 24 hours. The standards are always high, and this year will be no different!"
             track_prize="TBA" track_company="BCSS" track_company_link="https://thesubath.com/bcss" />
