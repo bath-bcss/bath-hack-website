@@ -1,11 +1,10 @@
 use actix_session::{Session, SessionExt, SessionInsertError};
-use actix_web::{http::header::ContentType, web, FromRequest, HttpResponse, ResponseError};
+use actix_web::{web, FromRequest};
 use bhw_models::{prelude::*, website_user};
+use bhw_types::auth::AuthSessionError;
 use sea_orm::{
     ColumnTrait, ConnectionTrait, DatabaseConnection, EntityTrait, QueryFilter, QuerySelect,
 };
-use serde::Serialize;
-use thiserror::Error;
 
 static USER_SESSION_KEY: &str = "authenticated_user";
 
@@ -17,27 +16,6 @@ pub struct SessionUser {
     pub bath_username: String,
 }
 
-#[derive(Debug, Error, Serialize)]
-pub enum AuthSessionError {
-    #[error("Reading session: {0}")]
-    ReadingSession(String),
-    #[error("Not signed in")]
-    NotAuthenticated,
-    #[error("Database not connected")]
-    NotConnected,
-    #[error("User ID was not valid because: {0}")]
-    IDNotValid(String),
-    #[error("From DB: {0}")]
-    DBError(String),
-}
-
-impl ResponseError for AuthSessionError {
-    fn error_response(&self) -> actix_web::HttpResponse<actix_web::body::BoxBody> {
-        HttpResponse::Unauthorized()
-            .content_type(ContentType::json())
-            .json(self)
-    }
-}
 
 impl FromRequest for SessionUser {
     type Error = AuthSessionError;

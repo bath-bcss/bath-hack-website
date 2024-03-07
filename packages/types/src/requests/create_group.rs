@@ -1,9 +1,17 @@
-use bhw_macro_types::{FromSeaORMError, ResponseError, JsonResponder};
+use bhw_macro_types::{FromSeaORMError, JsonResponder, ResponseError};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
+#[cfg(target_family = "unix")]
+use validator::Validate;
+
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[cfg_attr(target_family = "unix", derive(Validate))]
 pub struct CreateGroupRequest {
+    #[cfg_attr(
+        target_family = "unix",
+        validate(length(min = 2, max = 15, message = "Must be between 2 and 15 characters"))
+    )]
     pub group_name: String,
 }
 

@@ -61,7 +61,7 @@ pub async fn get_my_group_route(
 pub async fn create_group_route(
     user: SessionUser,
     db: web::Data<DatabaseConnection>,
-    data: web::Json<CreateGroupRequest>,
+    data: bhw_types::actix_web_validator::Json<CreateGroupRequest>,
 ) -> CreateGroupResult {
     let txn = db
         .begin_with_config(

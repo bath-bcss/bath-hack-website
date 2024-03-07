@@ -12,18 +12,21 @@ use actix_web::{
         header::{self, HeaderValue},
     },
     middleware::Logger,
-    web, App, HttpServer,
+    web::{self},
+    App, HttpServer,
 };
 use app_config::parse_config;
+use bhw_types::{actix_web_validator::JsonConfig, validation::ValidationError};
 use db::init_db;
 use middleware::csrf::Csrf;
 use routes::{
     auth::{check_signed_in_route, sign_in_route, sign_out_route},
     group::{create_group_route, get_my_group_route, join_group_route, leave_group_route},
-    password_reset::{forgot_password_route, forgot_password_pin_route},
+    password_reset::{forgot_password_pin_route, forgot_password_route},
     profile::{get_profile_route, update_profile_route},
     sign_up::{account_activate_route, sign_up_route},
 };
+use util::validation::humanise_validation_error;
 
 mod app_config;
 mod data;
@@ -61,6 +64,19 @@ async fn main() -> std::io::Result<()> {
             let csrf = Csrf {
                 allowed_origin: config.clone().allowed_origin,
             };
+
+            let json_config = JsonConfig::default().limit(4096).error_handler(|err, _| {
+                match err {
+                    bhw_types::actix_web_validator::Error::JsonPayloadError(e) => {
+                        ValidationError::Parse(e.to_string())
+                    }
+                    bhw_types::actix_web_validator::Error::Validate(e) => {
+                        ValidationError::Values(humanise_validation_error(&e))
+                    }
+                    _ => ValidationError::Unknown,
+                }
+                .into()
+            });
 
             App::new()
                 .wrap(Logger::default())
@@ -100,6 +116,7 @@ async fn main() -> std::io::Result<()> {
                         Ok(res)
                     }
                 })
+                .app_data(json_config)
                 .app_data(web::Data::new(config.clone()))
                 .app_data(web::Data::new(db_con.clone()))
                 .service(sign_up_route)

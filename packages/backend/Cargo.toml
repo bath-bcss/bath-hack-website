@@ -29,11 +29,10 @@ passwords = {version = "3.1.16", features = ["common-password"]}
 sea-orm = { version = "0.12", features = ["sqlx-postgres", "runtime-tokio-rustls", "with-chrono", "with-uuid", "macros"] }
 uuid = { version = "1.7.0", features = ["v4"] }
 chrono = "0.4.34"
+
 bhw-migration = { path = "../migration" }
 bhw-models = { path = "../models" }
-
 bhw-types = { path = "../types" }
-
 
 [features]
 default = ["ldap"]

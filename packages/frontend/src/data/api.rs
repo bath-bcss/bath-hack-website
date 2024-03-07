@@ -1,3 +1,4 @@
+use bhw_types::{auth::AuthSessionError, validation::ValidationError};
 use gloo_net::http::{Request, Response};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use thiserror::Error;
@@ -12,7 +13,11 @@ pub enum FrontendRequestError<E> {
     #[error("deserialize failed: {0}")]
     DeserializeFailed(String),
     #[error("{0}")]
-    BadRequest(E),
+    ValidationFailed(String),
+    #[error("Auth: {0}")]
+    AuthenticationFailed(#[from] AuthSessionError),
+    #[error("{0}")]
+    GenericError(E),
 }
 
 pub fn build_path(path: String) -> String {
@@ -31,12 +36,24 @@ where
             .await
             .map_err(|e| FrontendRequestError::DeserializeFailed(e.to_string()))?;
         return Ok(data);
+    } else if response.status() == 401 {
+        let data: AuthSessionError = response
+            .json()
+            .await
+            .map_err(|e| FrontendRequestError::DeserializeFailed(e.to_string()))?;
+        return Err(data.into());
+    } else if response.status() < 500 {
+        let data: ValidationError = response
+            .json()
+            .await
+            .map_err(|e| FrontendRequestError::DeserializeFailed(e.to_string()))?;
+        Err(FrontendRequestError::ValidationFailed(data.to_string()))
     } else {
         let data: Error = response
             .json()
             .await
             .map_err(|e| FrontendRequestError::DeserializeFailed(e.to_string()))?;
-        Err(FrontendRequestError::BadRequest(data))
+        Err(FrontendRequestError::GenericError(data))
     }
 }
 pub async fn send_get<Res, Error>(path: String) -> Result<Res, FrontendRequestError<Error>>

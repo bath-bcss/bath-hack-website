@@ -46,7 +46,7 @@ pub fn response_error_macro_derive(input: TokenStream) -> TokenStream {
         #[cfg(target_family = "unix")]
         impl actix_web::ResponseError for #name {
             fn error_response(&self) -> actix_web::HttpResponse<actix_web::body::BoxBody> {
-                actix_web::HttpResponse::BadRequest().json(self)
+                actix_web::HttpResponse::InternalServerError().json(self)
             }
         }
     };
