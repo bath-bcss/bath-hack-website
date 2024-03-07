@@ -126,17 +126,28 @@ impl UserHelper {
             ..Default::default()
         };
 
-        match request {
-            UpdateProfileRequest::DisplayName(display_name) => {
-                updated_user.display_name = Set(display_name);
+        // i know this is horrible
+        if let Some(display_name) = request.display_name {
+            if display_name.len() == 0 {
+                updated_user.display_name = Set(None)
+            } else {
+                updated_user.display_name = Set(Some(display_name));
             }
-            UpdateProfileRequest::AccessibilityRequirements(accessibility_requirements) => {
-                updated_user.accessibility_requirements = Set(accessibility_requirements);
+        }
+        if let Some(accessibility_requirements) = request.accessibility_requirements {
+            if accessibility_requirements.len() == 0 {
+                updated_user.accessibility_requirements = Set(None)
+            } else {
+                updated_user.accessibility_requirements = Set(Some(accessibility_requirements));
             }
-            UpdateProfileRequest::DietaryRequirements(dietary_requirements) => {
-                updated_user.dietary_requirements = Set(dietary_requirements);
+        }
+        if let Some(dietary_requirements) = request.dietary_requirements {
+            if dietary_requirements.len() == 0 {
+                updated_user.dietary_requirements = Set(None)
+            } else {
+                updated_user.dietary_requirements = Set(Some(dietary_requirements));
             }
-        };
+        }
 
         updated_user.save(conn).await?;
         Ok(())

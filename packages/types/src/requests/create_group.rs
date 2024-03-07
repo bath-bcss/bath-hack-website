@@ -10,7 +10,13 @@ use validator::Validate;
 pub struct CreateGroupRequest {
     #[cfg_attr(
         target_family = "unix",
-        validate(length(min = 2, max = 15, message = "Must be between 2 and 15 characters"))
+        validate(
+            length(min = 2, max = 15, message = "Must be between 2 and 15 characters"),
+            regex(
+                path = "crate::validation::RE_ALPHANUM",
+                message = "Must be alphanumeric"
+            )
+        )
     )]
     pub group_name: String,
 }

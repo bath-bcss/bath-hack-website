@@ -2,7 +2,7 @@ use bhw_types::requests::update_profile::UpdateProfileRequest;
 use yew::prelude::*;
 
 use crate::{
-    components::{button::Button, input::Input},
+    components::{button::Button, error::ErrorMessage, input::Input},
     data::profile::update_profile,
 };
 
@@ -33,6 +33,8 @@ pub fn profile_datapoint(props: &Props) -> Html {
         None => String::default(),
     });
     let local_input_value = (*local_input_state).clone();
+    let error_handle = use_state(|| None::<String>);
+    let error = (*error_handle).clone();
 
     let value_has_changed = use_memo(
         (local_input_value.clone(), props.current_value.clone()),
@@ -45,7 +47,6 @@ pub fn profile_datapoint(props: &Props) -> Html {
         },
     );
 
-    let error_handle = use_state(|| None::<String>);
     let loading_handle = use_state(|| false);
     let loading = (*loading_handle).clone();
 
@@ -54,24 +55,29 @@ pub fn profile_datapoint(props: &Props) -> Html {
             local_input_value,
             props.data_key.clone(),
             props.on_value_change.clone(),
+            error_handle.clone(),
         ),
-        move |e: SubmitEvent, (local_input_value, data_key, on_value_change)| {
+        move |e: SubmitEvent, (local_input_value, data_key, on_value_change, error_handle)| {
             e.prevent_default();
 
             let local_input_value = (*local_input_value).clone();
             let request = match data_key.clone() {
-                ProfileKey::DisplayName => {
-                    UpdateProfileRequest::DisplayName(Some(local_input_value))
-                }
-                ProfileKey::AccessibilityRequirements => {
-                    UpdateProfileRequest::AccessibilityRequirements(Some(local_input_value))
-                }
-                ProfileKey::DietaryRequirements => {
-                    UpdateProfileRequest::DietaryRequirements(Some(local_input_value))
-                }
+                ProfileKey::DisplayName => UpdateProfileRequest {
+                    display_name: Some(local_input_value),
+                    ..Default::default()
+                },
+                ProfileKey::AccessibilityRequirements => UpdateProfileRequest {
+                    accessibility_requirements: Some(local_input_value),
+                    ..Default::default()
+                },
+                ProfileKey::DietaryRequirements => UpdateProfileRequest {
+                    dietary_requirements: Some(local_input_value),
+                    ..Default::default()
+                },
             };
 
             let error_handle = error_handle.clone();
+            error_handle.set(None);
             let loading_handle = loading_handle.clone();
             let on_value_change = on_value_change.clone();
             wasm_bindgen_futures::spawn_local(async move {
@@ -96,6 +102,7 @@ pub fn profile_datapoint(props: &Props) -> Html {
         <Button dark_mode={false} disabled={loading} button_type="submit"
             class={classes!("mt-4")}>{"Save"}</Button>
         }
+        <ErrorMessage message={error} />
     </form>
     }
 }

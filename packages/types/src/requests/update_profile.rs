@@ -2,13 +2,38 @@ use bhw_macro_types::{FromSeaORMError, JsonResponder, ResponseError};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
+#[cfg(target_family = "unix")]
+use validator::Validate;
+
 use crate::nothing::Nothing;
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonResponder)]
-pub enum UpdateProfileRequest {
-    DisplayName(Option<String>),
-    AccessibilityRequirements(Option<String>),
-    DietaryRequirements(Option<String>),
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonResponder, Default)]
+#[cfg_attr(target_family = "unix", derive(Validate))]
+pub struct UpdateProfileRequest {
+    #[cfg_attr(
+        target_family = "unix",
+        validate(
+            length(max = 30, message = "Can't be longer than 30 characters"),
+            regex(
+                path = "crate::validation::RE_ALPHANUM",
+                message = "Must be alphanumeric"
+            )
+        )
+    )]
+    pub display_name: Option<String>,
+    #[cfg_attr(
+        target_family = "unix",
+        validate(length(max = 1000, message = "Can't be longer than 1000 characters"),)
+    )]
+    pub accessibility_requirements: Option<String>,
+    #[cfg_attr(
+        target_family = "unix",
+        validate(
+            length(max = 1000, message = "Can't be longer than 1000 characters"),
+            non_control_character
+        )
+    )]
+    pub dietary_requirements: Option<String>,
 }
 
 #[derive(

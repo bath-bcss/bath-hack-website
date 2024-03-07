@@ -44,7 +44,7 @@ pub async fn get_profile_route(
 pub async fn update_profile_route(
     user: SessionUser,
     db: web::Data<DatabaseConnection>,
-    data: web::Json<UpdateProfileRequest>,
+    data: bhw_types::actix_web_validator::Json<UpdateProfileRequest>,
 ) -> UpdateProfileResult {
     UserHelper::update_property(db.get_ref(), user.id, data.into_inner()).await?;
     Ok(Nothing)

@@ -59,14 +59,14 @@ pub fn account_home_page() -> Html {
 
                 let mut profile = profile.expect_throw("bruh");
 
-                match req {
-                    UpdateProfileRequest::DisplayName(d) => profile.display_name = d,
-                    UpdateProfileRequest::AccessibilityRequirements(d) => {
-                        profile.accessibility_requirements = d
-                    }
-                    UpdateProfileRequest::DietaryRequirements(d) => {
-                        profile.dietary_requirements = d
-                    }
+                if let Some(display_name) = req.display_name {
+                    profile.display_name = Some(display_name);
+                }
+                if let Some(accessibility_requirements) = req.accessibility_requirements {
+                    profile.accessibility_requirements = Some(accessibility_requirements);
+                }
+                if let Some(dietary_requirements) = req.dietary_requirements {
+                    profile.dietary_requirements = Some(dietary_requirements);
                 }
 
                 profile_handle.set(Some(profile));

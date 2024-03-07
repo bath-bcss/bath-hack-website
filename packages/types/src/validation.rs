@@ -1,6 +1,10 @@
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
+#[cfg(target_family = "unix")]
+pub static RE_ALPHANUM: once_cell::sync::Lazy<regex::Regex> =
+    once_cell::sync::Lazy::new(|| regex::Regex::new(r"^([a-z]|[A-Z]|[0-9]| )*$").unwrap());
+
 #[derive(Debug, Clone, PartialEq, Error, Serialize, Deserialize)]
 pub enum ValidationError {
     #[error("Parsing JSON payload: {0}")]
