@@ -6,11 +6,10 @@ pub fn humanise_validation_error(errors: &bhw_types::validator::ValidationErrors
 
         for field_error in field_errors {
             if let Some(field_message) = &field_error.message {
-                message.push_str(&field_message)
+                message.push_str(&field_message);
+                message.push_str("; ");
             }
         }
-
-        message.push_str(";");
     }
 
     message
