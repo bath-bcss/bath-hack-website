@@ -11,7 +11,7 @@ pub struct CreateGroupRequest {
     #[cfg_attr(
         target_family = "unix",
         validate(
-            length(min = 2, max = 15, message = "Must be between 2 and 15 characters"),
+            length(min = 2, max = 20, message = "Must be between 2 and 20 characters"),
             regex(
                 path = "crate::validation::RE_ALPHANUM",
                 message = "Must be alphanumeric"
