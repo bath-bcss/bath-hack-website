@@ -10,14 +10,17 @@ use bhw_types::{
         join_group::{JoinGroupError, JoinGroupRequest, JoinGroupResponse, JoinGroupResult},
         leave_group::{LeaveGroupResponseError, LeaveGroupResult},
         my_group::{MyGroupData, MyGroupResponse, MyGroupResponseError, MyGroupResult},
+        rename_group::{RenameGroupRequest, RenameGroupResponseError, RenameGroupResult},
     },
 };
+use log::error;
 use sea_orm::{AccessMode, DatabaseConnection, IsolationLevel, TransactionTrait};
 
 use crate::{
     data::session::SessionUser,
     models::groups::{
         GetUserGroupError, GroupsHelper, JoinGroupByCodeError, RemoveUserFromGroupError,
+        RenameMemberGroupError,
     },
 };
 
@@ -83,6 +86,35 @@ pub async fn create_group_route(
         new_group_id: new_group.id.to_string(),
         new_group_join_code: new_group.join_code,
     })
+}
+
+#[post("/groups/rename")]
+pub async fn rename_my_group_route(
+    user: SessionUser,
+    db: web::Data<DatabaseConnection>,
+    data: bhw_types::actix_web_validator::Json<RenameGroupRequest>,
+) -> RenameGroupResult {
+    let txn = db
+        .begin_with_config(
+            Some(IsolationLevel::RepeatableRead),
+            Some(AccessMode::ReadWrite),
+        )
+        .await?;
+
+    GroupsHelper::rename_member_group(&txn, user.id, data.new_name.clone())
+        .await
+        .map_err(|e| match e {
+            RenameMemberGroupError::DBError(e) => {
+                error!("rename group: {}", e.to_string());
+                RenameGroupResponseError::DBError
+            }
+            RenameMemberGroupError::UserNotFound => RenameGroupResponseError::UserNotFound,
+            RenameMemberGroupError::UserNotInGroup => RenameGroupResponseError::UserNotInGroup,
+        })?;
+
+    txn.commit().await?;
+
+    Ok(Nothing)
 }
 
 #[post("/groups/join")]

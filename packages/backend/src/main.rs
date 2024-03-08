@@ -21,7 +21,7 @@ use db::init_db;
 use middleware::csrf::Csrf;
 use routes::{
     auth::{check_signed_in_route, sign_in_route, sign_out_route},
-    group::{create_group_route, get_my_group_route, join_group_route, leave_group_route},
+    group::{create_group_route, get_my_group_route, join_group_route, leave_group_route, rename_my_group_route},
     password_reset::{forgot_password_pin_route, forgot_password_route},
     profile::{get_profile_route, update_profile_route},
     sign_up::{account_activate_route, sign_up_route},
@@ -129,6 +129,7 @@ async fn main() -> std::io::Result<()> {
                 .service(get_profile_route)
                 .service(update_profile_route)
                 .service(create_group_route)
+                .service(rename_my_group_route)
                 .service(join_group_route)
                 .service(get_my_group_route)
                 .service(leave_group_route)

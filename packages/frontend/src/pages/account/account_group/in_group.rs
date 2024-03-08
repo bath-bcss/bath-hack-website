@@ -3,8 +3,8 @@ use yew::prelude::*;
 
 use crate::{
     components::{
-        button::Button, error::ErrorMessage, page_control_heading::PageControlHeading,
-        page_control_paragraph::PageControlParagraph,
+        account::group::group_name::GroupName, button::Button, error::ErrorMessage,
+        page_control_heading::PageControlHeading, page_control_paragraph::PageControlParagraph,
     },
     data::group::leave_group,
     pages::account::account_group::member_card::member_card,
@@ -14,10 +14,9 @@ use super::types::AccountGroupSubpageProps;
 
 #[function_component(AccountGroupManage)]
 pub fn account_group_manage(props: &AccountGroupSubpageProps) -> Html {
-    let current_group = (*props.group_handle).clone().expect_throw(
-        "Cannot use AccountGroupManage with a None value for
-group_handle.",
-    );
+    let current_group = (*props.group_handle)
+        .clone()
+        .expect_throw("Cannot use AccountGroupManage with a None value for group_handle.");
 
     let leave_group_loading_handle = use_state_eq(|| false);
     let leave_group_loading = (*leave_group_loading_handle).clone();
@@ -60,9 +59,8 @@ group_handle.",
 
         <div
             class="mt-4 py-6 px-8 bg-bcss-50 dark:bg-bcss-900 shadow-md shadow-bcss-200 dark:shadow-bcss-800 rounded-2xl block sm:inline-block">
-            <p class="text-xl font-bold text-bcss-800 dark:text-bcss-200">
-                {current_group.name}
-            </p>
+            <GroupName group={current_group.clone()} />
+
             <p class="mt-1 text-bcss-900 dark:text-bcss-200">
                 {"Join code: "}
                 <code>{current_group.join_code}</code>

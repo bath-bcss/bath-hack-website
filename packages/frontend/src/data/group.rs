@@ -5,13 +5,13 @@ use bhw_types::{
         join_group::{JoinGroupError, JoinGroupRequest, JoinGroupResponse},
         leave_group::LeaveGroupResponseError,
         my_group::{MyGroupResponse, MyGroupResponseError},
+        rename_group::{RenameGroupResponseError, RenameGroupRequest},
     },
 };
 
 use super::api::{send_get, send_post, FrontendRequestError};
 
-pub async fn get_my_group(
-) -> Result<MyGroupResponse, FrontendRequestError<MyGroupResponseError>> {
+pub async fn get_my_group() -> Result<MyGroupResponse, FrontendRequestError<MyGroupResponseError>> {
     send_get("/groups/me".to_string()).await
 }
 
@@ -20,6 +20,13 @@ pub async fn create_group(
 ) -> Result<CreateGroupResponse, FrontendRequestError<CreateGroupError>> {
     let request = CreateGroupRequest { group_name };
     send_post("/groups".to_string(), &request).await
+}
+
+pub async fn change_my_group_name(
+    new_name: String,
+) -> Result<Nothing, FrontendRequestError<RenameGroupResponseError>> {
+    let request = RenameGroupRequest { new_name };
+    send_post("/groups/rename".to_string(), &request).await
 }
 
 pub async fn join_group(

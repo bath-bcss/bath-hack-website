@@ -13,3 +13,4 @@ pub mod flashy_homepage;
 pub mod hero;
 pub mod modal;
 pub mod loading_spinner;
+pub mod account;

@@ -15,7 +15,7 @@ use crate::{
 mod in_group;
 mod joining_group;
 mod member_card;
-mod types;
+pub mod types;
 mod joining;
 
 #[function_component(AccountGroupPage)]
