@@ -5,7 +5,7 @@ use thiserror::Error;
 #[cfg(target_family = "unix")]
 use validator::Validate;
 
-use crate::nothing::Nothing;
+use crate::{models::website_user::TShirtSize, nothing::Nothing};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonResponder, Default)]
 #[cfg_attr(target_family = "unix", derive(Validate))]
@@ -34,6 +34,7 @@ pub struct UpdateProfileRequest {
         )
     )]
     pub dietary_requirements: Option<String>,
+    pub t_shirt_size: Option<TShirtSize>,
 }
 
 #[derive(

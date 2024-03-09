@@ -2,7 +2,7 @@ use bhw_types::requests::update_profile::UpdateProfileRequest;
 use yew::prelude::*;
 
 use crate::{
-    components::{button::Button, error::ErrorMessage, input::Input},
+    components::{button::Button, error::ErrorMessage, form::input::Input},
     data::profile::update_profile,
 };
 

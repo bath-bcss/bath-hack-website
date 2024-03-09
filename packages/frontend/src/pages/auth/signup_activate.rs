@@ -6,11 +6,17 @@ use yew_router::hooks::{use_location, use_navigator};
 
 use crate::{
     components::{
-        button::Button, error::ErrorMessage, glass_container::{GlassContainer, heading::GlassContainerHeading, paragraph::GlassContainerParagraph},
-        hero::center::HeroCenterContainer, input::Input,
+        button::Button,
+        error::ErrorMessage,
+        form::input::Input,
+        glass_container::{
+            heading::GlassContainerHeading, paragraph::GlassContainerParagraph, GlassContainer,
+        },
+        hero::center::HeroCenterContainer,
     },
     data::sign_up::account_activate_request,
-    router::Route, pages::account::account_home::InitialSignupState,
+    pages::account::account_home::InitialSignupState,
+    router::Route,
 };
 
 #[derive(Debug, Deserialize)]

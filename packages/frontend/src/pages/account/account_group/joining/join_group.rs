@@ -1,6 +1,13 @@
 use yew::prelude::*;
 
-use crate::{components::{page_control_heading::PageControlHeading, page_control_paragraph::PageControlParagraph, input::Input, button::Button, error::ErrorMessage}, pages::account::account_group::types::{AccountGroupSubpageProps, FrontendGroupState}, data::group::join_group};
+use crate::{
+    components::{
+        button::Button, error::ErrorMessage, form::input::Input,
+        page_control_heading::PageControlHeading, page_control_paragraph::PageControlParagraph,
+    },
+    data::group::join_group,
+    pages::account::account_group::types::{AccountGroupSubpageProps, FrontendGroupState},
+};
 
 #[function_component(JoinGroup)]
 pub fn join_group_component(props: &AccountGroupSubpageProps) -> Html {
@@ -54,8 +61,8 @@ pub fn join_group_component(props: &AccountGroupSubpageProps) -> Html {
             {"If someone's given you a join code, enter it here to join their group!"}
         </PageControlParagraph>
         <form onsubmit={on_join_group_click}>
-            <Input input_label="Join code" placeholder="E.g. ab24be" handle={join_code_handle}
-                disabled={form_loading} required={true} />
+            <Input input_label="Join code" placeholder="E.g. ab24be" handle={join_code_handle} disabled={form_loading}
+                required={true} />
             <Button button_type="submit" dark_mode={false} class={classes!("mt-4")} disabled={form_loading}>
                 {"Join!"}
             </Button>

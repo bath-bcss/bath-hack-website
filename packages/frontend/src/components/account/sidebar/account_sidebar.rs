@@ -7,7 +7,7 @@ use yew_router::{
 };
 
 use crate::{
-    components::{button::Button, sidebar::sidebar_element::SidebarElement},
+    components::{account::sidebar::sidebar_element::SidebarElement, button::Button},
     redirect_if_not_authed,
     router::{AccountRoute, Route},
 };

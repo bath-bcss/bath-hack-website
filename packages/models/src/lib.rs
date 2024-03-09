@@ -4,5 +4,6 @@ pub mod prelude;
 
 pub mod competition_group;
 pub mod password_reset;
+pub mod sea_orm_active_enums;
 pub mod signup_request;
 pub mod website_user;

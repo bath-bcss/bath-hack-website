@@ -2,7 +2,7 @@ use yew::prelude::*;
 use yew_icons::{Icon, IconId};
 
 use crate::{
-    components::{button::Button, error::ErrorMessage, input::Input},
+    components::{button::Button, error::ErrorMessage, form::input::Input},
     data::group::change_my_group_name,
     pages::account::account_group::types::FrontendGroupState,
 };

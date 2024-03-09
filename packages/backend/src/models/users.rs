@@ -1,5 +1,5 @@
-use bhw_models::{prelude::*, website_user};
-use bhw_types::requests::update_profile::UpdateProfileRequest;
+use bhw_models::{prelude::*, sea_orm_active_enums::TShirtSizeEnum, website_user};
+use bhw_types::{models::website_user::TShirtSize, requests::update_profile::UpdateProfileRequest};
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait,
     QueryFilter, QuerySelect, Set,
@@ -147,6 +147,17 @@ impl UserHelper {
             } else {
                 updated_user.dietary_requirements = Set(Some(dietary_requirements));
             }
+        }
+        if let Some(t_shirt_size) = request.t_shirt_size {
+            updated_user.t_shirt_size = Set(Some(match t_shirt_size {
+                TShirtSize::S => TShirtSizeEnum::S,
+                TShirtSize::M => TShirtSizeEnum::M,
+                TShirtSize::L => TShirtSizeEnum::L,
+                TShirtSize::XL => TShirtSizeEnum::Xl,
+                TShirtSize::XXL => TShirtSizeEnum::Xxl,
+                TShirtSize::XXXL => TShirtSizeEnum::Xxxl,
+                TShirtSize::XXXXL => TShirtSizeEnum::Xxxxl,
+            }))
         }
 
         updated_user.save(conn).await?;

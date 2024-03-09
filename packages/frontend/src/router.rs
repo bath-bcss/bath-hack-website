@@ -2,14 +2,16 @@ use yew::prelude::*;
 use yew_router::prelude::*;
 
 use crate::{
-    components::sidebar::account_sidebar::AccountSidebar,
+    components::account::sidebar::account_sidebar::AccountSidebar,
     pages::{
-        account::{account_group::AccountGroupPage, account_home::AccountHomePage},
+        account::{
+            account_group::AccountGroupPage, account_home::AccountHomePage,
+        },
         auth::{
             forgot_password::ForgotPasswordPage, forgot_password_pin::ForgotPasswordPINPage,
             login::LoginPage, logout::LogoutPage, signup::SignupPage,
-            signup_activate::SignupActivatePage, 
-            signup_success::SignupSuccessPage, signup_notice::SignupNoticePage,
+            signup_activate::SignupActivatePage, signup_notice::SignupNoticePage,
+            signup_success::SignupSuccessPage,
         },
         home::HomePage,
         not_found::NotFoundPage,

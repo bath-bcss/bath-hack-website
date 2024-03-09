@@ -3,7 +3,7 @@ use yew::prelude::*;
 
 use crate::{
     components::{
-        button::Button, error::ErrorMessage, input::Input,
+        button::Button, error::ErrorMessage, form::input::Input,
         page_control_heading::PageControlHeading, page_control_paragraph::PageControlParagraph,
     },
     data::group::create_group,

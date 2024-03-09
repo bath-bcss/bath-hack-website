@@ -9,8 +9,7 @@ use crate::{
         glass_container::{
             heading::GlassContainerHeading, paragraph::GlassContainerParagraph, GlassContainer,
         },
-        hero::center::HeroCenterContainer,
-        input::Input,
+        hero::center::HeroCenterContainer, form::input::Input,
     },
     data::auth::forgot_password_pin,
     router::Route,

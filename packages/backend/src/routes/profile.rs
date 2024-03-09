@@ -1,5 +1,7 @@
 use actix_web::{get, post, web};
+use bhw_models::sea_orm_active_enums::TShirtSizeEnum;
 use bhw_types::{
+    models::website_user::TShirtSize,
     nothing::Nothing,
     requests::{
         profile::{ProfileResponse, ProfileResponseError, ProfileResult},
@@ -35,6 +37,15 @@ pub async fn get_profile_route(
         bath_username: user.bath_username,
         accessibility_requirements: user.accessibility_requirements,
         dietary_requirements: user.dietary_requirements,
+        t_shirt_size: user.t_shirt_size.map(|e| match e {
+            TShirtSizeEnum::S => TShirtSize::S,
+            TShirtSizeEnum::M => TShirtSize::M,
+            TShirtSizeEnum::L => TShirtSize::L,
+            TShirtSizeEnum::Xl => TShirtSize::XL,
+            TShirtSizeEnum::Xxl => TShirtSize::XXL,
+            TShirtSizeEnum::Xxxl => TShirtSize::XXXL,
+            TShirtSizeEnum::Xxxxl => TShirtSize::XXXXL,
+        }),
     };
 
     Ok(profile)

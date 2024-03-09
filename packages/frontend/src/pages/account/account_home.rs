@@ -6,12 +6,14 @@ use yew_router::hooks::use_location;
 
 use crate::{
     components::{
-        input::Input,
+        account::profile::{
+            profile_datapoint::{ProfileDatapoint, ProfileKey},
+            t_shirt_size_picker::TShirtSizePicker,
+        },
         loading_spinner::LoadingSpinner,
         page_container::PageContainer,
         page_control_paragraph::PageControlParagraph,
-        page_title::PageTitle,
-        profile_datapoint::{ProfileDatapoint, ProfileKey},
+        page_title::PageTitle, form::input::Input,
     },
     data::profile::get_profile,
 };
@@ -68,6 +70,9 @@ pub fn account_home_page() -> Html {
                 if let Some(dietary_requirements) = req.dietary_requirements {
                     profile.dietary_requirements = Some(dietary_requirements);
                 }
+                if let Some(t_shirt_size) = req.t_shirt_size {
+                    profile.t_shirt_size = Some(t_shirt_size)
+                }
 
                 profile_handle.set(Some(profile));
             },
@@ -121,6 +126,8 @@ pub fn account_home_page() -> Html {
 
             <ProfileDatapoint data_key={ProfileKey::DisplayName} current_value={profile.display_name}
                 on_value_change={on_datapoint_change.clone()} />
+            <TShirtSizePicker current_value={profile.t_shirt_size}
+                on_datapoint_change={on_datapoint_change.clone()} />
             <ProfileDatapoint data_key={ProfileKey::AccessibilityRequirements}
                 current_value={profile.accessibility_requirements} on_value_change={on_datapoint_change.clone()} />
             <ProfileDatapoint data_key={ProfileKey::DietaryRequirements}
