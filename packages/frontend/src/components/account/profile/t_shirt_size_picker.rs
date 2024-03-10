@@ -134,7 +134,7 @@ pub fn t_shirt_size_picker(props: &Props) -> Html {
         },
     );
 
-    let show_modal_handle = use_state_eq(|| true);
+    let show_modal_handle = use_state_eq(|| false);
     let show_modal = (*show_modal_handle).clone();
     let on_show_modal_click =
         use_callback((show_modal_handle.clone(),), |_, (show_modal_handle,)| {
