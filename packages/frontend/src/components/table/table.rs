@@ -8,7 +8,7 @@ pub struct Props {
 #[function_component(Table)]
 pub fn table_root(props: &Props) -> Html {
     html! {
-    <table class="w-full border border-bcss-300">
+    <table class="w-full border border-bcss-300 dark:border-bcss-700">
         {props.children.clone()}
     </table>
     }
