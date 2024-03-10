@@ -4,12 +4,20 @@ use bhw_types::{
 };
 use web_sys::{wasm_bindgen::UnwrapThrowExt, HtmlInputElement};
 use yew::prelude::*;
+use yew_icons::{Icon, IconId};
 
 use crate::{
     components::{
         button::Button,
         error::ErrorMessage,
         form::form_handle::{FormHandle, FormHandleChildProps},
+        modal::Modal,
+        page_control_paragraph::PageControlParagraph,
+        table::{
+            responsive_container::ResponsiveTableContainer, table::Table, table_body::TableBody,
+            table_data::TableData, table_header::TableHeader, table_heading::TableHeading,
+            table_row::TableRow,
+        },
     },
     data::profile::update_profile,
 };
@@ -126,10 +134,24 @@ pub fn t_shirt_size_picker(props: &Props) -> Html {
         },
     );
 
+    let show_modal_handle = use_state_eq(|| true);
+    let show_modal = (*show_modal_handle).clone();
+    let on_show_modal_click =
+        use_callback((show_modal_handle.clone(),), |_, (show_modal_handle,)| {
+            show_modal_handle.set(true);
+        });
+    let on_close_modal_click = use_callback((show_modal_handle,), |_, (show_modal_handle,)| {
+        show_modal_handle.set(false);
+    });
+
     html! {
     <>
         <form onsubmit={on_submit}>
             <FormHandle child_renderer={child_renderer} label={"T-Shirt size"} />
+            <button class="mt-1 text-sm text-gray-600 hover:underline w-full text-left"
+                onclick={on_show_modal_click}>
+                {"View more info (incl. size guide)"}
+            </button>
             if t_shirt_size != props.current_value {
             <Button dark_mode={false} button_type={"submit"} class={classes!("mt-4")} disabled={loading}>
                 {"Save"}
@@ -137,6 +159,76 @@ pub fn t_shirt_size_picker(props: &Props) -> Html {
             }
             <ErrorMessage message={error} />
         </form>
+
+        <Modal open={show_modal}>
+            <div class="flex justify-between items-center gap-x-6">
+                <h1 class="text-bcss-800 dark:text-bcss-200 font-bold text-3xl">
+                    {"T-Shirt size guide"}
+                </h1>
+                <Button dark_mode={false} onclick={on_close_modal_click}>
+                    <Icon icon_id={IconId::FontAwesomeSolidCircleXmark} />
+                </Button>
+            </div>
+
+            <PageControlParagraph>
+                {"All participants get a free t-shirt on arriving to the event! You can select your size here to
+                        help us ensure we have the correct amount of each, but we'll be somewhat flexible when handing
+                        them out, so don't worry if you get it wrong."}
+            </PageControlParagraph>
+
+            <PageControlParagraph>
+                {"Values have a tolerance of ± 2.54cm."}
+            </PageControlParagraph>
+
+            <ResponsiveTableContainer class={classes!("mt-4")}>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHeading>{"Sizes"}</TableHeading>
+                            <TableHeading>{"S"}</TableHeading>
+                            <TableHeading>{"M"}</TableHeading>
+                            <TableHeading>{"L"}</TableHeading>
+                            <TableHeading>{"XL"}</TableHeading>
+                            <TableHeading>{"2XL"}</TableHeading>
+                            <TableHeading>{"3XL"}</TableHeading>
+                            <TableHeading>{"4XL"}</TableHeading>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        <TableRow>
+                            <TableData>{"Half chest (cm)"}</TableData>
+                            <TableData>{"45.5"}</TableData>
+                            <TableData>{"51"}</TableData>
+                            <TableData>{"56"}</TableData>
+                            <TableData>{"61"}</TableData>
+                            <TableData>{"66"}</TableData>
+                            <TableData>{"71"}</TableData>
+                            <TableData>{"76"}</TableData>
+                        </TableRow>
+                        <TableRow>
+                            <TableData>{"Body length (cm)"}</TableData>
+                            <TableData>{"71"}</TableData>
+                            <TableData>{"73.5"}</TableData>
+                            <TableData>{"76"}</TableData>
+                            <TableData>{"78.5"}</TableData>
+                            <TableData>{"81.5"}</TableData>
+                            <TableData>{"84"}</TableData>
+                            <TableData>{"86.5"}</TableData>
+                        </TableRow>
+                        <TableRow>
+                            <TableData>{"Sleeve length — centre back (cm)"}</TableData>
+                            <TableData>{"42.5"}</TableData>
+                            <TableData>{"45.5"}</TableData>
+                            <TableData>{"48.5"}</TableData>
+                            <TableData>{"52"}</TableData>
+                            <TableData>{"55"}</TableData>
+                            <TableData>{"58"}</TableData>
+                            <TableData>{"60.5"}</TableData>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </ResponsiveTableContainer>
+        </Modal>
     </>
     }
 }

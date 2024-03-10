@@ -12,3 +12,4 @@ pub mod modal;
 pub mod loading_spinner;
 pub mod account;
 pub mod form;
+pub mod table;
