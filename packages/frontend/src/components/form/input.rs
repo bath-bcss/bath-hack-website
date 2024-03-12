@@ -30,6 +30,9 @@ pub struct Props {
     pub input_class: Option<Classes>,
     #[prop_or_default]
     pub container_class: Option<Classes>,
+
+    #[prop_or_default]
+    pub children: Html,
 }
 
 #[function_component(Input)]
@@ -62,6 +65,7 @@ pub fn input(props: &Props) -> Html {
             props.required,
             props.disabled,
             props.readonly,
+            props.children.clone(),
             handle_value,
             on_change_handler,
         ),
@@ -73,6 +77,7 @@ pub fn input(props: &Props) -> Html {
             required,
             disabled,
             readonly,
+            children,
             handle_value,
             on_change_handler,
         )| {
@@ -81,18 +86,24 @@ pub fn input(props: &Props) -> Html {
                 input_class.push(input_class_extra_props.clone());
             }
 
+            let mut children = children.clone();
             html! {
-                <input
-                    class={input_class}
-                    id={child_props.id}
-                    placeholder={placeholder.clone()}
-                    type={input_type.clone()}
-                    required={required.clone()}
-                    oninput={on_change_handler}
-                    value={handle_value.clone()}
-                    disabled={disabled.clone()}
-                    readonly={readonly.clone()}
-                />
+                <>
+                    <input
+                        class={input_class}
+                        id={child_props.id}
+                        placeholder={placeholder.clone()}
+                        type={input_type.clone()}
+                        required={required.clone()}
+                        oninput={on_change_handler}
+                        value={handle_value.clone()}
+                        disabled={disabled.clone()}
+                        readonly={readonly.clone()}
+                    />
+                    if children.to_vlist_mut().len() > 0 {
+                        <p class="text-gray-600 dark:text-gray-200 text-sm mt-1">{ children.clone() }</p>
+                    }
+                </>
             }
         },
     );

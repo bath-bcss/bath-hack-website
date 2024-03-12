@@ -18,6 +18,8 @@ pub struct Props {
     pub data_key: ProfileKey,
     pub current_value: Option<String>,
     pub on_value_change: Callback<UpdateProfileRequest>,
+    #[prop_or_default]
+    pub children: Html,
 }
 
 #[function_component(ProfileDatapoint)]
@@ -101,6 +103,7 @@ pub fn profile_datapoint(props: &Props) -> Html {
                 input_label={input_label.to_string()}
                 handle={local_input_state}
                 disabled={loading}
+                children={props.children.clone()}
             />
             if *value_has_changed {
                 <Button

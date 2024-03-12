@@ -90,8 +90,9 @@ pub fn account_home_page() -> Html {
                         { "You made it!" }
                     </h2>
                     <p class="text-green-800 dark:text-green-200">
-                        { "That's it; you're officially going to Bath Hack! If you feel like it, you can fill out the rest of
-                your profile, but that's all optional." }
+                        { "That's it; you're officially going to Bath Hack! If you feel like it, you can fill out the rest
+                    of
+                    your profile, but that's all optional." }
                     </p>
                     <p class="text-green-800 dark:text-green-200">
                         { "When you're ready, check out the Group tab. Most people compete in groups of up to 4 people, and
@@ -111,7 +112,8 @@ pub fn account_home_page() -> Html {
                 the event." }
             </PageControlParagraph>
             <PageControlParagraph>
-                { "Your accessibility requirements will be stored securely and shared only with BCSS Committee members or
+                { "Your accessibility requirements will be stored securely and shared only with BCSS Committee members
+                or
                 members of University staff as needed. Unless necessary, please do not disclose sensitive or medical
                 information." }
             </PageControlParagraph>
@@ -138,7 +140,9 @@ pub fn account_home_page() -> Html {
                         data_key={ProfileKey::AccessibilityRequirements}
                         current_value={profile.accessibility_requirements}
                         on_value_change={on_datapoint_change.clone()}
-                    />
+                    >
+                        <>{ "If you have any serious allergies, please enter them here." }</>
+                    </ProfileDatapoint>
                     <ProfileDatapoint
                         data_key={ProfileKey::DietaryRequirements}
                         current_value={profile.dietary_requirements}
