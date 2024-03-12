@@ -33,6 +33,7 @@ pub fn nav_link(props: &Props) -> Html {
     let classes = use_memo((props.is_at_top,), |(is_at_top,)| {
         let mut base_class = classes!(
             "text-bcss-200",
+            "font-medium",
             "hover:text-white",
             "hover:bg-bcss-800",
             "px-2",
@@ -61,10 +62,8 @@ pub fn nav_link(props: &Props) -> Html {
     });
 
     html! {
-    <p class={(*paragraph_classes).clone()}>
-        <a href={href} class={(*classes).clone()} style="text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);">
-            {props.label.clone()}
-        </a>
-    </p>
+        <p class={(*paragraph_classes).clone()}>
+            <a href={href} class={(*classes).clone()}>{ props.label.clone() }</a>
+        </p>
     }
 }

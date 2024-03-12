@@ -61,23 +61,30 @@ pub fn create_group_component(props: &AccountGroupSubpageProps) -> Html {
     );
 
     html! {
-    <>
-        <PageControlHeading>
-            {"Create a new group"}
-        </PageControlHeading>
-        <PageControlParagraph>
-            {"You'll need a group to enter Bath Hack. Your group can have between 1 and 4 members. When you create a
-            group, you'll be given a join code that you can share with your other teammates."}
-        </PageControlParagraph>
-        <form onsubmit={on_create_group_click}>
-            <Input input_label="Group name" placeholder="E.g. The Cool Kids" handle={new_group_name_handle}
-                disabled={form_loading} required={true} />
-            <Button button_type="submit" dark_mode={false} class={classes!("mt-4")} disabled={form_loading}>
-                {"Create!"}
-            </Button>
-
-            <ErrorMessage message={create_group_error} />
-        </form>
-    </>
+        <>
+            <PageControlHeading>{ "Create a new group" }</PageControlHeading>
+            <PageControlParagraph>
+                { "You'll need a group to enter Bath Hack. Your group can have between 1 and 4 members. When you create a
+            group, you'll be given a join code that you can share with your other teammates." }
+            </PageControlParagraph>
+            <form onsubmit={on_create_group_click}>
+                <Input
+                    input_label="Group name"
+                    placeholder="E.g. The Cool Kids"
+                    handle={new_group_name_handle}
+                    disabled={form_loading}
+                    required=true
+                />
+                <Button
+                    button_type="submit"
+                    dark_mode=false
+                    class={classes!("mt-4")}
+                    disabled={form_loading}
+                >
+                    { "Create!" }
+                </Button>
+                <ErrorMessage message={create_group_error} />
+            </form>
+        </>
     }
 }

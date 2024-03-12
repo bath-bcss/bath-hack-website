@@ -20,8 +20,13 @@ pub fn image_grid_item(props: &Props) -> Html {
     };
 
     html! {
-    <img src={(*src).clone()}
-        class="w-full h-auto rounded-2xl shadow-2xl shadow-bcss-400 dark:shadow-bcss-700 dark:brightness-90 bg-bcss-400"
-        loading="lazy" width={width.to_string()} height={height.to_string()} role="presentation" />
+        <img
+            src={(*src).clone()}
+            class="w-full h-auto rounded-2xl shadow-2xl shadow-bcss-400 dark:shadow-bcss-700 dark:brightness-90 bg-bcss-400"
+            loading="lazy"
+            width={width.to_string()}
+            height={height.to_string()}
+            role="presentation"
+        />
     }
 }

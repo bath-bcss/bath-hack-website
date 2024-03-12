@@ -16,18 +16,17 @@ pub struct Props {
 #[function_component(GlassContainer)]
 pub fn glass_container(props: &Props) -> Html {
     html! {
-    <>
-        <div class="p-12 bg-white/90 dark:bg-bcss-900/90 rounded-xl backdrop-blur drop-shadow-lg md:max-w-2xl overflow-y-auto max-h-[90vh]">
-            {props.children.clone()}
-        </div>
-
-        if props.home_link {
-        <p class="text-center text-bcss-200 dark:text-bcss-300 hover:underline">
-            <Link<Route> to={Route::Home}>
-                {"Back home"}
-            </Link<Route>>
-        </p>
-        }
-    </>
+        <>
+            <div
+                class="p-12 bg-white/90 dark:bg-bcss-900/90 rounded-xl backdrop-blur drop-shadow-lg md:max-w-2xl overflow-y-auto max-h-[90vh]"
+            >
+                { props.children.clone() }
+            </div>
+            if props.home_link {
+                <p class="text-center text-bcss-200 dark:text-bcss-300 hover:underline">
+                    <Link<Route> to={Route::Home}>{ "Back home" }</Link<Route>>
+                </p>
+            }
+        </>
     }
 }

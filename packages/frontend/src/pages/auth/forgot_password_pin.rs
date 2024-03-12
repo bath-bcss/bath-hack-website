@@ -6,10 +6,11 @@ use crate::{
     components::{
         button::Button,
         error::ErrorMessage,
+        form::input::Input,
         glass_container::{
             heading::GlassContainerHeading, paragraph::GlassContainerParagraph, GlassContainer,
         },
-        hero::center::HeroCenterContainer, form::input::Input,
+        hero::center::HeroCenterContainer,
     },
     data::auth::forgot_password_pin,
     router::Route,
@@ -58,36 +59,47 @@ pub fn forgot_password_pin_page() -> Html {
     );
 
     html! {
-    <HeroCenterContainer>
-        <GlassContainer>
-            <GlassContainerHeading>
-                {"Reset your password"}
-            </GlassContainerHeading>
-            <GlassContainerParagraph>
-                {"Thanks! If your entered username exists in our database, we've sent you an email with a PIN to reset
+        <HeroCenterContainer>
+            <GlassContainer>
+                <GlassContainerHeading>{ "Reset your password" }</GlassContainerHeading>
+                <GlassContainerParagraph>
+                    { "Thanks! If your entered username exists in our database, we've sent you an email with a PIN to reset
                 your
-                password."}
-            </GlassContainerParagraph>
-            <GlassContainerParagraph>
-                {"For security reasons, we won't tell you if your username didn't exist. Also, you can only make one
+                password." }
+                </GlassContainerParagraph>
+                <GlassContainerParagraph>
+                    { "For security reasons, we won't tell you if your username didn't exist. Also, you can only make one
                 reset
-                request every 15 minutes — if it's been less than that since your last one, we can't tell you!"}
-            </GlassContainerParagraph>
-            <GlassContainerParagraph top_margin={true}>
-                {"If you received your PIN, please enter it here."}
-            </GlassContainerParagraph>
-
-            <form class="mt-4" onsubmit={on_submit}>
-                <Input handle={pin_handle} input_label="Reset PIN" placeholder="abcdef123" disabled={loading} />
-                <Input handle={new_password_handle} input_label="New password" input_type="password"
-                    container_class={classes!("mt-4")} disabled={loading} />
-                <Button dark_mode={false} class={classes!("mt-4")} disabled={loading} button_type="submit">
-                    {"Change my password!"}
-                </Button>
-            </form>
-
-            <ErrorMessage message={(*error_handle).clone()} />
-        </GlassContainer>
-    </HeroCenterContainer>
+                request every 15 minutes — if it's been less than that since your last one, we can't tell you!" }
+                </GlassContainerParagraph>
+                <GlassContainerParagraph top_margin=true>
+                    { "If you received your PIN, please enter it here." }
+                </GlassContainerParagraph>
+                <form class="mt-4" onsubmit={on_submit}>
+                    <Input
+                        handle={pin_handle}
+                        input_label="Reset PIN"
+                        placeholder="abcdef123"
+                        disabled={loading}
+                    />
+                    <Input
+                        handle={new_password_handle}
+                        input_label="New password"
+                        input_type="password"
+                        container_class={classes!("mt-4")}
+                        disabled={loading}
+                    />
+                    <Button
+                        dark_mode=false
+                        class={classes!("mt-4")}
+                        disabled={loading}
+                        button_type="submit"
+                    >
+                        { "Change my password!" }
+                    </Button>
+                </form>
+                <ErrorMessage message={(*error_handle).clone()} />
+            </GlassContainer>
+        </HeroCenterContainer>
     }
 }

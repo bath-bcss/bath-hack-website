@@ -5,7 +5,7 @@ use bhw_types::{
         join_group::{JoinGroupError, JoinGroupRequest, JoinGroupResponse},
         leave_group::LeaveGroupResponseError,
         my_group::{MyGroupResponse, MyGroupResponseError},
-        rename_group::{RenameGroupResponseError, RenameGroupRequest},
+        rename_group::{RenameGroupRequest, RenameGroupResponseError},
     },
 };
 

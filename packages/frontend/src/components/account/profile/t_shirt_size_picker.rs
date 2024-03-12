@@ -106,11 +106,16 @@ pub fn t_shirt_size_picker(props: &Props) -> Html {
         |child_props: FormHandleChildProps,
          (select_value, on_select_change, loading, t_shirt_size)| {
             html! {
-            <select class={child_props.class.clone()} value={select_value.clone()} onchange={on_select_change}
-                disabled={loading.clone()}>
-                <option hidden={true} selected={t_shirt_size.clone().is_none()}>{"Please select"}</option>
-
-                {TShirtSize::iter().map(|size| {
+                <select
+                    class={child_props.class.clone()}
+                    value={select_value.clone()}
+                    onchange={on_select_change}
+                    disabled={loading.clone()}
+                >
+                    <option hidden=true selected={t_shirt_size.clone().is_none()}>
+                        { "Please select" }
+                    </option>
+                    { TShirtSize::iter().map(|size| {
                 let label = match size {
                 TShirtSize::S => "S",
                 TShirtSize::M => "M",
@@ -128,8 +133,8 @@ pub fn t_shirt_size_picker(props: &Props) -> Html {
                     {label}
                 </option>
                 }
-                }).collect::<Html>()}
-            </select>
+                }).collect::<Html>() }
+                </select>
             }
         },
     );
@@ -145,90 +150,93 @@ pub fn t_shirt_size_picker(props: &Props) -> Html {
     });
 
     html! {
-    <>
-        <form onsubmit={on_submit}>
-            <FormHandle child_renderer={child_renderer} label={"T-Shirt size"} />
-            <button class="mt-1 text-sm text-gray-600 dark:text-gray-200 hover:underline w-full text-left"
-                onclick={on_show_modal_click}>
-                {"View more info (incl. size guide)"}
-            </button>
-            if t_shirt_size != props.current_value {
-            <Button dark_mode={false} button_type={"submit"} class={classes!("mt-4")} disabled={loading}>
-                {"Save"}
-            </Button>
-            }
-            <ErrorMessage message={error} />
-        </form>
-
-        <Modal open={show_modal}>
-            <div class="flex justify-between items-center gap-x-6">
-                <h1 class="text-bcss-800 dark:text-bcss-200 font-bold text-3xl">
-                    {"T-Shirt size guide"}
-                </h1>
-                <Button dark_mode={false} onclick={on_close_modal_click}>
-                    <Icon icon_id={IconId::FontAwesomeSolidCircleXmark} />
-                </Button>
-            </div>
-
-            <PageControlParagraph>
-                {"All participants get a free t-shirt on arriving to the event! You can select your size here to
+        <>
+            <form onsubmit={on_submit}>
+                <FormHandle child_renderer={child_renderer} label="T-Shirt size" />
+                <button
+                    class="mt-1 text-sm text-gray-600 dark:text-gray-200 hover:underline w-full text-left"
+                    onclick={on_show_modal_click}
+                >
+                    { "View more info (incl. size guide)" }
+                </button>
+                if t_shirt_size != props.current_value {
+                    <Button
+                        dark_mode=false
+                        button_type="submit"
+                        class={classes!("mt-4")}
+                        disabled={loading}
+                    >
+                        { "Save" }
+                    </Button>
+                }
+                <ErrorMessage message={error} />
+            </form>
+            <Modal open={show_modal}>
+                <div class="flex justify-between items-center gap-x-6">
+                    <h1 class="text-bcss-800 dark:text-bcss-200 font-bold text-3xl">
+                        { "T-Shirt size guide" }
+                    </h1>
+                    <Button dark_mode=false onclick={on_close_modal_click}>
+                        <Icon icon_id={IconId::FontAwesomeSolidCircleXmark} />
+                    </Button>
+                </div>
+                <PageControlParagraph>
+                    { "All participants get a free t-shirt on arriving to the event! You can select your size here to
                         help us ensure we have the correct amount of each, but we'll be somewhat flexible when handing
-                        them out, so don't worry if you get it wrong."}
-            </PageControlParagraph>
-
-            <PageControlParagraph>
-                {"Values have a tolerance of ± 2.54cm."}
-            </PageControlParagraph>
-
-            <ResponsiveTableContainer class={classes!("mt-4")}>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHeading>{"Sizes"}</TableHeading>
-                            <TableHeading>{"S"}</TableHeading>
-                            <TableHeading>{"M"}</TableHeading>
-                            <TableHeading>{"L"}</TableHeading>
-                            <TableHeading>{"XL"}</TableHeading>
-                            <TableHeading>{"2XL"}</TableHeading>
-                            <TableHeading>{"3XL"}</TableHeading>
-                            <TableHeading>{"4XL"}</TableHeading>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        <TableRow>
-                            <TableData>{"Half chest (cm)"}</TableData>
-                            <TableData>{"45.5"}</TableData>
-                            <TableData>{"51"}</TableData>
-                            <TableData>{"56"}</TableData>
-                            <TableData>{"61"}</TableData>
-                            <TableData>{"66"}</TableData>
-                            <TableData>{"71"}</TableData>
-                            <TableData>{"76"}</TableData>
-                        </TableRow>
-                        <TableRow>
-                            <TableData>{"Body length (cm)"}</TableData>
-                            <TableData>{"71"}</TableData>
-                            <TableData>{"73.5"}</TableData>
-                            <TableData>{"76"}</TableData>
-                            <TableData>{"78.5"}</TableData>
-                            <TableData>{"81.5"}</TableData>
-                            <TableData>{"84"}</TableData>
-                            <TableData>{"86.5"}</TableData>
-                        </TableRow>
-                        <TableRow>
-                            <TableData>{"Sleeve length — centre back (cm)"}</TableData>
-                            <TableData>{"42.5"}</TableData>
-                            <TableData>{"45.5"}</TableData>
-                            <TableData>{"48.5"}</TableData>
-                            <TableData>{"52"}</TableData>
-                            <TableData>{"55"}</TableData>
-                            <TableData>{"58"}</TableData>
-                            <TableData>{"60.5"}</TableData>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </ResponsiveTableContainer>
-        </Modal>
-    </>
+                        them out, so don't worry if you get it wrong." }
+                </PageControlParagraph>
+                <PageControlParagraph>
+                    { "Values have a tolerance of ± 2.54cm." }
+                </PageControlParagraph>
+                <ResponsiveTableContainer class={classes!("mt-4")}>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHeading>{ "Sizes" }</TableHeading>
+                                <TableHeading>{ "S" }</TableHeading>
+                                <TableHeading>{ "M" }</TableHeading>
+                                <TableHeading>{ "L" }</TableHeading>
+                                <TableHeading>{ "XL" }</TableHeading>
+                                <TableHeading>{ "2XL" }</TableHeading>
+                                <TableHeading>{ "3XL" }</TableHeading>
+                                <TableHeading>{ "4XL" }</TableHeading>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            <TableRow>
+                                <TableData>{ "Half chest (cm)" }</TableData>
+                                <TableData>{ "45.5" }</TableData>
+                                <TableData>{ "51" }</TableData>
+                                <TableData>{ "56" }</TableData>
+                                <TableData>{ "61" }</TableData>
+                                <TableData>{ "66" }</TableData>
+                                <TableData>{ "71" }</TableData>
+                                <TableData>{ "76" }</TableData>
+                            </TableRow>
+                            <TableRow>
+                                <TableData>{ "Body length (cm)" }</TableData>
+                                <TableData>{ "71" }</TableData>
+                                <TableData>{ "73.5" }</TableData>
+                                <TableData>{ "76" }</TableData>
+                                <TableData>{ "78.5" }</TableData>
+                                <TableData>{ "81.5" }</TableData>
+                                <TableData>{ "84" }</TableData>
+                                <TableData>{ "86.5" }</TableData>
+                            </TableRow>
+                            <TableRow>
+                                <TableData>{ "Sleeve length — centre back (cm)" }</TableData>
+                                <TableData>{ "42.5" }</TableData>
+                                <TableData>{ "45.5" }</TableData>
+                                <TableData>{ "48.5" }</TableData>
+                                <TableData>{ "52" }</TableData>
+                                <TableData>{ "55" }</TableData>
+                                <TableData>{ "58" }</TableData>
+                                <TableData>{ "60.5" }</TableData>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </ResponsiveTableContainer>
+            </Modal>
+        </>
     }
 }

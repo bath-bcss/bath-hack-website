@@ -11,12 +11,12 @@ mod router;
 #[function_component]
 fn App() -> Html {
     html! {
-    <>
-        <div id="modal_host" />
-        <BrowserRouter>
-            <Switch<Route> render={switch} />
-        </BrowserRouter>
-    </>
+        <>
+            <div id="modal_host" />
+            <BrowserRouter>
+                <Switch<Route> render={switch} />
+            </BrowserRouter>
+        </>
     }
 }
 

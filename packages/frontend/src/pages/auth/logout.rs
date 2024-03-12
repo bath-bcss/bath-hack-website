@@ -14,12 +14,10 @@ pub fn logout_page() -> Html {
             let result = sign_out().await;
             match result {
                 Err(e) => log!(e.to_string()),
-                Ok(_) => navigator.replace(&Route::Login)
+                Ok(_) => navigator.replace(&Route::Login),
             }
         })
     });
 
-    html!{
-        <p>{"Signing out..."}</p>
-    }
+    html! { <p>{ "Signing out..." }</p> }
 }

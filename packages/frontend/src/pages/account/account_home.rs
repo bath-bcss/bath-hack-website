@@ -10,10 +10,11 @@ use crate::{
             profile_datapoint::{ProfileDatapoint, ProfileKey},
             t_shirt_size_picker::TShirtSizePicker,
         },
+        form::input::Input,
         loading_spinner::LoadingSpinner,
         page_container::PageContainer,
         page_control_paragraph::PageControlParagraph,
-        page_title::PageTitle, form::input::Input,
+        page_title::PageTitle,
     },
     data::profile::get_profile,
 };
@@ -80,60 +81,71 @@ pub fn account_home_page() -> Html {
     };
 
     html! {
-    <PageContainer>
-        if is_initial_signup {
-        <div
-            class="p-4 bg-green-200 dark:bg-green-700 shadow-lg dark:shadow-md shadow-green-100 dark:shadow-green-800 rounded-2xl mb-4">
-            <h2 class="text-green-900 dark:text-green-200 font-bold text-xl">
-                {"You made it!"}
-            </h2>
-            <p class="text-green-800 dark:text-green-200">
-                {"That's it; you're officially going to Bath Hack! If you feel like it, you can fill out the rest of
-                your profile, but that's all optional."}
-            </p>
-            <p class="text-green-800 dark:text-green-200">
-                {"When you're ready, check out the Group tab. Most people compete in groups of up to 4 people, and
-                it's really easy to join or create them."}
-            </p>
-            <p class="text-green-800 dark:text-green-200">
-                {"Keep an eye on your inbox for more updates from our Committee as the event approaches :)"}
-            </p>
-        </div>
-        }
-
-        <PageTitle page_description="View or edit your profile and requirements">
-            {"Your profile"}
-        </PageTitle>
-
-        <PageControlParagraph>
-            {"All of the below fields are completely optional. Entering your name will help your group members
+        <PageContainer>
+            if is_initial_signup {
+                <div
+                    class="p-4 bg-green-200 dark:bg-green-700 shadow-lg dark:shadow-md shadow-green-100 dark:shadow-green-800 rounded-2xl mb-4"
+                >
+                    <h2 class="text-green-900 dark:text-green-200 font-bold text-xl">
+                        { "You made it!" }
+                    </h2>
+                    <p class="text-green-800 dark:text-green-200">
+                        { "That's it; you're officially going to Bath Hack! If you feel like it, you can fill out the rest of
+                your profile, but that's all optional." }
+                    </p>
+                    <p class="text-green-800 dark:text-green-200">
+                        { "When you're ready, check out the Group tab. Most people compete in groups of up to 4 people, and
+                it's really easy to join or create them." }
+                    </p>
+                    <p class="text-green-800 dark:text-green-200">
+                        { "Keep an eye on your inbox for more updates from our Committee as the event approaches :)" }
+                    </p>
+                </div>
+            }
+            <PageTitle page_description="View or edit your profile and requirements">
+                { "Your profile" }
+            </PageTitle>
+            <PageControlParagraph>
+                { "All of the below fields are completely optional. Entering your name will help your group members
                 identify you, and adding your access or dietary requirements will help us provide everything you need at
-                the event."}
-        </PageControlParagraph>
-        <PageControlParagraph>
-            {"Your accessibility requirements will be stored securely and shared only with BCSS Committee members or
+                the event." }
+            </PageControlParagraph>
+            <PageControlParagraph>
+                { "Your accessibility requirements will be stored securely and shared only with BCSS Committee members or
                 members of University staff as needed. Unless necessary, please do not disclose sensitive or medical
-                information."}
-        </PageControlParagraph>
-
-        if loading.clone() {
-        <LoadingSpinner class={classes!("mt-4")} />
-        }
-
-        if let Some(profile) = profile {
-        <div class="space-y-4 mt-4">
-            <Input static_value={profile.bath_username} readonly={true} input_label="Bath Username" />
-
-            <ProfileDatapoint data_key={ProfileKey::DisplayName} current_value={profile.display_name}
-                on_value_change={on_datapoint_change.clone()} />
-            <TShirtSizePicker current_value={profile.t_shirt_size}
-                on_datapoint_change={on_datapoint_change.clone()} />
-            <ProfileDatapoint data_key={ProfileKey::AccessibilityRequirements}
-                current_value={profile.accessibility_requirements} on_value_change={on_datapoint_change.clone()} />
-            <ProfileDatapoint data_key={ProfileKey::DietaryRequirements}
-                current_value={profile.dietary_requirements} on_value_change={on_datapoint_change.clone()} />
-        </div>
-        }
-    </PageContainer>
+                information." }
+            </PageControlParagraph>
+            if loading.clone() {
+                <LoadingSpinner class={classes!("mt-4")} />
+            }
+            if let Some(profile) = profile {
+                <div class="space-y-4 mt-4">
+                    <Input
+                        static_value={profile.bath_username}
+                        readonly=true
+                        input_label="Bath Username"
+                    />
+                    <ProfileDatapoint
+                        data_key={ProfileKey::DisplayName}
+                        current_value={profile.display_name}
+                        on_value_change={on_datapoint_change.clone()}
+                    />
+                    <TShirtSizePicker
+                        current_value={profile.t_shirt_size}
+                        on_datapoint_change={on_datapoint_change.clone()}
+                    />
+                    <ProfileDatapoint
+                        data_key={ProfileKey::AccessibilityRequirements}
+                        current_value={profile.accessibility_requirements}
+                        on_value_change={on_datapoint_change.clone()}
+                    />
+                    <ProfileDatapoint
+                        data_key={ProfileKey::DietaryRequirements}
+                        current_value={profile.dietary_requirements}
+                        on_value_change={on_datapoint_change.clone()}
+                    />
+                </div>
+            }
+        </PageContainer>
     }
 }

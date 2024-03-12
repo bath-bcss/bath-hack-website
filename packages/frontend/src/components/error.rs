@@ -10,8 +10,8 @@ pub fn error_message(props: &Props) -> Html {
     let message = props.message.clone();
 
     html! {
-    if let Some(message) = message {
-        <p class="text-red-600 dark:text-red-300 mt-4">{message}</p>
-    }
+        if let Some(message) = message {
+            <p class="text-red-600 dark:text-red-300 mt-4">{ message }</p>
+        }
     }
 }

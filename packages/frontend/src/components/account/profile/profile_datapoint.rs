@@ -96,13 +96,23 @@ pub fn profile_datapoint(props: &Props) -> Html {
     );
 
     html! {
-    <form onsubmit={on_save_click}>
-        <Input input_label={input_label.to_string()} handle={local_input_state} disabled={loading} />
-        if *value_has_changed {
-        <Button dark_mode={false} disabled={loading} button_type="submit"
-            class={classes!("mt-4")}>{"Save"}</Button>
-        }
-        <ErrorMessage message={error} />
-    </form>
+        <form onsubmit={on_save_click}>
+            <Input
+                input_label={input_label.to_string()}
+                handle={local_input_state}
+                disabled={loading}
+            />
+            if *value_has_changed {
+                <Button
+                    dark_mode=false
+                    disabled={loading}
+                    button_type="submit"
+                    class={classes!("mt-4")}
+                >
+                    { "Save" }
+                </Button>
+            }
+            <ErrorMessage message={error} />
+        </form>
     }
 }

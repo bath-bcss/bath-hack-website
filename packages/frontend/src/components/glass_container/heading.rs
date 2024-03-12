@@ -8,8 +8,8 @@ pub struct Props {
 #[function_component(GlassContainerHeading)]
 pub fn glass_container_heading(props: &Props) -> Html {
     html! {
-    <h1 class="text-3xl font-hero text-bcss-900 dark:text-bcss-200 mb-4">
-        {props.children.clone()}
-    </h1>
+        <h1 class="text-3xl font-hero text-bcss-900 dark:text-bcss-200 mb-4">
+            { props.children.clone() }
+        </h1>
     }
 }

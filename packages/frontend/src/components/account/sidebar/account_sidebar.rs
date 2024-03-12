@@ -81,43 +81,53 @@ pub fn account_sidebar(props: &Props) -> Html {
     });
 
     html! {
-    <div class="flex w-full">
-        <div class={(*sidebar_container_classes).clone()}>
-            <div class="flex items-center justify-between mb-2 md:mb-0">
-                <h1 class="text-3xl text-white dark:text-bcss-200 font-bold tracking-tighter">
-                    <Link<Route> to={Route::Home} classes={classes!("hover:underline")}>
-                        {"Bath Hack 24"}
+        <div class="flex w-full">
+            <div class={(*sidebar_container_classes).clone()}>
+                <div class="flex items-center justify-between mb-2 md:mb-0">
+                    <h1 class="text-3xl text-white dark:text-bcss-200 font-bold tracking-tighter">
+                        <Link<Route> to={Route::Home} classes={classes!("hover:underline")}>
+                            { "Bath Hack 24" }
+                        </Link<Route>>
+                    </h1>
+                    <Button
+                        dark_mode=true
+                        onclick={on_small_screen_close_click}
+                        class={classes!("md:hidden")}
+                    >
+                        <Icon icon_id={IconId::FontAwesomeSolidCircleXmark} />
+                    </Button>
+                </div>
+                <p>
+                    <Link<Route>
+                        to={Route::Logout}
+                        classes={classes!("text-white", "hover:underline")}
+                    >
+                        { "Log out" }
                     </Link<Route>>
-                </h1>
-                <Button dark_mode={true} onclick={on_small_screen_close_click} class={classes!("md:hidden")}>
-                    <Icon icon_id={IconId::FontAwesomeSolidCircleXmark} />
-                </Button>
+                </p>
+                <div class="space-y-2 mt-4">
+                    <SidebarElement
+                        link_to={AccountRoute::Profile}
+                        label="Profile"
+                        icon={IconId::FontAwesomeSolidUser}
+                    />
+                    <SidebarElement
+                        link_to={AccountRoute::Groups}
+                        label="Group"
+                        icon={IconId::FontAwesomeSolidPeopleGroup}
+                    />
+                </div>
             </div>
-
-            <p>
-                <Link<Route> to={Route::Logout} classes={classes!("text-white", "hover:underline")}>
-                    {"Log out"}
-                </Link<Route>>
-            </p>
-
-            <div class="space-y-2 mt-4">
-                <SidebarElement link_to={AccountRoute::Profile} label="Profile" icon={IconId::FontAwesomeSolidUser} />
-                <SidebarElement link_to={AccountRoute::Groups} label="Group"
-                    icon={IconId::FontAwesomeSolidPeopleGroup} />
+            <div class="flex-1 pb-10">
+                if !small_screen_show {
+                    <div class="md:hidden fixed pt-4 pl-4 z-0">
+                        <Button dark_mode=false onclick={on_small_screen_show_click}>
+                            <Icon icon_id={IconId::FontAwesomeSolidBars} />
+                        </Button>
+                    </div>
+                }
+                { props.children.clone() }
             </div>
         </div>
-
-        <div class="flex-1 pb-10">
-            if !small_screen_show {
-            <div class="md:hidden fixed pt-4 pl-4 z-0">
-                <Button dark_mode={false} onclick={on_small_screen_show_click}>
-                    <Icon icon_id={IconId::FontAwesomeSolidBars} />
-                </Button>
-            </div>
-            }
-
-            {props.children.clone()}
-        </div>
-    </div>
     }
 }

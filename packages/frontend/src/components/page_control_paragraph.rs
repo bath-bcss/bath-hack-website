@@ -19,9 +19,5 @@ pub fn page_control_paragraph(props: &Props) -> Html {
         base_classes
     });
 
-    html! {
-    <p class={(*classes).clone()}>
-        {props.children.clone()}
-    </p>
-    }
+    html! { <p class={(*classes).clone()}>{ props.children.clone() }</p> }
 }

@@ -28,54 +28,59 @@ pub fn track_grid_item(props: &Props) -> Html {
     });
 
     html! {
-    <>
-        <li
-            class="w-full h-40 relative rounded-2xl overflow-hidden shadow-bcss-900/40 shadow-xl hover:scale-105 transition-transform">
-            <div style={format!("background-image: url('{}');", props.background_image.clone())}
-                class="absolute top-0 left-0 w-full h-full bg-bcss-200 brightness-75 blur-sm" />
-            <a class="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center text-center drop-shadow cursor-pointer px-2"
-                onclick={on_open_click}>
-                <span class="text-2xl text-white font-bold leading-none">
-                    {props.track_name.clone()}
-                </span>
-                <span class="text-gray-200">
-                    {"from "}<strong>{props.track_company.clone()}</strong>
-                </span>
-            </a>
-        </li>
-
-        <Modal open={show_modal}>
-            <div class="flex items-center justify-between space-x-6">
-                <div>
-                    <h1 class="text-bcss-800 dark:text-bcss-200 font-bold text-3xl">
-                        {props.track_name.clone()}
-                    </h1>
-                    <h2 class="text-bcss-600 dark:text-bcss-300 text-xl">
-                        {"from "}
-                        <a href={props.track_company_link.clone()} target="_blank" class="underline">
-                            {props.track_company.clone()}
-                        </a>
-                    </h2>
+        <>
+            <li
+                class="w-full h-40 relative rounded-2xl overflow-hidden shadow-bcss-900/40 shadow-xl hover:scale-105 transition-transform"
+            >
+                <div
+                    style={format!("background-image: url('{}');", props.background_image.clone())}
+                    class="absolute top-0 left-0 w-full h-full bg-bcss-200 brightness-75 blur-sm"
+                />
+                <a
+                    class="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center text-center drop-shadow cursor-pointer px-2"
+                    onclick={on_open_click}
+                >
+                    <span class="text-2xl text-white font-bold leading-none">
+                        { props.track_name.clone() }
+                    </span>
+                    <span class="text-gray-200">
+                        { "from " }
+                        <strong>{ props.track_company.clone() }</strong>
+                    </span>
+                </a>
+            </li>
+            <Modal open={show_modal}>
+                <div class="flex items-center justify-between space-x-6">
+                    <div>
+                        <h1 class="text-bcss-800 dark:text-bcss-200 font-bold text-3xl">
+                            { props.track_name.clone() }
+                        </h1>
+                        <h2 class="text-bcss-600 dark:text-bcss-300 text-xl">
+                            { "from " }
+                            <a
+                                href={props.track_company_link.clone()}
+                                target="_blank"
+                                class="underline"
+                            >
+                                { props.track_company.clone() }
+                            </a>
+                        </h2>
+                    </div>
+                    <Button onclick={on_close_click} dark_mode=false>
+                        <Icon icon_id={IconId::FontAwesomeSolidCircleXmark} />
+                    </Button>
                 </div>
-                <Button onclick={on_close_click} dark_mode={false}>
-                    <Icon icon_id={IconId::FontAwesomeSolidCircleXmark} />
-                </Button>
-            </div>
-
-            <p class="text-bcss-700 dark:text-bcss-300 mt-4">
-                {props.track_caption.clone()}
-            </p>
-
-            if let Some(track_prize) = props.track_prize.clone() {
-            <h1 class="mt-4 text-bcss-800 dark:text-bcss-200 font-bold text-xl align-middle">
-                <Icon icon_id={IconId::FontAwesomeSolidTrophy} class="inline-block mr-2" />
-                {"Prize"}
-            </h1>
-            <p class="text-bcss-700 dark:text-bcss-300 mt-2">
-                {track_prize}
-            </p>
-            }
-        </Modal>
-    </>
+                <p class="text-bcss-700 dark:text-bcss-300 mt-4">{ props.track_caption.clone() }</p>
+                if let Some(track_prize) = props.track_prize.clone() {
+                    <h1
+                        class="mt-4 text-bcss-800 dark:text-bcss-200 font-bold text-xl align-middle"
+                    >
+                        <Icon icon_id={IconId::FontAwesomeSolidTrophy} class="inline-block mr-2" />
+                        { "Prize" }
+                    </h1>
+                    <p class="text-bcss-700 dark:text-bcss-300 mt-2">{ track_prize }</p>
+                }
+            </Modal>
+        </>
     }
 }

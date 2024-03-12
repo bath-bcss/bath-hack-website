@@ -10,8 +10,8 @@ pub struct Props {
 #[function_component(ResponsiveTableContainer)]
 pub fn responsive_table_container(props: &Props) -> Html {
     html! {
-    <div class={classes!("w-full", "overflow-x-auto", props.class.clone())}>
-        {props.children.clone()}
-    </div>
+        <div class={classes!("w-full", "overflow-x-auto", props.class.clone())}>
+            { props.children.clone() }
+        </div>
     }
 }

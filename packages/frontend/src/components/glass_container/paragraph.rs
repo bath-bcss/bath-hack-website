@@ -18,9 +18,5 @@ pub fn glass_container_paragraph(props: &Props) -> Html {
         base_classes
     });
 
-    html! {
-    <p class={(*p_class).clone()}>
-        {props.children.clone()}
-    </p>
-    }
+    html! { <p class={(*p_class).clone()}>{ props.children.clone() }</p> }
 }

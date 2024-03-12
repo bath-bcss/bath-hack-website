@@ -60,23 +60,26 @@ pub fn group_name_component(props: &Props) -> Html {
     );
 
     html! {
-    if !is_editing {
-    <div class="flex items-center justify-between gap-x-4 mb-2">
-        <p class="text-xl font-bold text-bcss-800 dark:text-bcss-200">
-            {group_name}
-        </p>
-        <Button dark_mode={false} onclick={on_edit_click}>
-            <Icon icon_id={IconId::FontAwesomeSolidPencil} class={classes!("h-4", "w-4" )} />
-        </Button>
-    </div>
-    } else {
-    <form class="mb-2" onsubmit={on_name_submit}>
-        <Input handle={group_name_handle} disabled={loading.clone()} />
-        <Button class={classes!("mt-2")} button_type={"submit"} dark_mode={false} disabled={loading.clone()}>
-            {"Save"}
-        </Button>
-        <ErrorMessage message={error} />
-    </form>
-    }
+        if !is_editing {
+            <div class="flex items-center justify-between gap-x-4 mb-2">
+                <p class="text-xl font-bold text-bcss-800 dark:text-bcss-200">{ group_name }</p>
+                <Button dark_mode=false onclick={on_edit_click}>
+                    <Icon icon_id={IconId::FontAwesomeSolidPencil} class={classes!("h-4", "w-4" )} />
+                </Button>
+            </div>
+        } else {
+            <form class="mb-2" onsubmit={on_name_submit}>
+                <Input handle={group_name_handle} disabled={loading.clone()} />
+                <Button
+                    class={classes!("mt-2")}
+                    button_type="submit"
+                    dark_mode=false
+                    disabled={loading.clone()}
+                >
+                    { "Save" }
+                </Button>
+                <ErrorMessage message={error} />
+            </form>
+        }
     }
 }

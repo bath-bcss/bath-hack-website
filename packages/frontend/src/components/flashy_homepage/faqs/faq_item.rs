@@ -75,15 +75,13 @@ pub fn faq_item(props: &Props) -> Html {
     );
 
     html! {
-    <div>
-        <p class="w-full text-lg">
-            <a class={(*link_classes).clone()} onclick={on_question_click}>
-                {props.question.clone()}
-            </a>
-        </p>
-        <div class={(*expanded_div_classes).clone()}>
-            {props.children.clone()}
+        <div>
+            <p class="w-full text-lg">
+                <a class={(*link_classes).clone()} onclick={on_question_click}>
+                    { props.question.clone() }
+                </a>
+            </p>
+            <div class={(*expanded_div_classes).clone()}>{ props.children.clone() }</div>
         </div>
-    </div>
     }
 }

@@ -27,66 +27,88 @@ pub fn faqs_component() -> Html {
     );
 
     html! {
-    <div class="mt-4 space-y-4">
-        <FAQItem current_open={currently_open_index.clone()} i={FAQItemIndex::WhatIsHackathon}
-            on_click={on_item_click.clone()} question="What is a hackathon?">
-            <FAQItemParagraph>
-                {"In short, it is the ultimate technological group work task. You have 24hrs and a team to plan, design,
+        <div class="mt-4 space-y-4">
+            <FAQItem
+                current_open={currently_open_index.clone()}
+                i={FAQItemIndex::WhatIsHackathon}
+                on_click={on_item_click.clone()}
+                question="What is a hackathon?"
+            >
+                <FAQItemParagraph>
+                    { "In short, it is the ultimate technological group work task. You have 24hrs and a team to plan, design,
                 develop and pitch a system from scratch. Whether you sacrifice functionality for ambition or strive for
                 a
                 fully working system the options are boundless. Pick a prize track and creatively solve the problem and
                 you'll be real competition. As cliche as it sounds, the most important thing is have fun and meet new
-                people."}
-            </FAQItemParagraph>
-        </FAQItem>
-        <FAQItem current_open={currently_open_index.clone()} i={FAQItemIndex::WhatIsPrizeTrack}
-            on_click={on_item_click.clone()} question="What is a track?">
-            <FAQItemParagraph>
-                {"A track is a problem that needs to be solved or a question that needs to be answered. It's a
+                people." }
+                </FAQItemParagraph>
+            </FAQItem>
+            <FAQItem
+                current_open={currently_open_index.clone()}
+                i={FAQItemIndex::WhatIsPrizeTrack}
+                on_click={on_item_click.clone()}
+                question="What is a track?"
+            >
+                <FAQItemParagraph>
+                    { "A track is a problem that needs to be solved or a question that needs to be answered. It's a
                 specific
-                goal your solution should fulfil."}
-            </FAQItemParagraph>
-            <FAQItemParagraph>
-                {"Tracks can be vague or specific and your project can be eligible for more than one."}
-            </FAQItemParagraph>
-        </FAQItem>
-        <FAQItem current_open={currently_open_index.clone()} i={FAQItemIndex::WhoCanParticipate}
-            on_click={on_item_click.clone()} question="Who can participate in this event?">
-            <FAQItemParagraph>
-                {"Any student at the University of Bath! Not just Computer Scientists."}
-            </FAQItemParagraph>
-            <FAQItemParagraph>
-                {"In fact, you don't even need experience with coding or tech in general. All you need are creativity
+                goal your solution should fulfil." }
+                </FAQItemParagraph>
+                <FAQItemParagraph>
+                    { "Tracks can be vague or specific and your project can be eligible for more than one." }
+                </FAQItemParagraph>
+            </FAQItem>
+            <FAQItem
+                current_open={currently_open_index.clone()}
+                i={FAQItemIndex::WhoCanParticipate}
+                on_click={on_item_click.clone()}
+                question="Who can participate in this event?"
+            >
+                <FAQItemParagraph>
+                    { "Any student at the University of Bath! Not just Computer Scientists." }
+                </FAQItemParagraph>
+                <FAQItemParagraph>
+                    { "In fact, you don't even need experience with coding or tech in general. All you need are creativity
                 and enthusiasm! There'll be lots of support available for those with less experience — but there will
-                also be ways to participate without writing a single line of code."}
-            </FAQItemParagraph>
-        </FAQItem>
-        <FAQItem current_open={currently_open_index.clone()} i={FAQItemIndex::WhatCanBuild}
-            on_click={on_item_click.clone()} question="What can I build?">
-            <FAQItemParagraph>
-                {"Anything cool! In the past lots of projects have involved electronics or programming, but we'll also
-                have ways to participate without writing any code!"}
-            </FAQItemParagraph>
-        </FAQItem>
-        <FAQItem current_open={currently_open_index.clone()} i={FAQItemIndex::TwentyFour}
-            on_click={on_item_click.clone()} question="24 hours‽">
-            <FAQItemParagraph>
-                {"You don't have to use the full time and we encourage you to take a break and/or sleep. But yes, 24hrs
-                of potential project time."}
-            </FAQItemParagraph>
-            <FAQItemParagraph>
-                {"Good luck, use it wisely!"}
-            </FAQItemParagraph>
-        </FAQItem>
-        <FAQItem current_open={currently_open_index.clone()} i={FAQItemIndex::Food} on_click={on_item_click.clone()}
-            question="Food?">
-            <FAQItemParagraph>
-                {"Food indeed! There will be 3 meals provided free of charge (thanks to our lovely sponsors!) to all
+                also be ways to participate without writing a single line of code." }
+                </FAQItemParagraph>
+            </FAQItem>
+            <FAQItem
+                current_open={currently_open_index.clone()}
+                i={FAQItemIndex::WhatCanBuild}
+                on_click={on_item_click.clone()}
+                question="What can I build?"
+            >
+                <FAQItemParagraph>
+                    { "Anything cool! In the past lots of projects have involved electronics or programming, but we'll also
+                have ways to participate without writing any code!" }
+                </FAQItemParagraph>
+            </FAQItem>
+            <FAQItem
+                current_open={currently_open_index.clone()}
+                i={FAQItemIndex::TwentyFour}
+                on_click={on_item_click.clone()}
+                question="24 hours‽"
+            >
+                <FAQItemParagraph>
+                    { "You don't have to use the full time and we encourage you to take a break and/or sleep. But yes, 24hrs
+                of potential project time." }
+                </FAQItemParagraph>
+                <FAQItemParagraph>{ "Good luck, use it wisely!" }</FAQItemParagraph>
+            </FAQItem>
+            <FAQItem
+                current_open={currently_open_index.clone()}
+                i={FAQItemIndex::Food}
+                on_click={on_item_click.clone()}
+                question="Food?"
+            >
+                <FAQItemParagraph>
+                    { "Food indeed! There will be 3 meals provided free of charge (thanks to our lovely sponsors!) to all
                 participants, including dinner, breakfast,
                 and lunch. We'll try to cater to all dietary requirements, so please specify these when you create your
-                account."}
-            </FAQItemParagraph>
-        </FAQItem>
-    </div>
+                account." }
+                </FAQItemParagraph>
+            </FAQItem>
+        </div>
     }
 }

@@ -82,16 +82,26 @@ pub fn input(props: &Props) -> Html {
             }
 
             html! {
-            <input class={input_class} id={child_props.id} placeholder={placeholder.clone()}
-                type={input_type.clone()} required={required.clone()} oninput={on_change_handler}
-                value={handle_value.clone()} disabled={disabled.clone()}
-                readonly={readonly.clone()} />
+                <input
+                    class={input_class}
+                    id={child_props.id}
+                    placeholder={placeholder.clone()}
+                    type={input_type.clone()}
+                    required={required.clone()}
+                    oninput={on_change_handler}
+                    value={handle_value.clone()}
+                    disabled={disabled.clone()}
+                    readonly={readonly.clone()}
+                />
             }
         },
     );
 
     html! {
-    <FormHandle child_renderer={child_renderer}
-        container_class={props.container_class.clone()} label={props.input_label.clone()} />
+        <FormHandle
+            child_renderer={child_renderer}
+            container_class={props.container_class.clone()}
+            label={props.input_label.clone()}
+        />
     }
 }

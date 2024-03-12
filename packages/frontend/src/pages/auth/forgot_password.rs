@@ -6,10 +6,11 @@ use crate::{
     components::{
         button::Button,
         error::ErrorMessage,
+        form::input::Input,
         glass_container::{
             heading::GlassContainerHeading, paragraph::GlassContainerParagraph, GlassContainer,
         },
-        hero::center::HeroCenterContainer, form::input::Input,
+        hero::center::HeroCenterContainer,
     },
     data::auth::forgot_password,
     router::Route,
@@ -53,27 +54,33 @@ pub fn forgot_password_page() -> Html {
     );
 
     html! {
-    <HeroCenterContainer>
-        <GlassContainer home_link={true}>
-            <GlassContainerHeading>
-                {"Reset your password"}
-            </GlassContainerHeading>
-            <GlassContainerParagraph>
-                {"If you've forgotten your password, don't worry! You can enter your Bath username here and we'll send
+        <HeroCenterContainer>
+            <GlassContainer home_link=true>
+                <GlassContainerHeading>{ "Reset your password" }</GlassContainerHeading>
+                <GlassContainerParagraph>
+                    { "If you've forgotten your password, don't worry! You can enter your Bath username here and we'll send
                 you
-                an email to reset it."}
-            </GlassContainerParagraph>
-
-            <form class="mt-4" onsubmit={on_submit}>
-                <Input handle={username_handle} input_label="Bath Username" placeholder="E.g. pk760"
-                    disabled={loading} required={true} />
-                <Button button_type="submit" dark_mode={false} class={classes!("mt-4")} disabled={loading}>
-                    {"Let's do this!"}
-                </Button>
-            </form>
-
-            <ErrorMessage message={(*error_handle).clone()} />
-        </GlassContainer>
-    </HeroCenterContainer>
+                an email to reset it." }
+                </GlassContainerParagraph>
+                <form class="mt-4" onsubmit={on_submit}>
+                    <Input
+                        handle={username_handle}
+                        input_label="Bath Username"
+                        placeholder="E.g. pk760"
+                        disabled={loading}
+                        required=true
+                    />
+                    <Button
+                        button_type="submit"
+                        dark_mode=false
+                        class={classes!("mt-4")}
+                        disabled={loading}
+                    >
+                        { "Let's do this!" }
+                    </Button>
+                </form>
+                <ErrorMessage message={(*error_handle).clone()} />
+            </GlassContainer>
+        </HeroCenterContainer>
     }
 }

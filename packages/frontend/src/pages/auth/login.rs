@@ -6,10 +6,11 @@ use crate::{
     components::{
         button::Button,
         error::ErrorMessage,
+        form::input::Input,
         glass_container::{
             heading::GlassContainerHeading, paragraph::GlassContainerParagraph, GlassContainer,
         },
-        hero::center::HeroCenterContainer, form::input::Input,
+        hero::center::HeroCenterContainer,
     },
     data::auth::sign_in,
     router::Route,
@@ -54,32 +55,39 @@ pub fn login_page() -> Html {
     );
 
     html! {
-    <HeroCenterContainer>
-        <GlassContainer home_link={true}>
-            <GlassContainerHeading>
-                {"Sign in"}
-            </GlassContainerHeading>
-
-            <form onsubmit={on_sign_in_callback}>
-                <Input handle={username_handle} input_label="Bath Username" placeholder="E.g. pk760" required={true}
-                    input_type="text" input_class={classes!("mb-4")} disabled={loading.clone()} />
-
-                <Input handle={password_handle} input_label="Password" placeholder="NOT your uni password"
-                    required={true} input_type="password" input_class={classes!("mb-4")} disabled={loading.clone()} />
-
-                <Button dark_mode={false} button_type="submit" disabled={loading.clone()}>
-                    {"Sign in!"}
-                </Button>
-
-                <ErrorMessage message={error} />
-
-                <GlassContainerParagraph top_margin={true}>
-                    <Link<Route> to={Route::ForgotPassword} classes={classes!("underline")}>
-                        {"Forgot your password?"}
-                    </Link<Route>>
-                </GlassContainerParagraph>
-            </form>
-        </GlassContainer>
-    </HeroCenterContainer>
+        <HeroCenterContainer>
+            <GlassContainer home_link=true>
+                <GlassContainerHeading>{ "Sign in" }</GlassContainerHeading>
+                <form onsubmit={on_sign_in_callback}>
+                    <Input
+                        handle={username_handle}
+                        input_label="Bath Username"
+                        placeholder="E.g. pk760"
+                        required=true
+                        input_type="text"
+                        input_class={classes!("mb-4")}
+                        disabled={loading.clone()}
+                    />
+                    <Input
+                        handle={password_handle}
+                        input_label="Password"
+                        placeholder="NOT your uni password"
+                        required=true
+                        input_type="password"
+                        input_class={classes!("mb-4")}
+                        disabled={loading.clone()}
+                    />
+                    <Button dark_mode=false button_type="submit" disabled={loading.clone()}>
+                        { "Sign in!" }
+                    </Button>
+                    <ErrorMessage message={error} />
+                    <GlassContainerParagraph top_margin=true>
+                        <Link<Route> to={Route::ForgotPassword} classes={classes!("underline")}>
+                            { "Forgot your password?" }
+                        </Link<Route>>
+                    </GlassContainerParagraph>
+                </form>
+            </GlassContainer>
+        </HeroCenterContainer>
     }
 }

@@ -58,9 +58,13 @@ pub fn button(props: &Props) -> Html {
     });
 
     html! {
-    <button class={(*class).clone()} onclick={props.onclick.clone()} type={props.button_type.clone()}
-        disabled={props.disabled}>
-        {props.children.clone()}
-    </button>
+        <button
+            class={(*class).clone()}
+            onclick={props.onclick.clone()}
+            type={props.button_type.clone()}
+            disabled={props.disabled}
+        >
+            { props.children.clone() }
+        </button>
     }
 }

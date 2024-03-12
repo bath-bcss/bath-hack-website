@@ -13,10 +13,10 @@ use crate::{
 };
 
 mod in_group;
+mod joining;
 mod joining_group;
 mod member_card;
 pub mod types;
-mod joining;
 
 #[function_component(AccountGroupPage)]
 pub fn account_group_page() -> Html {
@@ -53,20 +53,17 @@ pub fn account_group_page() -> Html {
     }
 
     html! {
-    <PageContainer>
-        <PageTitle page_description="Manage your group membership">
-            {"Your group"}
-        </PageTitle>
-
-        if get_group_loading {
-        <LoadingSpinner class={classes!("mt-4")} />
-        } else {
-        if let Some(_) = current_group {
-        <AccountGroupManage group_handle={current_group_handle} />
-        } else {
-        <AccountGroupJoining group_handle={current_group_handle} />
-        }
-        }
-    </PageContainer>
+        <PageContainer>
+            <PageTitle page_description="Manage your group membership">{ "Your group" }</PageTitle>
+            if get_group_loading {
+                <LoadingSpinner class={classes!("mt-4")} />
+            } else {
+                if let Some(_) = current_group {
+                    <AccountGroupManage group_handle={current_group_handle} />
+                } else {
+                    <AccountGroupJoining group_handle={current_group_handle} />
+                }
+            }
+        </PageContainer>
     }
 }

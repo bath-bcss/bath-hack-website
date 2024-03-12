@@ -25,7 +25,5 @@ pub fn loading_spinner(props: &Props) -> Html {
         base_classes
     });
 
-    html! {
-    <Icon icon_id={IconId::FontAwesomeSolidSpinner} class={(*classes).clone()} />
-    }
+    html! { <Icon icon_id={IconId::FontAwesomeSolidSpinner} class={(*classes).clone()} /> }
 }

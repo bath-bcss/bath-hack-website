@@ -37,6 +37,9 @@ cargo run -p bhw-backend --no-default-features
 
 This last command will run the migrations on your database and then start up the backend server (this doesn't live-reload).
 
+## Formatting
+Frontend Yew macros can be tricky for Rust's built-in `rustfmt` to handle. Instead, we use [`yew-fmt`](https://github.com/schvv31n/yew-fmt), which is a drop-in replacement that handles Yew code nicely.
+
 ## Deploying
 This can be done in a couple of ways. If you're using Kubernetes, see the `k8s` directory for a `kustomize`-compatible configuration. You'll need to set some secrets manually, so make sure to look through the files before deploying them.
 

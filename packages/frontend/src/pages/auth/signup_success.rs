@@ -10,18 +10,16 @@ use crate::components::{
 #[function_component(SignupSuccessPage)]
 pub fn signup_success_page() -> Html {
     html! {
-    <HeroCenterContainer>
-        <GlassContainer>
-            <GlassContainerHeading>
-                {"Awesome!"}
-            </GlassContainerHeading>
-            <GlassContainerParagraph>
-                {"We've sent an email to your Uni inbox. Please follow the link to continue :)"}
-            </GlassContainerParagraph>
-            <GlassContainerParagraph>
-                {"It may take a while to arrive and it'll probably go to your Junk folder, so look out for it!"}
-            </GlassContainerParagraph>
-        </GlassContainer>
-    </HeroCenterContainer>
+        <HeroCenterContainer>
+            <GlassContainer>
+                <GlassContainerHeading>{ "Awesome!" }</GlassContainerHeading>
+                <GlassContainerParagraph>
+                    { "We've sent an email to your Uni inbox. Please follow the link to continue :)" }
+                </GlassContainerParagraph>
+                <GlassContainerParagraph>
+                    { "It may take a while to arrive and it'll probably go to your Junk folder, so look out for it!" }
+                </GlassContainerParagraph>
+            </GlassContainer>
+        </HeroCenterContainer>
     }
 }

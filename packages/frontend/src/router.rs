@@ -4,9 +4,7 @@ use yew_router::prelude::*;
 use crate::{
     components::account::sidebar::account_sidebar::AccountSidebar,
     pages::{
-        account::{
-            account_group::AccountGroupPage, account_home::AccountHomePage,
-        },
+        account::{account_group::AccountGroupPage, account_home::AccountHomePage},
         auth::{
             forgot_password::ForgotPasswordPage, forgot_password_pin::ForgotPasswordPINPage,
             login::LoginPage, logout::LogoutPage, signup::SignupPage,
@@ -59,49 +57,28 @@ pub enum AccountRoute {
 
 pub fn switch(routes: Route) -> Html {
     match routes {
-        Route::Home => html! {
-        <HomePage />
-        },
-        Route::Login => html! {
-        <LoginPage />
-        },
-        Route::Logout => html! {
-        <LogoutPage />},
-        Route::SignupNotice => html! {
-        <SignupNoticePage />
-        },
-        Route::Signup => html! {
-        <SignupPage />
-        },
-        Route::SignupSuccess => html! {
-        <SignupSuccessPage />
-        },
-        Route::ActivateAccount => html! {
-        <SignupActivatePage />
-        },
-        Route::ForgotPassword => html! {
-        <ForgotPasswordPage />
-        },
-        Route::ForgotPasswordPIN => html! {
-        <ForgotPasswordPINPage />
-        },
-        Route::NotFound => html! {
-        <NotFoundPage />
-        },
+        Route::Home => html! { <HomePage /> },
+        Route::Login => html! { <LoginPage /> },
+        Route::Logout => html! { <LogoutPage /> },
+        Route::SignupNotice => html! { <SignupNoticePage /> },
+        Route::Signup => html! { <SignupPage /> },
+        Route::SignupSuccess => html! { <SignupSuccessPage /> },
+        Route::ActivateAccount => html! { <SignupActivatePage /> },
+        Route::ForgotPassword => html! { <ForgotPasswordPage /> },
+        Route::ForgotPasswordPIN => html! { <ForgotPasswordPINPage /> },
+        Route::NotFound => html! { <NotFoundPage /> },
 
         Route::AccountHome | Route::Account => html! {
-        <AccountSidebar>
-            <Switch<AccountRoute> render={switch_account} />
-        </AccountSidebar>
+            <AccountSidebar>
+                <Switch<AccountRoute> render={switch_account} />
+            </AccountSidebar>
         },
     }
 }
 
 pub fn switch_account(route: AccountRoute) -> Html {
     match route {
-        AccountRoute::Profile => html! {
-        <AccountHomePage /> },
-        AccountRoute::Groups => html! {
-        <AccountGroupPage />},
+        AccountRoute::Profile => html! { <AccountHomePage /> },
+        AccountRoute::Groups => html! { <AccountGroupPage /> },
     }
 }

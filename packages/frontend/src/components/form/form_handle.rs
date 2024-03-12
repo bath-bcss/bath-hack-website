@@ -54,13 +54,11 @@ pub fn form_handle(props: &Props) -> Html {
     );
 
     html! {
-    <div class={props.container_class.clone()}>
-        if let Some(label) = props.label.clone() {
-        <label for={(*label_id).clone()} class={label_class}>
-            { label }
-        </label>
-        }
-        {(*child).clone()}
-    </div>
+        <div class={props.container_class.clone()}>
+            if let Some(label) = props.label.clone() {
+                <label for={(*label_id).clone()} class={label_class}>{ label }</label>
+            }
+            { (*child).clone() }
+        </div>
     }
 }

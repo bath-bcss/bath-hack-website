@@ -76,30 +76,34 @@ pub fn signup_activate_page() -> Html {
     });
 
     html! {
-    <HeroCenterContainer>
-        <GlassContainer>
-            <GlassContainerHeading>
-                {"Welcome to Bath Hack 24!"}
-            </GlassContainerHeading>
-
-            <GlassContainerParagraph top_margin={true}>
-                {"To get started, please create a password."}
-            </GlassContainerParagraph>
-            <GlassContainerParagraph>
-                {"This should be different to your Uni password."}
-            </GlassContainerParagraph>
-
-            <form class="mt-4" onsubmit={on_activate_click}>
-                <Input input_label="New password" placeholder="NOT your uni password" input_type="password"
-                    required={true} handle={new_password_handle} />
-
-                <Button dark_mode={false} button_type="submit" class={classes!("mt-4")} disabled={loading}>
-                    {"Activate account"}
-                </Button>
-            </form>
-
-            <ErrorMessage message={error} />
-        </GlassContainer>
-    </HeroCenterContainer>
+        <HeroCenterContainer>
+            <GlassContainer>
+                <GlassContainerHeading>{ "Welcome to Bath Hack 24!" }</GlassContainerHeading>
+                <GlassContainerParagraph top_margin=true>
+                    { "To get started, please create a password." }
+                </GlassContainerParagraph>
+                <GlassContainerParagraph>
+                    { "This should be different to your Uni password." }
+                </GlassContainerParagraph>
+                <form class="mt-4" onsubmit={on_activate_click}>
+                    <Input
+                        input_label="New password"
+                        placeholder="NOT your uni password"
+                        input_type="password"
+                        required=true
+                        handle={new_password_handle}
+                    />
+                    <Button
+                        dark_mode=false
+                        button_type="submit"
+                        class={classes!("mt-4")}
+                        disabled={loading}
+                    >
+                        { "Activate account" }
+                    </Button>
+                </form>
+                <ErrorMessage message={error} />
+            </GlassContainer>
+        </HeroCenterContainer>
     }
 }

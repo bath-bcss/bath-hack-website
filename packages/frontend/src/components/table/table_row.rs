@@ -7,9 +7,5 @@ pub struct Props {
 
 #[function_component(TableRow)]
 pub fn table_row(props: &Props) -> Html {
-    html! {
-    <tr>
-        {props.children.clone()}
-    </tr>
-    }
+    html! { <tr>{ props.children.clone() }</tr> }
 }

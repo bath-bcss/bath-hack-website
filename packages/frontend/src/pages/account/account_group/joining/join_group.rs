@@ -53,22 +53,29 @@ pub fn join_group_component(props: &AccountGroupSubpageProps) -> Html {
     );
 
     html! {
-    <>
-        <PageControlHeading>
-            {"Join a group"}
-        </PageControlHeading>
-        <PageControlParagraph>
-            {"If someone's given you a join code, enter it here to join their group!"}
-        </PageControlParagraph>
-        <form onsubmit={on_join_group_click}>
-            <Input input_label="Join code" placeholder="E.g. ab24be" handle={join_code_handle} disabled={form_loading}
-                required={true} />
-            <Button button_type="submit" dark_mode={false} class={classes!("mt-4")} disabled={form_loading}>
-                {"Join!"}
-            </Button>
-
-            <ErrorMessage message={join_group_error} />
-        </form>
-    </>
+        <>
+            <PageControlHeading>{ "Join a group" }</PageControlHeading>
+            <PageControlParagraph>
+                { "If someone's given you a join code, enter it here to join their group!" }
+            </PageControlParagraph>
+            <form onsubmit={on_join_group_click}>
+                <Input
+                    input_label="Join code"
+                    placeholder="E.g. ab24be"
+                    handle={join_code_handle}
+                    disabled={form_loading}
+                    required=true
+                />
+                <Button
+                    button_type="submit"
+                    dark_mode=false
+                    class={classes!("mt-4")}
+                    disabled={form_loading}
+                >
+                    { "Join!" }
+                </Button>
+                <ErrorMessage message={join_group_error} />
+            </form>
+        </>
     }
 }
