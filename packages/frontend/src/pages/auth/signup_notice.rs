@@ -83,14 +83,17 @@ pub fn signup_notice_page() -> Html {
                     as they need the information to run the event." }
                     </GlassContainerParagraph>
                     <GlassContainerParagraph>
-                        { "To exercise your rights under the Data Protection Act 2018 and (where relevant) the General Data
-                    Protection
-                    Act, please email su-bcss@bath.ac.uk from your University email account." }
+                        { "Your information may be processed securely by third-parties also on a legitimate interest basis:
+                    to facilitate the secure recording of your details and ensure communication." }
+                    </GlassContainerParagraph>
+                    <GlassContainerParagraph>
+                        { "If you have any questions or would like to exercise your rights under the Data Protection Act
+                    2018 and (where relevant) the General Data Protection Act, please email su-bcss@bath.ac.uk from your
+                    University email account." }
                     </GlassContainerParagraph>
                     <GlassContainerParagraph top_margin=true>
                         { "By pressing the button below, you accept the above points and agree to allow BCSS to process the
-                    personal
-                    information you provide." }
+                    personal information you provide." }
                     </GlassContainerParagraph>
                     <Button
                         dark_mode=false
