@@ -20,6 +20,7 @@ pub struct Model {
     pub group_id: Option<Uuid>,
     pub ldap_check_status: i16,
     pub t_shirt_size: Option<TShirtSizeEnum>,
+    pub is_committee: bool,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

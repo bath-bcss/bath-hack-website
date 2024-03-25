@@ -123,7 +123,9 @@ impl SignupRequestHelper {
             expires_at: {
                 let now = Utc::now();
                 let new_time = now
-                    .checked_add_signed(Duration::minutes(15))
+                    .checked_add_signed(
+                        Duration::try_minutes(15).ok_or(SignupRequestCreateError::Duration)?,
+                    )
                     .ok_or(SignupRequestCreateError::Duration)?;
                 Set(new_time.naive_utc())
             },
@@ -151,7 +153,6 @@ impl SignupRequestHelper {
     pub fn expired(signup_request: &signup_request::Model) -> bool {
         signup_request.expires_at <= Utc::now().naive_utc()
     }
-
     pub fn send_email<'a>(
         signup_request: &'a signup_request::Model,
         config: &'a AppConfig,
