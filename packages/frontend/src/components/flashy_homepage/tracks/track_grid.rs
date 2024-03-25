@@ -22,6 +22,14 @@ pub fn track_grid() -> Html {
                 track_company="BCSS"
                 track_company_link="https://thesubath.com/bcss"
             />
+            <TrackGridItem
+                track_name="Best Overall"
+                background_image="img/track_technologically_impressive.webp"
+                track_caption="The ultimate prize: selected by our committee, this project will be a perfect combination of advanced technology, high-quality branding, strong vision, and general ingenuity."
+                track_prize="TBA"
+                track_company="BCSS"
+                track_company_link="https://thesubath.com/bcss"
+            />
             <li
                 class="h-40 flex justify-center items-center border-2 border-gray-200 dark:border-bcss-800 rounded-2xl"
             >
