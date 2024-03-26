@@ -8,7 +8,7 @@ mod sponsor_item;
 pub fn sponsors_grid() -> Html {
     html! {
         <div
-            class="mt-8 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12 items-center"
+            class="mt-8 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-4 items-center"
             role="list"
         >
             <SponsorItem
@@ -22,16 +22,31 @@ pub fn sponsors_grid() -> Html {
                 logo_url="img/sponsors/hpe.svg"
                 url="https://www.hpe.com"
             />
-            <SponsorItem name="GitHub" logo_url="img/sponsors/github.png" url="https://github.com" />
-            <SponsorItem name="XMOS" logo_url="img/sponsors/xmos.png" url="https://www.xmos.com" />
+            <SponsorItem name="GitHub" logo_url="img/sponsors/github.webp" url="https://github.com" />
+            <SponsorItem name="XMOS" logo_url="img/sponsors/xmos.webp" url="https://www.xmos.com" />
+            <SponsorItem
+                name="SparkLayer"
+                logo_url="img/sponsors/sparklayer.webp"
+                url="https://sparklayer.io"
+            />
+            <SponsorItem
+                name="CiteAB"
+                logo_url="img/sponsors/citeab.webp"
+                url="https://citeab.com"
+            />
+            <SponsorItem
+                name="Telekinetix"
+                logo_url="img/sponsors/telekinetix.webp"
+                url="https://www.telekinetix.com"
+            />
             <SponsorItem
                 name="University of Bath Department of Computer Science"
-                logo_url="img/sponsors/uni.png"
+                logo_url="img/sponsors/uni.webp"
                 url="https://www.bath.ac.uk/departments/department-of-computer-science/"
             />
             <SponsorItem
                 name="The SU Groups"
-                logo_url="img/sponsors/su.svg"
+                logo_url="img/sponsors/thesubath.webp"
                 url="https://thesubath.com"
             />
         </div>

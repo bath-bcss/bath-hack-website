@@ -106,6 +106,10 @@ pub fn home_page() -> Html {
                 for all of them. So even if your project might fall into the scope of multiple tracks, you won't need to
                 pick which you run for." }
                     </FlashyHomepageSectionParagraph>
+                    <FlashyHomepageSectionParagraph>
+                        { "Prizes shown are per member of your group (for groups with 4 members) and are subject to change before
+                    the event." }
+                    </FlashyHomepageSectionParagraph>
                     <TrackGrid />
                 </FlashyHomepageSection>
                 <FlashyHomepageSection
