@@ -15,7 +15,7 @@ pub fn track_grid() -> Html {
             <TrackGridItem
                 track_name="Hackers' Choice"
                 background_image="img/tracks/hackers_choice.webp"
-                track_caption="People are great, and we famously always make good decisions as a group. The biggest decision of your collective lives is now upon you! (Debatably) Who’s got the funniest project? Which project really tugs at your heart strings? Which project do you think is just the best (except your own, obviously). It really is up to you!"
+                track_caption="People are great, and we famously always make good decisions as a group. The biggest decision of your collective lives is now upon you! Who’s got the funniest project? Which project really tugs at your heart strings? Which project do you think is just the best. It really is up to you!"
                 track_prize="£125 Amazon gift card"
             />
             <TrackGridItem
@@ -49,7 +49,7 @@ pub fn track_grid() -> Html {
             <TrackGridItem
                 track_name="Best Design and Concept"
                 background_image="img/tracks/design.webp"
-                track_caption="This one's new for 2024! You don't have to write any code at all for this track, but you need creativity and ambition! We're looking for a perfectly designed project concept/mockup with great potential to be made into a real implementation — preferably, this would be something novel and intelligent that could genuinely have a positive impact on peoples' lives."
+                track_caption="This one's new for 2024! You don't have to write any code at all for this track, but you need creativity and ambition! We're looking for a perfectly designed project concept or mockup with great potential to be made into a real implementation — preferably, this would be something novel and intelligent that could genuinely have a positive impact on peoples' lives."
                 track_prize="XP-PEN Deco Pro Drawing Tablet"
             />
         </ul>

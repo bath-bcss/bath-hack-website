@@ -101,14 +101,14 @@ pub fn home_page() -> Html {
                     anchor="tracks"
                 >
                     <FlashyHomepageSectionParagraph>
-                        { "The competition's split into \"tracks\", to give your project ideas a general guiding theme. Don't
+                        { "The competition is split into “tracks”, to give your project ideas a general guiding theme. Don't
                 worry — you won't need to choose a track at the start, as your entry will automatically be considered
                 for all of them. So even if your project might fall into the scope of multiple tracks, you won't need to
                 pick which you run for." }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph>
-                        { "Prizes shown are per member of your group (for groups with 4 members) and are subject to change before
-                    the event." }
+                        { "Prizes shown are per member of your group (for groups with 4 members) and are subject to change
+                    before the event." }
                     </FlashyHomepageSectionParagraph>
                     <TrackGrid />
                 </FlashyHomepageSection>
