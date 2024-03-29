@@ -26,7 +26,14 @@ pub fn homepage_footer() -> Html {
                     { "." }
                 </p>
                 <p class="text-bcss-800 dark:text-bcss-200">
-                    { "Contact su-bcss@bath.ac.uk for support." }
+                    { "Contact " }
+                    <a
+                        href="mailto:su-bcss@bath.ac.uk"
+                        class="underline"
+                    >
+                        { "su-bcss@bath.ac.uk" }
+                    </a>
+                    { " for support." }                
                 </p>
             </div>
         </footer>
