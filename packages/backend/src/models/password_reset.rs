@@ -85,7 +85,9 @@ impl PasswordResetHelper {
             expires_at: {
                 let now = Utc::now();
                 let new_time = now
-                    .checked_add_signed(Duration::minutes(15))
+                    .checked_add_signed(
+                        Duration::try_minutes(15).ok_or(CreatePasswordResetError::TimeError)?,
+                    )
                     .ok_or(CreatePasswordResetError::TimeError)?;
                 Set(new_time.naive_utc())
             },
