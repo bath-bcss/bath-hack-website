@@ -3,14 +3,20 @@ use yew_icons::{Icon, IconId};
 
 use crate::components::{button::Button, modal::Modal};
 
+#[derive(Debug, PartialEq, Clone)]
+pub struct TrackCompany {
+    pub name: String,
+    pub link: String,
+}
+
 #[derive(Properties, Debug, PartialEq)]
 pub struct Props {
     pub track_name: String,
     pub track_caption: String,
     #[prop_or_default]
     pub track_prize: Option<String>,
-    pub track_company: String,
-    pub track_company_link: String,
+    #[prop_or_default]
+    pub track_company: Option<TrackCompany>,
     pub background_image: String,
 }
 
@@ -34,7 +40,7 @@ pub fn track_grid_item(props: &Props) -> Html {
             >
                 <div
                     style={format!("background-image: url('{}');", props.background_image.clone())}
-                    class="absolute top-0 left-0 w-full h-full bg-bcss-200 brightness-75 blur-sm"
+                    class="absolute top-0 left-0 w-full h-full bg-bcss-200 bg-cover bg-center brightness-[0.6] blur-sm"
                 />
                 <a
                     class="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center text-center drop-shadow cursor-pointer px-2"
@@ -43,10 +49,12 @@ pub fn track_grid_item(props: &Props) -> Html {
                     <span class="text-2xl text-white font-bold leading-none">
                         { props.track_name.clone() }
                     </span>
-                    <span class="text-gray-200">
-                        { "from " }
-                        <strong>{ props.track_company.clone() }</strong>
-                    </span>
+                    if let Some(track_company) = props.track_company.clone() {
+                        <span class="text-gray-200">
+                            { "from " }
+                            <strong>{ track_company.name }</strong>
+                        </span>
+                    }
                 </a>
             </li>
             <Modal open={show_modal}>
@@ -55,16 +63,14 @@ pub fn track_grid_item(props: &Props) -> Html {
                         <h1 class="text-bcss-800 dark:text-bcss-200 font-bold text-3xl">
                             { props.track_name.clone() }
                         </h1>
-                        <h2 class="text-bcss-600 dark:text-bcss-300 text-xl">
-                            { "from " }
-                            <a
-                                href={props.track_company_link.clone()}
-                                target="_blank"
-                                class="underline"
-                            >
-                                { props.track_company.clone() }
-                            </a>
-                        </h2>
+                        if let Some(track_company) = props.track_company.clone() {
+                            <h2 class="text-bcss-600 dark:text-bcss-300 text-xl">
+                                { "from " }
+                                <a href={track_company.link} target="_blank" class="underline">
+                                    { track_company.name }
+                                </a>
+                            </h2>
+                        }
                     </div>
                     <Button onclick={on_close_click} dark_mode=false>
                         <Icon icon_id={IconId::FontAwesomeSolidCircleXmark} />
