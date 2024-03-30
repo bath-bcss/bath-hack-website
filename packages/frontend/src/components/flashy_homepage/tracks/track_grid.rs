@@ -49,7 +49,7 @@ pub fn track_grid() -> Html {
             <TrackGridItem
                 track_name="Best Design and Concept"
                 background_image="img/tracks/design.webp"
-                track_caption="This one's new for 2024! You don't have to write any code at all for this track, but you need creativity and ambition! We're looking for a perfectly designed project concept or mockup with great potential to be made into a real implementation — preferably, this would be something novel and intelligent that could genuinely have a positive impact on peoples' lives."
+                track_caption="This one's new for 2024! You don't have to write any code at all for this track, but you need creativity and ambition! We're looking for a perfectly designed project concept or mockup with great potential to be made into a real implementation. Preferably, this would be something novel and intelligent that could genuinely have a positive impact on people's lives."
                 track_prize="XP-PEN Deco Pro Drawing Tablet"
             />
         </ul>
