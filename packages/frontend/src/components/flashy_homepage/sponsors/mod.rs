@@ -8,7 +8,7 @@ mod sponsor_item;
 pub fn sponsors_grid() -> Html {
     html! {
         <div
-            class="mt-8 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-4 items-center"
+            class="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 auto-rows-fr gap-4 sm:gap-x-8 sm:gap-y-4 items-center"
             role="list"
         >
             <SponsorItem
@@ -22,7 +22,11 @@ pub fn sponsors_grid() -> Html {
                 logo_url="img/sponsors/hpe.svg"
                 url="https://www.hpe.com"
             />
-            <SponsorItem name="GitHub" logo_url="img/sponsors/github.webp" url="https://github.com" />
+            <SponsorItem
+                name="GitHub"
+                logo_url="img/sponsors/github.webp"
+                url="https://github.com"
+            />
             <SponsorItem name="XMOS" logo_url="img/sponsors/xmos.webp" url="https://www.xmos.com" />
             <SponsorItem
                 name="SparkLayer"
