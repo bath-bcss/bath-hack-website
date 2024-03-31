@@ -161,7 +161,7 @@ pub fn t_shirt_size_picker(props: &Props) -> Html {
                 </button>
                 if t_shirt_size != props.current_value {
                     <Button
-                        dark_mode=false
+                        background_is_dark=false
                         button_type="submit"
                         class={classes!("mt-4")}
                         disabled={loading}
@@ -176,12 +176,13 @@ pub fn t_shirt_size_picker(props: &Props) -> Html {
                     <h1 class="text-bcss-800 dark:text-bcss-200 font-bold text-3xl">
                         { "T-Shirt size guide" }
                     </h1>
-                    <Button dark_mode=false onclick={on_close_modal_click}>
+                    <Button background_is_dark=false onclick={on_close_modal_click}>
                         <Icon icon_id={IconId::FontAwesomeSolidCircleXmark} />
                     </Button>
                 </div>
                 <PageControlParagraph>
-                    { "All participants get a free t-shirt on arriving to the event! You can select your size here to
+                    { "All participants get a free t-shirt on arriving to the event! You can select your size here
+                        to
                         help us ensure we have the correct amount of each, but we'll be somewhat flexible when handing
                         them out, so don't worry if you get it wrong." }
                 </PageControlParagraph>

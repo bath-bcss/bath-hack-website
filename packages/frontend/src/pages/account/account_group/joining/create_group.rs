@@ -81,7 +81,7 @@ pub fn create_group_component(props: &AccountGroupSubpageProps) -> Html {
                 />
                 <Button
                     button_type="submit"
-                    dark_mode=false
+                    background_is_dark=false
                     class={classes!("mt-4")}
                     disabled={form_loading}
                 >

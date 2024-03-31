@@ -41,7 +41,7 @@ pub fn sign_up_page() -> Html {
                         handle={username_handle}
                         required=true
                     />
-                    <Button dark_mode=false class={classes!("mt-4")} button_type="submit">
+                    <Button background_is_dark=false class={classes!("mt-4")} button_type="submit">
                         { "Sign up!" }
                     </Button>
                 </form>

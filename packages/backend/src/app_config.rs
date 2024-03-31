@@ -13,6 +13,10 @@ pub struct AppConfig {
     pub mailgun_api_key: String,
     pub mailgun_domain: String,
 
+    pub s3_endpoint: String,
+    pub s3_region: String,
+    pub s3_bucket: String,
+
     pub ldap_url: String,
 
     pub allowed_origin: String,

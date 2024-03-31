@@ -81,6 +81,31 @@ spec:
               value: https://hack.bathcs.com
             - name: BHW_DEV_WEAK_PASSWORDS
               value: "false"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: bhw-s3
+                  key: access_key_id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: bhw-s3
+                  key: secret_access_key
+            - name: BHW_S3_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: bhw-s3
+                  key: endpoint
+            - name: BHW_S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: bhw-s3
+                  key: bucket
+            - name: BHW_S3_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: bhw-s3
+                  key: region
 ---
 apiVersion: v1
 kind: Service

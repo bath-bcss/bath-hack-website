@@ -34,7 +34,11 @@ pub fn account_group_joining(props: &AccountGroupSubpageProps) -> Html {
     html! {
         <>
             if let Some(group_method) = group_method {
-                <Button onclick={on_method_deselect} dark_mode=false class={classes!("mt-4")}>
+                <Button
+                    onclick={on_method_deselect}
+                    background_is_dark=false
+                    class={classes!("mt-4")}
+                >
                     <Icon
                         icon_id={IconId::FontAwesomeSolidArrowLeft}
                         class={classes!("inline-block")}
@@ -55,11 +59,13 @@ pub fn account_group_joining(props: &AccountGroupSubpageProps) -> Html {
                 <div
                     class="mt-4 flex md:flex-row flex-col items-stretch md:items-center md:gap-x-4"
                 >
-                    <Button dark_mode=false onclick={on_create_click}>{ "Create a group" }</Button>
+                    <Button background_is_dark=false onclick={on_create_click}>
+                        { "Create a group" }
+                    </Button>
                     <PageControlParagraph classes={classes!("text-center")}>
                         { "or" }
                     </PageControlParagraph>
-                    <Button dark_mode=false onclick={on_join_click}>
+                    <Button background_is_dark=false onclick={on_join_click}>
                         { "Join an existing group" }
                     </Button>
                 </div>

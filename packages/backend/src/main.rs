@@ -1,4 +1,5 @@
 use actix_cors::Cors;
+use actix_multipart::form::MultipartFormConfig;
 use actix_session::{
     config::{CookieContentSecurity, PersistentSession},
     storage::RedisSessionStore,
@@ -17,11 +18,16 @@ use actix_web::{
 };
 use app_config::parse_config;
 use bhw_types::{actix_web_validator::JsonConfig, validation::ValidationError};
+use data::cv::CVManager;
 use db::init_db;
 use middleware::csrf::Csrf;
 use routes::{
     auth::{check_signed_in_route, sign_in_route, sign_out_route},
-    group::{create_group_route, get_my_group_route, join_group_route, leave_group_route, rename_my_group_route},
+    cv::{cv_exists_route, delete_cv_route, get_cv_download_url_route, upload_cv_route},
+    group::{
+        create_group_route, get_my_group_route, join_group_route, leave_group_route,
+        rename_my_group_route,
+    },
     password_reset::{forgot_password_pin_route, forgot_password_route},
     profile::{get_profile_route, update_profile_route},
     sign_up::{account_activate_route, sign_up_route},
@@ -78,6 +84,10 @@ async fn main() -> std::io::Result<()> {
                 .into()
             });
 
+            let cv_manager = CVManager::client(&config);
+
+            let multipart_form_config = MultipartFormConfig::default().total_limit(10000000);
+
             App::new()
                 .wrap(Logger::default())
                 .wrap(cors)
@@ -119,6 +129,8 @@ async fn main() -> std::io::Result<()> {
                 .app_data(json_config)
                 .app_data(web::Data::new(config.clone()))
                 .app_data(web::Data::new(db_con.clone()))
+                .app_data(web::Data::new(cv_manager))
+                .app_data(web::Data::new(multipart_form_config))
                 .service(sign_up_route)
                 .service(account_activate_route)
                 .service(check_signed_in_route)
@@ -133,6 +145,10 @@ async fn main() -> std::io::Result<()> {
                 .service(join_group_route)
                 .service(get_my_group_route)
                 .service(leave_group_route)
+                .service(upload_cv_route)
+                .service(cv_exists_route)
+                .service(get_cv_download_url_route)
+                .service(delete_cv_route)
         }
     };
 

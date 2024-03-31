@@ -69,7 +69,7 @@ pub fn account_group_manage(props: &AccountGroupSubpageProps) -> Html {
                 </div>
                 <Button
                     class={classes!("mt-4")}
-                    dark_mode=false
+                    background_is_dark=false
                     onclick={on_leave_group_click}
                     disabled={leave_group_loading}
                 >

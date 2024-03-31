@@ -4,7 +4,10 @@ use yew_router::prelude::*;
 use crate::{
     components::account::sidebar::account_sidebar::AccountSidebar,
     pages::{
-        account::{account_group::AccountGroupPage, account_home::AccountHomePage},
+        account::{
+            account_cv::AccountCVPage, account_group::AccountGroupPage,
+            account_home::AccountHomePage,
+        },
         auth::{
             forgot_password::ForgotPasswordPage, forgot_password_pin::ForgotPasswordPINPage,
             login::LoginPage, logout::LogoutPage, signup::SignupPage,
@@ -53,6 +56,8 @@ pub enum AccountRoute {
     Profile,
     #[at("/account/groups")]
     Groups,
+    #[at("/account/cv")]
+    CV,
 }
 
 pub fn switch(routes: Route) -> Html {
@@ -80,5 +85,6 @@ pub fn switch_account(route: AccountRoute) -> Html {
     match route {
         AccountRoute::Profile => html! { <AccountHomePage /> },
         AccountRoute::Groups => html! { <AccountGroupPage /> },
+        AccountRoute::CV => html! { <AccountCVPage /> },
     }
 }

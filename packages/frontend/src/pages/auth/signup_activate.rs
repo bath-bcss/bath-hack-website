@@ -94,7 +94,7 @@ pub fn signup_activate_page() -> Html {
                         handle={new_password_handle}
                     />
                     <Button
-                        dark_mode=false
+                        background_is_dark=false
                         button_type="submit"
                         class={classes!("mt-4")}
                         disabled={loading}

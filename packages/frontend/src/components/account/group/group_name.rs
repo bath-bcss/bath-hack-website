@@ -63,7 +63,7 @@ pub fn group_name_component(props: &Props) -> Html {
         if !is_editing {
             <div class="flex items-center justify-between gap-x-4 mb-2">
                 <p class="text-xl font-bold text-bcss-800 dark:text-bcss-200">{ group_name }</p>
-                <Button dark_mode=false onclick={on_edit_click}>
+                <Button background_is_dark=false onclick={on_edit_click}>
                     <Icon icon_id={IconId::FontAwesomeSolidPencil} class={classes!("h-4", "w-4" )} />
                 </Button>
             </div>
@@ -73,7 +73,7 @@ pub fn group_name_component(props: &Props) -> Html {
                 <Button
                     class={classes!("mt-2")}
                     button_type="submit"
-                    dark_mode=false
+                    background_is_dark=false
                     disabled={loading.clone()}
                 >
                     { "Save" }
@@ -83,3 +83,4 @@ pub fn group_name_component(props: &Props) -> Html {
         }
     }
 }
+

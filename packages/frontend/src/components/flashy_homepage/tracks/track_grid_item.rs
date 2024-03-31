@@ -72,7 +72,7 @@ pub fn track_grid_item(props: &Props) -> Html {
                             </h2>
                         }
                     </div>
-                    <Button onclick={on_close_click} dark_mode=false>
+                    <Button onclick={on_close_click} background_is_dark=false>
                         <Icon icon_id={IconId::FontAwesomeSolidCircleXmark} />
                     </Button>
                 </div>
