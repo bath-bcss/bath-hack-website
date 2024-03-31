@@ -58,7 +58,7 @@ pub fn home_page() -> Html {
                         <p class="text-heroSubtitle text-bcss-100 font-bold italic">
                             { "13th - 14th April. Free to enter." }
                         </p>
-                        <Button dark_mode=true onclick={on_sign_up_click.clone()}>
+                        <Button background_is_dark=true onclick={on_sign_up_click.clone()}>
                             { "Sign up!" }
                         </Button>
                     </div>
@@ -89,7 +89,7 @@ pub fn home_page() -> Html {
                     </FlashyHomepageSectionParagraph>
                     <Button
                         onclick={on_sign_up_click.clone()}
-                        dark_mode=false
+                        background_is_dark=false
                         class={classes!("mt-4")}
                     >
                         { "Sign up now!" }
@@ -208,7 +208,7 @@ pub fn home_page() -> Html {
                     </FlashyHomepageSectionParagraph>
                     <Button
                         onclick={on_find_out_more_click.clone()}
-                        dark_mode=false
+                        background_is_dark=false
                         class={classes!("mt-4")}
                     >
                         { "Find out more" }

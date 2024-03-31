@@ -90,7 +90,7 @@ pub fn forgot_password_pin_page() -> Html {
                         disabled={loading}
                     />
                     <Button
-                        dark_mode=false
+                        background_is_dark=false
                         class={classes!("mt-4")}
                         disabled={loading}
                         button_type="submit"

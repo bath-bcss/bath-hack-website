@@ -90,7 +90,7 @@ pub fn account_sidebar(props: &Props) -> Html {
                         </Link<Route>>
                     </h1>
                     <Button
-                        dark_mode=true
+                        background_is_dark=true
                         onclick={on_small_screen_close_click}
                         class={classes!("md:hidden")}
                     >
@@ -116,12 +116,17 @@ pub fn account_sidebar(props: &Props) -> Html {
                         label="Group"
                         icon={IconId::FontAwesomeSolidPeopleGroup}
                     />
+                    <SidebarElement
+                        link_to={AccountRoute::CV}
+                        label="CV"
+                        icon={IconId::FontAwesomeSolidFileContract}
+                    />
                 </div>
             </div>
             <div class="flex-1 pb-10">
                 if !small_screen_show {
                     <div class="md:hidden fixed pt-4 pl-4 z-0">
-                        <Button dark_mode=false onclick={on_small_screen_show_click}>
+                        <Button background_is_dark=false onclick={on_small_screen_show_click}>
                             <Icon icon_id={IconId::FontAwesomeSolidBars} />
                         </Button>
                     </div>

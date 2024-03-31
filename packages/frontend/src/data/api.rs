@@ -1,8 +1,9 @@
 use bhw_types::{auth::AuthSessionError, validation::ValidationError};
+use gloo_console::warn;
 use gloo_net::http::{Request, Response};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use thiserror::Error;
-use web_sys::RequestCredentials;
+use web_sys::{Blob, File, FormData, RequestCredentials};
 
 #[derive(Debug, Deserialize, Error)]
 pub enum FrontendRequestError<E> {
@@ -82,6 +83,33 @@ where
     let resp = Request::post(build_path(path).as_str())
         .credentials(RequestCredentials::Include)
         .json(&data)
+        .map_err(|e| FrontendRequestError::SerializeFailed(e.to_string()))?
+        .send()
+        .await
+        .map_err(|e| FrontendRequestError::RequestFailed(e.to_string()))?;
+
+    handle_response(resp).await
+}
+
+pub async fn send_file<Res, Error>(
+    path: String,
+    file: File,
+    key: &str,
+) -> Result<Res, FrontendRequestError<Error>>
+where
+    Res: DeserializeOwned,
+    Error: DeserializeOwned,
+{
+    let blob: Blob = file.into();
+    let fd = FormData::new().expect("Create new FormData");
+    fd.set_with_blob(key, &blob).map_err(|e| {
+        warn!(e);
+        FrontendRequestError::SerializeFailed("set_with_blob (see console)".to_string())
+    })?;
+
+    let resp = Request::post(build_path(path).as_str())
+        .credentials(RequestCredentials::Include)
+        .body(fd)
         .map_err(|e| FrontendRequestError::SerializeFailed(e.to_string()))?
         .send()
         .await

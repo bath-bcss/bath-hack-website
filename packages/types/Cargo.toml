@@ -12,6 +12,7 @@ strum = { version = "0.26", features = ["derive"] }
 
 [target.'cfg(target_family = "unix")'.dependencies]
 actix-web = "4"
+actix-multipart = { version = "0.6.1", features = ["derive"]}
 sea-orm = { version = "0.12" }
 log = "0.4.20"
 validator = { version = "0.16", features = ["derive", "unic"] }

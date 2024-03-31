@@ -3,7 +3,7 @@ use yew::prelude::*;
 #[derive(Properties, PartialEq)]
 pub struct Props {
     pub children: Html,
-    pub dark_mode: bool,
+    pub background_is_dark: bool,
     #[prop_or_default]
     pub onclick: Option<Callback<MouseEvent, ()>>,
     #[prop_or_default]
@@ -19,7 +19,7 @@ pub fn button(props: &Props) -> Html {
     let class = use_memo((props.class.clone(),), move |(class_prop,)| {
         let mut class = classes!(
             "text-white",
-            if props.dark_mode {
+            if props.background_is_dark {
                 "bg-transparent"
             } else {
                 "bg-bcss-700"
@@ -27,7 +27,7 @@ pub fn button(props: &Props) -> Html {
             "px-4",
             "py-2",
             "rounded-md",
-            if props.dark_mode {
+            if props.background_is_dark {
                 "border-2"
             } else {
                 "border-0"
@@ -36,12 +36,12 @@ pub fn button(props: &Props) -> Html {
             "focus:outline-0",
             "ring-bcss-300",
             "transition-all",
-            if props.dark_mode {
+            if props.background_is_dark {
                 "hover:bg-white/20"
             } else {
                 "hover:bg-bcss-800/90"
             },
-            if props.dark_mode {
+            if props.background_is_dark {
                 "active:bg-white/10"
             } else {
                 "active:bg-bcss-800"

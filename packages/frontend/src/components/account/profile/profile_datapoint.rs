@@ -107,7 +107,7 @@ pub fn profile_datapoint(props: &Props) -> Html {
             />
             if *value_has_changed {
                 <Button
-                    dark_mode=false
+                    background_is_dark=false
                     disabled={loading}
                     button_type="submit"
                     class={classes!("mt-4")}

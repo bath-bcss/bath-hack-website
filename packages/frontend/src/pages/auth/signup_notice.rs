@@ -96,7 +96,7 @@ pub fn signup_notice_page() -> Html {
                     personal information you provide." }
                     </GlassContainerParagraph>
                     <Button
-                        dark_mode=false
+                        background_is_dark=false
                         class={classes!("mt-4")}
                         onclick={on_agree_click}
                         disabled={loading}

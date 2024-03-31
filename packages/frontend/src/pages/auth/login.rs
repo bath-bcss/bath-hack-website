@@ -77,7 +77,7 @@ pub fn login_page() -> Html {
                         input_class={classes!("mb-4")}
                         disabled={loading.clone()}
                     />
-                    <Button dark_mode=false button_type="submit" disabled={loading.clone()}>
+                    <Button background_is_dark=false button_type="submit" disabled={loading.clone()}>
                         { "Sign in!" }
                     </Button>
                     <ErrorMessage message={error} />

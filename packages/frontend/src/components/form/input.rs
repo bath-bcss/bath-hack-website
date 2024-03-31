@@ -15,12 +15,16 @@ pub struct Props {
     pub handle: Option<UseStateHandle<String>>,
     #[prop_or_default]
     pub static_value: Option<String>,
+    #[prop_or_default]
+    pub onchange: Option<Callback<InputEvent>>,
 
     #[prop_or_default]
     pub readonly: bool,
 
     #[prop_or_default]
     pub input_type: Option<String>,
+    #[prop_or_default]
+    pub accept_file: Option<String>,
     #[prop_or_default]
     pub required: bool,
     #[prop_or_default]
@@ -37,24 +41,34 @@ pub struct Props {
 
 #[function_component(Input)]
 pub fn input(props: &Props) -> Html {
-    let handle_value = match props.handle.clone() {
-        Some(h) => (*h).clone(),
-        None => match props.static_value.clone() {
-            Some(s) => s,
-            None => String::default(),
-        },
+    let handle_value = {
+        if props.input_type == Some("file".to_string()) {
+            None
+        } else {
+            match props.handle.clone() {
+                Some(h) => Some((*h).clone()),
+                None => props.static_value.clone(),
+            }
+        }
     };
     let on_change_handler = {
         let handle = props.handle.to_owned();
 
-        use_callback((), move |value: InputEvent, _| {
-            if let Some(handle) = handle.clone() {
-                let target = value.target_dyn_into::<HtmlInputElement>();
-                if let Some(target) = target {
-                    handle.set(target.value());
+        use_callback(
+            (props.onchange.clone(),),
+            move |value: InputEvent, (on_change_prop,)| {
+                if let Some(on_change_prop) = on_change_prop {
+                    on_change_prop.emit(value.clone());
                 }
-            }
-        })
+
+                if let Some(handle) = handle.clone() {
+                    let target = value.target_dyn_into::<HtmlInputElement>();
+                    if let Some(target) = target {
+                        handle.set(target.value());
+                    }
+                }
+            },
+        )
     };
 
     let child_renderer = use_callback(
@@ -62,6 +76,7 @@ pub fn input(props: &Props) -> Html {
             props.input_class.clone(),
             props.placeholder.clone(),
             props.input_type.clone(),
+            props.accept_file.clone(),
             props.required,
             props.disabled,
             props.readonly,
@@ -74,6 +89,7 @@ pub fn input(props: &Props) -> Html {
             input_class_extra_props,
             placeholder,
             input_type,
+            accept_file,
             required,
             disabled,
             readonly,
@@ -99,9 +115,12 @@ pub fn input(props: &Props) -> Html {
                         value={handle_value.clone()}
                         disabled={disabled.clone()}
                         readonly={readonly.clone()}
+                        accept={accept_file.clone()}
                     />
                     if children.to_vlist_mut().len() > 0 {
-                        <p class="text-gray-600 dark:text-gray-200 text-sm mt-1">{ children.clone() }</p>
+                        <p class="text-gray-600 dark:text-gray-200 text-sm mt-1">
+                            { children.clone() }
+                        </p>
                     }
                 </>
             }
