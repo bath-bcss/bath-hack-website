@@ -23,7 +23,7 @@ spec:
   repo: https://charts.bitnami.com/bitnami
   chart: redis
   targetNamespace: bhw-24-redis
-  version: 18.16.0
+  version: 19.0.1
   valuesContent: |-
     commonLabels:
       app: bhw-redis

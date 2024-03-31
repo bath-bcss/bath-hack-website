@@ -70,10 +70,8 @@ pub fn upload_cv_page(props: &AccountCVSubpageProps) -> Html {
                     potential applicants. This is completely optional, and it only takes a few seconds!" }
             </PageControlParagraph>
             <PageControlParagraph>
-                { "If you upload a CV, it will be shared with INSERT SPONSORS, along with your provided display name
-                    (if
-                    any),
-                    group name, and University username (so they can get in touch with you). This does " }
+                { "If you upload a CV, it will be shared with some of our sponsors, along with your provided display
+            name (if any), group name, and University username (so they can get in touch with you). This does " }
                 <strong>{ "not" }</strong>
                 { " constitute a formal job application of any kind." }
             </PageControlParagraph>
