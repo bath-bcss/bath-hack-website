@@ -36,9 +36,9 @@ pub fn track_grid() -> Html {
                 track_name="E-commerce"
                 background_image="img/tracks/ecommerce.webp"
                 track_caption=""
-                track_prize="TBA (worth ~£125 each)"
-                track_company={TrackCompany{ name: "SparkLayer" .to_string(),
-            link: "https://sparklayer.io" .to_string() }}
+                track_prize="XENCELABS Quick Keys Programmable Keypad"
+                track_company={TrackCompany{ name: "SparkLayer"
+            .to_string(), link: "https://sparklayer.io" .to_string() }}
             />
             <TrackGridItem
                 track_name="Best use of AI"
