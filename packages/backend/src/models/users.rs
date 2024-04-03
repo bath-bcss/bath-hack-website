@@ -36,7 +36,7 @@ pub struct UserHelper;
 
 impl UserHelper {
     pub fn validate_username(username: &String) -> bool {
-        let username_regex = regex::Regex::new(r"^[a-z]{2,4}\d{2,5}$").expect("Username regex");
+        let username_regex = regex::Regex::new(r"^[a-z]{2,5}\d{2,5}$").expect("Username regex");
         username_regex.is_match(username.as_str())
     }
 
