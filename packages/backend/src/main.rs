@@ -28,6 +28,7 @@ use routes::{
         create_group_route, get_my_group_route, join_group_route, leave_group_route,
         rename_my_group_route,
     },
+    healthz::healthz_route,
     password_reset::{forgot_password_pin_route, forgot_password_route},
     profile::{get_profile_route, update_profile_route},
     sign_up::{account_activate_route, sign_up_route},
@@ -131,6 +132,7 @@ async fn main() -> std::io::Result<()> {
                 .app_data(web::Data::new(db_con.clone()))
                 .app_data(web::Data::new(cv_manager))
                 .app_data(web::Data::new(multipart_form_config))
+                .service(healthz_route)
                 .service(sign_up_route)
                 .service(account_activate_route)
                 .service(check_signed_in_route)

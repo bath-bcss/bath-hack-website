@@ -66,6 +66,14 @@ where
     forward_ready!(service);
 
     fn call(&self, req: ServiceRequest) -> Self::Future {
+        if req.path() == "/healthz" {
+            let fut = self.service.call(req);
+            return Box::pin(async move {
+                let res = fut.await?;
+                Ok(res)
+            });
+        }
+
         let req_headers = req.headers().clone();
         let origin_header = req_headers.get(header::ORIGIN);
         match origin_header {

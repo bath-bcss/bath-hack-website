@@ -45,6 +45,18 @@ spec:
               cpu: 200m
             requests:
               cpu: 100m
+          readinessProbe:
+            timeoutSeconds: 3
+            failureThreshold: 5
+            httpGet:
+              path: /healthz
+              port: 8080
+          livenessProbe:
+            timeoutSeconds: 3
+            failureThreshold: 5
+            httpGet:
+              path: /healthz
+              port: 8080
           env:
             - name: BHW_BIND_PORT
               value: "8080"
