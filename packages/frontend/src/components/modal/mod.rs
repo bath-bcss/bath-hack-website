@@ -1,5 +1,7 @@
 use yew::prelude::*;
 
+pub mod modal_header;
+
 #[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub children: Html,

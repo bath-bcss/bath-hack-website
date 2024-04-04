@@ -1,7 +1,7 @@
 use yew::prelude::*;
 use yew_icons::{Icon, IconId};
 
-use crate::components::{button::Button, modal::Modal};
+use crate::components::modal::{modal_header::ModalHeader, Modal};
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct TrackCompany {
@@ -58,26 +58,13 @@ pub fn track_grid_item(props: &Props) -> Html {
                 </a>
             </li>
             <Modal open={show_modal}>
-                <div class="flex items-center justify-between space-x-6">
-                    <div>
-                        <h1 class="text-bcss-800 dark:text-bcss-200 font-bold text-3xl">
-                            { props.track_name.clone() }
-                        </h1>
-                        if let Some(track_company) = props.track_company.clone() {
-                            <h2 class="text-bcss-600 dark:text-bcss-300 text-xl">
-                                { "from " }
-                                <a href={track_company.link} target="_blank" class="underline">
-                                    { track_company.name }
-                                </a>
-                            </h2>
-                        }
-                    </div>
-                    <Button onclick={on_close_click} background_is_dark=false>
-                        <Icon icon_id={IconId::FontAwesomeSolidCircleXmark} />
-                    </Button>
-                </div>
-                <p class="text-bcss-700 dark:text-bcss-300 mt-4">{ props.track_caption.clone() }</p>
-                if let Some(track_prize) = props.track_prize.clone() {
+                <ModalHeader
+                    title={props.track_name.clone()}
+                    subtitle={props.track_company.clone().map(|e| e.name)}
+                    subtitle_link={props.track_company.clone().map(|e| e.link)}
+                    onclose={on_close_click}
+                />
+                <p class="text-bcss-700 dark:text-bcss-300 mt-4">{ props.track_caption.clone() }</p> if let Some(track_prize) = props.track_prize.clone() {
                     <h1
                         class="mt-4 text-bcss-800 dark:text-bcss-200 font-bold text-xl align-middle"
                     >

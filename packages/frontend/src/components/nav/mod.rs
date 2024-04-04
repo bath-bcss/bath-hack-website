@@ -51,7 +51,7 @@ pub fn scrolling_navbar() -> Html {
             "justify-between",
             "items-center",
             "px-8",
-            "z-10",
+            "z-20",
             "transition-colors",
             "drop-shadow-md",
         );
@@ -105,8 +105,8 @@ pub fn scrolling_navbar() -> Html {
                     is_at_top={is_at_top}
                 />
                 <NavLink
-                    dest={NavLinkDestination::Anchor("talks".to_string())}
-                    label="Talks"
+                    dest={NavLinkDestination::Anchor("schedule".to_string())}
+                    label="Schedule"
                     is_at_top={is_at_top}
                 />
                 <NavLink

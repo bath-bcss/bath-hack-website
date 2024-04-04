@@ -11,6 +11,7 @@ use crate::{
             faqs::FAQs,
             footer::HomepageFooter,
             image_grid::image_grid_container::ImageGrid,
+            schedule::Schedule,
             section::{
                 heading::SectionIcon, page_section::FlashyHomepageSection,
                 section_paragraph::FlashyHomepageSectionParagraph,
@@ -113,26 +114,12 @@ pub fn home_page() -> Html {
                     <TrackGrid />
                 </FlashyHomepageSection>
                 <FlashyHomepageSection
-                    icon={SectionIcon::Icon(IconId::FontAwesomeSolidComments)}
-                    title="Talks"
-                    anchor="talks"
+                    icon={SectionIcon::Icon(IconId::FontAwesomeSolidClock)}
+                    title="Schedule"
+                    anchor="schedule"
                     image="home_section3.webp"
                 >
-                    <FlashyHomepageSectionParagraph full_width=true>
-                        { "Bath Hack is about more than just coding: come along to our interesting series of talks from various
-                    industry experts and University academics." }
-                    </FlashyHomepageSectionParagraph>
-                    <FlashyHomepageSectionParagraph full_width=true>
-                        { "Some might provide inspiration for your projects (or even your career), but others will be more
-                    light-hearted, providing a fun break from the work." }
-                    </FlashyHomepageSectionParagraph>
-                    <FlashyHomepageSectionParagraph full_width=true>
-                        { "We'll announce the full series of talks soon. Do you want to give one yourself? " }
-                        <a href="mailto:su-bcss@bath.ac.uk" target="_blank" class="underline">
-                            { "Get in touch at su-bcss@bath.ac.uk" }
-                        </a>
-                        { "!" }
-                    </FlashyHomepageSectionParagraph>
+                    <Schedule />
                 </FlashyHomepageSection>
                 <FlashyHomepageSection
                     icon={SectionIcon::Icon(IconId::FontAwesomeSolidHeart)}
