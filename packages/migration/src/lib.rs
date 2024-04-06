@@ -6,6 +6,7 @@ mod m20240227_135849_add_group_names;
 mod m20240301_150415_add_password_reset;
 mod m20240309_111540_add_tshirt_size;
 mod m20240325_224148_add_committee_flag;
+mod m20240406_074034_add_attendance;
 
 pub struct Migrator;
 
@@ -19,6 +20,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20240301_150415_add_password_reset::Migration),
             Box::new(m20240309_111540_add_tshirt_size::Migration),
             Box::new(m20240325_224148_add_committee_flag::Migration),
+            Box::new(m20240406_074034_add_attendance::Migration),
         ]
     }
 }
