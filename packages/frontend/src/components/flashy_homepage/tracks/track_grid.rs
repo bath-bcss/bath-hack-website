@@ -35,7 +35,7 @@ pub fn track_grid() -> Html {
             <TrackGridItem
                 track_name="E-commerce"
                 background_image="img/tracks/ecommerce.webp"
-                track_caption=""
+                track_caption="In the vast digital marketplace, innovation is key. Showcase your prowess in the realm of online commerce by crafting a project that redefines user experience, streamlines transactions, or revolutionises customer engagement. Whether it's enhancing personalising recommendations, or simplifying checkout processes, your solution should embody the future of e-commerce."
                 track_prize="XENCELABS Quick Keys Programmable Keypad"
                 track_company={TrackCompany{ name: "SparkLayer"
             .to_string(), link: "https://sparklayer.io" .to_string() }}
