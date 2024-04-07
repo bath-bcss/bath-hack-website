@@ -3,6 +3,7 @@
 pub mod prelude;
 
 pub mod competition_group;
+pub mod participant_registration;
 pub mod password_reset;
 pub mod sea_orm_active_enums;
 pub mod signup_request;

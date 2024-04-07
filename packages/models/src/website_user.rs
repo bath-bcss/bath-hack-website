@@ -33,6 +33,8 @@ pub enum Relation {
         on_delete = "NoAction"
     )]
     CompetitionGroup,
+    #[sea_orm(has_many = "super::participant_registration::Entity")]
+    ParticipantRegistration,
     #[sea_orm(has_one = "super::password_reset::Entity")]
     PasswordReset,
 }
@@ -40,6 +42,12 @@ pub enum Relation {
 impl Related<super::competition_group::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::CompetitionGroup.def()
+    }
+}
+
+impl Related<super::participant_registration::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::ParticipantRegistration.def()
     }
 }
 
