@@ -33,9 +33,9 @@ pub fn track_grid() -> Html {
             link: "https://xmos.com" .to_string() }}
             />
             <TrackGridItem
-                track_name="E-commerce"
+                track_name="Best use of Golang"
                 background_image="img/tracks/ecommerce.webp"
-                track_caption="In the vast digital marketplace, innovation is key. Showcase your prowess in the realm of online commerce by crafting a project that redefines user experience, streamlines transactions, or revolutionises customer engagement. Whether it's enhancing personalising recommendations, or simplifying checkout processes, your solution should embody the future of e-commerce."
+                track_caption="Unleash the potential of Golang in your project! From powering e-commerce platforms to optimising backend systems, explore the versatility of this language. Showcasing concurrency, scalability, and efficiency, demonstrate the best use of Golang in any application imaginable!"
                 track_prize="XENCELABS Quick Keys Programmable Keypad"
                 track_company={TrackCompany{ name: "SparkLayer"
             .to_string(), link: "https://sparklayer.io" .to_string() }}
