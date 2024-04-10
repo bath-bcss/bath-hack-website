@@ -43,7 +43,7 @@ pub fn schedule() -> Html {
                     { "We'll have loads of rooms available for you to work in, including collaborative ones where you can
                 check out what other teams are doing, as well as quieter ones." }
                 </ScheduleItem>
-                <ScheduleItem event="Pizza" time="~18:00">
+                <ScheduleItem event="Pizza" time="~19:00">
                     { "The first meal of your culinary hackathon journey! " }
                     { " Make sure you've submitted your dietary requirements to avoid disappointment. " }
                     { "As mentioned, all meals are completely free of charge." }
