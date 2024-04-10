@@ -48,7 +48,7 @@ pub fn schedule() -> Html {
                     { " Make sure you've submitted your dietary requirements to avoid disappointment. " }
                     { "As mentioned, all meals are completely free of charge." }
                 </ScheduleItem>
-                <ScheduleItem event="Breakfast" day="Sunday" time="~08:00">
+                <ScheduleItem event="Breakfast" day="Sunday" time="~06:00">
                     { "We'll have a buffet-style cold breakfast with a range of pastries, toast, snacks, and more." }
                 </ScheduleItem>
                 <ScheduleItem event="DevPost support" time="11:00-12:00">
