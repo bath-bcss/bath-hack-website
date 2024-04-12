@@ -31,6 +31,10 @@ pub fn schedule() -> Html {
                     { "This will help us keep everyone safe at the event. " }
                     { "It's okay if you miss the registration time! We'll have someone at the desk throughout the event." }
                 </ScheduleItem>
+                <ScheduleItem event="XMOS presentation" time="10:15-11:00">
+                    { "XMOS will be delivering some presentations and showcasing two demonstrations of their technology to you all. " }
+                    { "You will be able to ask them questions are learn more about what they do." }
+                </ScheduleItem>
                 <ScheduleItem event="Induction presentation" time="11:00-12:00">
                     { "Here's where everything gets started! We'll explain how the event works and go over the tracks and prizes
                 you'll be competing for. " }
