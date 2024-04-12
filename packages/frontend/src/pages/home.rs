@@ -17,7 +17,7 @@ use crate::{
                 section_paragraph::FlashyHomepageSectionParagraph,
             },
             sponsors::SponsorsGrid,
-            tracks::track_grid::TrackGrid,
+            tracks::TrackGrid,
         },
         hero::gradient::HeroGradientContainer,
         nav::ScrollingNavbar,
