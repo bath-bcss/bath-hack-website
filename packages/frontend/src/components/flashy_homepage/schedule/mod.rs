@@ -64,7 +64,7 @@ pub fn schedule() -> Html {
                     { "You won't be able to make any changes to your project or its DevPost page after this time. " }
                     { "As the final meal, we'll serve lunch around this time: Subway!" }
                 </ScheduleItem>
-                <ScheduleItem event="Showcase Fair" time="12:30-13:30">
+                <ScheduleItem event="Showcase Fair" time="12:30-14:30">
                     { "Along with all the other teams, you'll be able to demonstrate your project to our sponsors and judges at
                 our Showcase Fair. " }
                     { "This is the best opportunity to impress the judges and secure your win! " }
