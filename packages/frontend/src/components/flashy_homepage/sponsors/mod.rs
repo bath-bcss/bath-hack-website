@@ -27,6 +27,11 @@ pub fn sponsors_grid() -> Html {
                 logo_url="img/sponsors/github.webp"
                 url="https://github.com"
             />
+            <SponsorItem
+                name="Unilever"
+                logo_url="img/sponsors/unilever.svg"
+                url="https://www.unilever.com"
+            />
             <SponsorItem name="XMOS" logo_url="img/sponsors/xmos.webp" url="https://www.xmos.com" />
             <SponsorItem
                 name="SparkLayer"
