@@ -42,7 +42,7 @@ pub fn track_grid() -> Html {
             />
             <TrackGridItem
                 track_name="Best use of Golang"
-                background_image="img/tracks/ecommerce.webp"
+                background_image="img/tracks/golang.webp"
                 track_caption="Unleash the potential of Golang in your project! From powering e-commerce platforms to optimising backend systems, explore the versatility of this language. Showcasing concurrency, scalability, and efficiency, demonstrate the best use of Golang in any application imaginable!"
                 track_prize="XENCELABS Quick Keys Programmable Keypad"
                 track_company={TrackCompany{ name: "SparkLayer"
