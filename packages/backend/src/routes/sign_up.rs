@@ -33,8 +33,12 @@ pub async fn sign_up_route(
     db: web::Data<DatabaseConnection>,
     config: web::Data<AppConfig>,
 ) -> SignUpResult {
+    if config.disable_signup {
+        return Err(SignUpResponseError::SignupDisabled);
+    }
+
     if !UserHelper::validate_username(&request.bath_username) {
-        return Err(SignUpResponseError::UsernameInvalid.into());
+        return Err(SignUpResponseError::UsernameInvalid);
     }
 
     #[cfg(feature = "ldap")]

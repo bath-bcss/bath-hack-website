@@ -23,6 +23,8 @@ pub enum SignUpResponseError {
     CreateError(String),
     #[error("Cannot send email: {0}")]
     EmailError(String),
+    #[error("New signups are currently disabled. Please contact su-bcss@bath.ac.uk for support.")]
+    SignupDisabled,
     #[error("Database failure")]
     DBError,
     #[error("Blocking error")]
