@@ -55,13 +55,13 @@ pub fn schedule() -> Html {
                 <ScheduleItem event="Breakfast" day="Sunday" time="~06:00">
                     { "We'll have a buffet-style cold breakfast with a range of pastries, toast, snacks, and more." }
                 </ScheduleItem>
-                <ScheduleItem event="DevPost support" time="11:00-12:00">
-                    { "You'll need to post your project on DevPost before hacking ends at 12:00. " }
+                <ScheduleItem event="Devpost support" time="11:00-12:00">
+                    { "You'll need to post your project on Devpost before hacking ends at 12:00. " }
                     { "We'll have a short session at 11:00 for anyone who hasn't done this before, and our Committee Members
                 will be on hand to help sort out any issues." }
                 </ScheduleItem>
                 <ScheduleItem event="Hacking ends + Lunch" time="12:00">
-                    { "You won't be able to make any changes to your project or its DevPost page after this time. " }
+                    { "You won't be able to make any changes to your project or its Devpost page after this time. " }
                     { "As the final meal, we'll serve lunch around this time: Subway!" }
                 </ScheduleItem>
                 <ScheduleItem event="Showcase Fair" time="12:30-14:30">
