@@ -12,7 +12,7 @@ pub fn track_grid() -> Html {
                 track_name="Best Overall"
                 background_image="img/tracks/best_overall.webp"
                 track_caption="The ultimate prize: selected by our judges, this project will be a perfect combination of advanced technology, high-quality branding, strong vision, and general ingenuity. For this one, you'll really need to have done it all; it's basically like starting an entire business in 24 hours."
-                track_prize="Monitor worth ~£250"
+                track_prize="27 Inch Curved Gaming Monitor"
             />
             <TrackGridItem
                 track_name="Hackers' Choice"
@@ -36,7 +36,7 @@ pub fn track_grid() -> Html {
                 track_name="Embedded Systems"
                 background_image="img/tracks/embedded_systems.webp"
                 track_caption="Projects in the Embedded Track will focus on hardware and software for use in an embedded system. Each project need not produce a complete device. However for projects producing an embedded sub-system, the judges will need sufficient contextual information regarding the device that incorporates it in order to assess its merits."
-                track_prize="TBA (worth ~£125 each)"
+                track_prize="£125 Amazon gift card"
                 track_company={TrackCompany{ name: "XMOS" .to_string(),
             link: "https://xmos.com" .to_string() }}
             />
