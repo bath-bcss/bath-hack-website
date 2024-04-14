@@ -92,7 +92,7 @@ spec:
             - name: BHW_ALLOWED_ORIGIN
               value: https://hack.bathcs.com
             - name: BHW_DISABLE_SIGNUP
-              value: "false"
+              value: "true"
             - name: BHW_DEV_WEAK_PASSWORDS
               value: "false"
             - name: AWS_ACCESS_KEY_ID

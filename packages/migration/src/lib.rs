@@ -9,6 +9,7 @@ mod m20240325_224148_add_committee_flag;
 mod m20240406_074034_add_attendance;
 mod m20240407_144512_multi_registration;
 mod m20240412_105947_internal_notes;
+mod m20240414_042102_group_number;
 
 pub struct Migrator;
 
@@ -25,6 +26,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20240406_074034_add_attendance::Migration),
             Box::new(m20240407_144512_multi_registration::Migration),
             Box::new(m20240412_105947_internal_notes::Migration),
+            Box::new(m20240414_042102_group_number::Migration),
         ]
     }
 }
