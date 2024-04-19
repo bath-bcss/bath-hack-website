@@ -14,7 +14,7 @@ use crate::{
             signup_activate::SignupActivatePage, signup_notice::SignupNoticePage,
             signup_success::SignupSuccessPage,
         },
-        home::HomePage,
+        home_alt::HomePageAlt,
         not_found::NotFoundPage,
     },
 };
@@ -62,7 +62,7 @@ pub enum AccountRoute {
 
 pub fn switch(routes: Route) -> Html {
     match routes {
-        Route::Home => html! { <HomePage /> },
+        Route::Home => html! { <HomePageAlt /> },
         Route::Login => html! { <LoginPage /> },
         Route::Logout => html! { <LogoutPage /> },
         Route::SignupNotice => html! { <SignupNoticePage /> },
