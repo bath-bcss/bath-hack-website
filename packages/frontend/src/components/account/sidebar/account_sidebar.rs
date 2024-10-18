@@ -25,7 +25,7 @@ pub fn account_sidebar(props: &Props) -> Html {
     });
 
     let small_screen_show_handle = use_state_eq(|| false);
-    let small_screen_show = (*small_screen_show_handle).clone();
+    let small_screen_show = *small_screen_show_handle;
 
     let sidebar_container_classes = use_memo((small_screen_show,), |(small_screen_show,)| {
         let mut base_classes = classes!(
@@ -116,11 +116,12 @@ pub fn account_sidebar(props: &Props) -> Html {
                         label="Group"
                         icon={IconId::FontAwesomeSolidPeopleGroup}
                     />
+                    /*
                     <SidebarElement
                         link_to={AccountRoute::CV}
                         label="CV"
                         icon={IconId::FontAwesomeSolidFileContract}
-                    />
+                    /> */
                 </div>
             </div>
             <div class="flex-1 pb-10">

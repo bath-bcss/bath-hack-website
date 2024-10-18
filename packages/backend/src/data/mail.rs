@@ -32,7 +32,7 @@ impl Mailer {
         }
     }
 
-    pub fn send_template<'b>(&self, instruction: SendInstruction) -> SendResult<SendResponse> {
+    pub fn send_template(&self, instruction: SendInstruction) -> SendResult<SendResponse> {
         let recipient = EmailAddress::address(&instruction.to);
 
         let message = Message {

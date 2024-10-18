@@ -33,7 +33,7 @@ pub fn signup_activate_page() -> Html {
     let new_password = (*new_password_handle).clone();
 
     let loading_handle = use_state_eq(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
     let error_handle = use_state_eq(|| None::<String>);
     let error = (*error_handle).clone();
 
@@ -78,7 +78,7 @@ pub fn signup_activate_page() -> Html {
     html! {
         <HeroCenterContainer>
             <GlassContainer>
-                <GlassContainerHeading>{ "Welcome to Bath Hack 24!" }</GlassContainerHeading>
+                <GlassContainerHeading>{ "Welcome to Game Jam 24!" }</GlassContainerHeading>
                 <GlassContainerParagraph top_margin=true>
                     { "To get started, please create a password." }
                 </GlassContainerParagraph>

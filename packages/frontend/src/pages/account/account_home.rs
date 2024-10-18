@@ -27,7 +27,7 @@ pub fn account_home_page() -> Html {
     let profile = (*profile_handle).clone();
 
     let loading_handle = use_state_eq(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
 
     let is_initial_signup = use_location()
         .expect_throw("Location not found")
@@ -56,7 +56,7 @@ pub fn account_home_page() -> Html {
             (profile.clone(),),
             move |req: UpdateProfileRequest, (profile,)| {
                 let profile = (*profile).clone();
-                if let None = profile {
+                if profile.is_none() {
                     return;
                 }
 
@@ -117,7 +117,7 @@ pub fn account_home_page() -> Html {
                 members of University staff as needed. Unless necessary, please do not disclose sensitive or medical
                 information." }
             </PageControlParagraph>
-            if loading.clone() {
+            if loading {
                 <LoadingSpinner class={classes!("mt-4")} />
             }
             if let Some(profile) = profile {

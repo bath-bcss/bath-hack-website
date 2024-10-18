@@ -11,7 +11,7 @@ mod link;
 #[function_component(ScrollingNavbar)]
 pub fn scrolling_navbar() -> Html {
     let is_at_top_handle = use_state(|| true);
-    let is_at_top = (*is_at_top_handle).clone();
+    let is_at_top = *is_at_top_handle;
 
     use_effect_with((), move |_| {
         let window = window().expect_throw("Window was not defined");
@@ -29,12 +29,12 @@ pub fn scrolling_navbar() -> Html {
         });
 
         document
-            .add_event_listener_with_callback("scroll", &cb.as_ref().unchecked_ref())
+            .add_event_listener_with_callback("scroll", cb.as_ref().unchecked_ref())
             .expect_throw("adding scroll listener");
 
         move || {
             document
-                .remove_event_listener_with_callback("scroll", &cb.as_ref().unchecked_ref())
+                .remove_event_listener_with_callback("scroll", cb.as_ref().unchecked_ref())
                 .expect_throw("removing scroll listener");
         }
     });

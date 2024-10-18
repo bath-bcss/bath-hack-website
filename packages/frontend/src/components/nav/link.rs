@@ -23,7 +23,7 @@ pub fn nav_link(props: &Props) -> Html {
         let dest = props.dest.clone();
         match dest {
             NavLinkDestination::Anchor(mut anchor) => {
-                anchor.insert_str(0, "#");
+                anchor.insert(0, '#');
                 anchor
             }
             NavLinkDestination::Page(route) => route,

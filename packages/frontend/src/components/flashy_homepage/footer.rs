@@ -33,7 +33,7 @@ pub fn homepage_footer() -> Html {
                     >
                         { "su-bcss@bath.ac.uk" }
                     </a>
-                    { " for support." }                
+                    { " for support." }
                 </p>
             </div>
         </footer>

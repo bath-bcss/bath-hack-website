@@ -21,7 +21,7 @@ pub mod types;
 #[function_component(AccountGroupPage)]
 pub fn account_group_page() -> Html {
     let get_group_loading_handle = use_state_eq(|| false);
-    let get_group_loading = (*get_group_loading_handle).clone();
+    let get_group_loading = *get_group_loading_handle;
 
     let current_group_handle = use_state_eq(|| None::<FrontendGroupState>);
     let current_group = (*current_group_handle).clone();
@@ -38,7 +38,7 @@ pub fn account_group_page() -> Html {
                 match group {
                     Err(e) => error!("getting group: ", e.to_string()),
                     Ok(group) => match group {
-                        MyGroupResponse::None => return,
+                        MyGroupResponse::None => (),
                         MyGroupResponse::Data(group) => {
                             current_group_handle.set(Some(FrontendGroupState {
                                 name: group.name,
@@ -58,7 +58,7 @@ pub fn account_group_page() -> Html {
             if get_group_loading {
                 <LoadingSpinner class={classes!("mt-4")} />
             } else {
-                if let Some(_) = current_group {
+                if current_group.is_some() {
                     <AccountGroupManage group_handle={current_group_handle} />
                 } else {
                     <AccountGroupJoining group_handle={current_group_handle} />

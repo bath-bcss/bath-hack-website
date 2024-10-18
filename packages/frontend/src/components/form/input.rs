@@ -110,11 +110,11 @@ pub fn input(props: &Props) -> Html {
                         id={child_props.id}
                         placeholder={placeholder.clone()}
                         type={input_type.clone()}
-                        required={required.clone()}
+                        required={*required}
                         oninput={on_change_handler}
                         value={handle_value.clone()}
-                        disabled={disabled.clone()}
-                        readonly={readonly.clone()}
+                        disabled={*disabled}
+                        readonly={*readonly}
                         accept={accept_file.clone()}
                     />
                     if children.to_vlist_mut().len() > 0 {

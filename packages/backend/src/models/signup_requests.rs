@@ -71,7 +71,7 @@ impl SignupRequestHelper {
         id: &String,
     ) -> Result<Option<signup_request::Model>, SignupRequestFromIdError> {
         let parsed_id =
-            uuid::Uuid::parse_str(id).map_err(|e| SignupRequestFromIdError::InvalidID(e))?;
+            uuid::Uuid::parse_str(id).map_err(SignupRequestFromIdError::InvalidID)?;
 
         let resp = SignupRequest::find()
             .filter(signup_request::Column::Id.eq(parsed_id))
@@ -101,7 +101,7 @@ impl SignupRequestHelper {
         signup_request: &signup_request::Model,
         secret: &String,
     ) -> Result<bool, argon2::password_hash::Error> {
-        PasswordManager::verify(&secret, &signup_request.secret_hash)
+        PasswordManager::verify(secret, &signup_request.secret_hash)
     }
 
     pub async fn create<C: ConnectionTrait>(
@@ -109,13 +109,13 @@ impl SignupRequestHelper {
         username: &String,
         status: i16,
     ) -> Result<NewSignupRequestSecret, SignupRequestCreateError> {
-        let already_exists = Self::exists_for_username(conn, &username).await?;
+        let already_exists = Self::exists_for_username(conn, username).await?;
         if already_exists {
             return Err(SignupRequestCreateError::AlreadyExists);
         }
 
         let secret = PasswordManager::hash_random()
-            .map_err(|e| SignupRequestCreateError::PasswordError(e))?;
+            .map_err(SignupRequestCreateError::PasswordError)?;
 
         let new_signup_request = signup_request::ActiveModel {
             id: Set(uuid::Uuid::new_v4()),
@@ -179,7 +179,7 @@ impl SignupRequestHelper {
         new_status: i16,
     ) -> Result<(), DbErr> {
         let updated_signup_request = signup_request::ActiveModel {
-            id: Set(id.clone()),
+            id: Set(*id),
             ldap_check_status: Set(new_status),
             ..Default::default()
         };

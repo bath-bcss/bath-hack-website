@@ -10,7 +10,6 @@ use crate::{
         flashy_homepage::{
             faqs::FAQs,
             footer::HomepageFooter,
-            image_grid::image_grid_container::ImageGrid,
             schedule::Schedule,
             section::{
                 heading::SectionIcon, page_section::FlashyHomepageSection,
@@ -47,23 +46,21 @@ pub fn home_page() -> Html {
             <HeroGradientContainer>
                 <div class="w-full px-4 sm:px-6 md:px-8 lg:px-[5%] xl:px-[10%] flex items-center">
                     <div class="space-y-4 flex-1 md:mr-10">
-                        <img src="img/logo.svg" role="presentation" class="lg:h-48 md:h-32 h-24" />
                         <h1
                             class="text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-hero text-bcss-100 leading-none"
                         >
-                            { "Bath Hack 2024" }
+                            { "Game Jam 2024" }
                         </h1>
                         <p class="text-heroSubtitle text-bcss-100">
-                            { "The annual 24-hour hackathon for all Uni of Bath students" }
+                            { "Build games in inter-society teams to win cool prizes" }
                         </p>
                         <p class="text-heroSubtitle text-bcss-100 font-bold italic">
-                            { "13th - 14th April. Free to enter." }
+                            { "30th Oct — 13th Nov. Free to enter." }
                         </p>
                         <Button background_is_dark=true onclick={on_sign_up_click.clone()}>
                             { "Sign up!" }
                         </Button>
                     </div>
-                    <ImageGrid />
                 </div>
             </HeroGradientContainer>
             <div class="space-y-32 mt-32">

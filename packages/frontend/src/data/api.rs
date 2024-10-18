@@ -36,7 +36,7 @@ where
             .json()
             .await
             .map_err(|e| FrontendRequestError::DeserializeFailed(e.to_string()))?;
-        return Ok(data);
+        Ok(data)
     } else if response.status() == 401 {
         let data: AuthSessionError = response
             .json()

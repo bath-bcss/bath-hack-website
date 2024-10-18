@@ -15,7 +15,7 @@ pub struct Props {
 #[function_component(GroupName)]
 pub fn group_name_component(props: &Props) -> Html {
     let is_editing_handle = use_state_eq(|| false);
-    let is_editing = (*is_editing_handle).clone();
+    let is_editing = *is_editing_handle;
     let on_edit_click = {
         let is_editing_handle = is_editing_handle.clone();
         use_callback((), move |_, _| {
@@ -27,7 +27,7 @@ pub fn group_name_component(props: &Props) -> Html {
     let group_name = (*group_name_handle).clone();
 
     let loading_handle = use_state_eq(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
     let error_handle = use_state_eq(|| None::<String>);
     let error = (*error_handle).clone();
 
@@ -69,12 +69,12 @@ pub fn group_name_component(props: &Props) -> Html {
             </div>
         } else {
             <form class="mb-2" onsubmit={on_name_submit}>
-                <Input handle={group_name_handle} disabled={loading.clone()} />
+                <Input handle={group_name_handle} disabled={loading} />
                 <Button
                     class={classes!("mt-2")}
                     button_type="submit"
                     background_is_dark=false
-                    disabled={loading.clone()}
+                    disabled={loading}
                 >
                     { "Save" }
                 </Button>
@@ -83,4 +83,3 @@ pub fn group_name_component(props: &Props) -> Html {
         }
     }
 }
-

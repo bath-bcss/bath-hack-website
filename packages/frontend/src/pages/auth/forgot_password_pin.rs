@@ -18,11 +18,11 @@ use crate::{
 
 #[function_component(ForgotPasswordPINPage)]
 pub fn forgot_password_pin_page() -> Html {
-    let pin_handle = use_state_eq(|| String::default());
-    let new_password_handle = use_state_eq(|| String::default());
+    let pin_handle = use_state_eq(String::default);
+    let new_password_handle = use_state_eq(String::default);
 
     let loading_handle = use_state_eq(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
     let error_handle = use_state_eq(|| None::<String>);
     let navigator = use_navigator().expect_throw("Navigator not found");
 

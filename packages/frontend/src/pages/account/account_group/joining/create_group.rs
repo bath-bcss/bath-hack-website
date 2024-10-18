@@ -13,9 +13,9 @@ use crate::{
 #[function_component(CreateGroup)]
 pub fn create_group_component(props: &AccountGroupSubpageProps) -> Html {
     let form_loading_handle = use_state_eq(|| false);
-    let form_loading = (*form_loading_handle).clone();
+    let form_loading = *form_loading_handle;
 
-    let new_group_name_handle = use_state_eq(|| String::default());
+    let new_group_name_handle = use_state_eq(String::default);
     let new_group_name = (*new_group_name_handle).clone();
 
     let create_group_error_handle = use_state_eq(|| None::<String>);

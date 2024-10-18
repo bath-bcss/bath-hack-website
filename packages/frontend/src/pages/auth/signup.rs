@@ -30,7 +30,7 @@ pub fn sign_up_page() -> Html {
     html! {
         <HeroCenterContainer>
             <GlassContainer home_link=true>
-                <GlassContainerHeading>{ "Sign Up to Bath Hack" }</GlassContainerHeading>
+                <GlassContainerHeading>{ "Sign Up to Game Jam" }</GlassContainerHeading>
                 <GlassContainerParagraph>
                     { "We'll send an email to your University email account with a link to set up your account." }
                 </GlassContainerParagraph>

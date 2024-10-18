@@ -13,7 +13,7 @@ use super::types::AccountCVSubpageProps;
 #[function_component(AccountCVPageManage)]
 pub fn manage_cv_page(props: &AccountCVSubpageProps) -> Html {
     let loading_handle = use_state_eq(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
     let download_error_handle = use_state_eq(|| None::<String>);
     let download_error = (*download_error_handle).clone();
     let delete_error_handle = use_state_eq(|| None::<String>);

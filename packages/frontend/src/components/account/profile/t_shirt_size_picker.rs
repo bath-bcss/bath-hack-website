@@ -14,7 +14,7 @@ use crate::{
         modal::Modal,
         page_control_paragraph::PageControlParagraph,
         table::{
-            responsive_container::ResponsiveTableContainer, table::Table, table_body::TableBody,
+            responsive_container::ResponsiveTableContainer, table_component::Table, table_body::TableBody,
             table_data::TableData, table_header::TableHeader, table_heading::TableHeading,
             table_row::TableRow,
         },
@@ -58,7 +58,7 @@ pub fn t_shirt_size_picker(props: &Props) -> Html {
     );
 
     let loading_handle = use_state_eq(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
     let error_handle = use_state_eq(|| None::<String>);
     let error = (*error_handle).clone();
 
@@ -110,7 +110,7 @@ pub fn t_shirt_size_picker(props: &Props) -> Html {
                     class={child_props.class.clone()}
                     value={select_value.clone()}
                     onchange={on_select_change}
-                    disabled={loading.clone()}
+                    disabled={*loading}
                 >
                     <option hidden=true selected={t_shirt_size.clone().is_none()}>
                         { "Please select" }
@@ -140,7 +140,7 @@ pub fn t_shirt_size_picker(props: &Props) -> Html {
     );
 
     let show_modal_handle = use_state_eq(|| false);
-    let show_modal = (*show_modal_handle).clone();
+    let show_modal = *show_modal_handle;
     let on_show_modal_click =
         use_callback((show_modal_handle.clone(),), |_, (show_modal_handle,)| {
             show_modal_handle.set(true);

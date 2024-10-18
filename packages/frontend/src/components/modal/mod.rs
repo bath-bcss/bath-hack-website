@@ -40,6 +40,6 @@ pub fn modal_component(props: &Props) -> Html {
                 </div>
             </div>
         },
-        host.into(),
+        host,
     )
 }

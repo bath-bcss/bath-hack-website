@@ -39,7 +39,7 @@ pub fn faq_item(props: &Props) -> Html {
             "hover:underline"
         );
 
-        if is_open.clone() {
+        if *is_open {
             base_classes.push("rounded-b-none");
         }
 
@@ -60,7 +60,7 @@ pub fn faq_item(props: &Props) -> Html {
             "px-4",
         );
 
-        if is_open.clone() {
+        if *is_open {
             base_class.push(classes!("max-h-80", "py-4"));
         }
 

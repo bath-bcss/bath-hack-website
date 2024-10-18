@@ -27,7 +27,7 @@ pub fn signup_notice_page() -> Html {
 
     let navigator = use_navigator().expect_throw("Navigator not found");
     let loading_handle = use_state_eq(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
     let error_handle = use_state_eq(|| None::<String>);
     let error = (*error_handle).clone();
 
@@ -50,7 +50,7 @@ pub fn signup_notice_page() -> Html {
                 loading_handle.set(false);
                 if let Err(response) = response {
                     error_handle.set(Some(response.to_string()));
-                } else if let Ok(_) = response {
+                } else if response.is_ok() {
                     navigator.push(&Route::SignupSuccess);
                 }
             });

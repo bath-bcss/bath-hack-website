@@ -18,7 +18,7 @@ pub struct Props {
 #[function_component(ScheduleItem)]
 pub fn schedule_item(props: &Props) -> Html {
     let modal_open_handle = use_state(|| false);
-    let modal_open = (*modal_open_handle).clone();
+    let modal_open = *modal_open_handle;
 
     let on_open_modal_click = use_callback(
         (modal_open_handle.clone(),),

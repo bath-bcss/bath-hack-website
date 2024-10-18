@@ -24,7 +24,7 @@ pub fn login_page() -> Html {
     let password = (*password_handle).clone();
 
     let loading_handle = use_state_eq(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
 
     let error_handle = use_state_eq(|| None::<String>);
     let error = (*error_handle).clone();
@@ -66,7 +66,7 @@ pub fn login_page() -> Html {
                         required=true
                         input_type="text"
                         input_class={classes!("mb-4")}
-                        disabled={loading.clone()}
+                        disabled={loading}
                     />
                     <Input
                         handle={password_handle}
@@ -75,9 +75,13 @@ pub fn login_page() -> Html {
                         required=true
                         input_type="password"
                         input_class={classes!("mb-4")}
-                        disabled={loading.clone()}
+                        disabled={loading}
                     />
-                    <Button background_is_dark=false button_type="submit" disabled={loading.clone()}>
+                    <Button
+                        background_is_dark=false
+                        button_type="submit"
+                        disabled={loading}
+                    >
                         { "Sign in!" }
                     </Button>
                     <ErrorMessage message={error} />
