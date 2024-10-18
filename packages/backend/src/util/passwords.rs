@@ -37,7 +37,7 @@ impl PasswordManager {
         }
         Ok(())
     }
-    pub fn hash(password: &String) -> Result<String, argon2::password_hash::Error> {
+    pub fn hash(password: &str) -> Result<String, argon2::password_hash::Error> {
         let salt = SaltString::generate(&mut OsRng);
         let argon2 = Argon2::default();
         let password_hash = argon2
@@ -59,7 +59,7 @@ impl PasswordManager {
         })
     }
 
-    pub fn verify(password: &String, hash: &String) -> Result<bool, argon2::password_hash::Error> {
+    pub fn verify(password: &str, hash: &str) -> Result<bool, argon2::password_hash::Error> {
         let parsed_hash = PasswordHash::new(hash)?;
         let result = Argon2::default().verify_password(password.as_bytes(), &parsed_hash);
 
@@ -67,7 +67,7 @@ impl PasswordManager {
     }
 
     /// Time-wasting function to prevent time attacks
-    pub fn dummy_verify(password: &String) {
+    pub fn dummy_verify(password: &str) {
         let res = Self::hash(password);
         if let Err(e) = res {
             warn!(

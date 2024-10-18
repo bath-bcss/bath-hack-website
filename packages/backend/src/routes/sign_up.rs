@@ -86,16 +86,11 @@ pub async fn sign_up_route(
         .await
         .map_err(|e| SignUpResponseError::CreateError(e.to_string()))?;
 
-    web::block(move || -> Result<(), SignUpResponseError> {
-        SignupRequestHelper::send_email(&new_sr.request, &config, &new_sr.secret)
-            .map_err(|e| SignUpResponseError::EmailError(e.to_string()))?;
-        Ok(())
-    })
-    .await
-    .map_err(|_| SignUpResponseError::BlockingError)??;
+    SignupRequestHelper::send_email(&new_sr.request, &config, &new_sr.secret)
+        .await
+        .map_err(|e| SignUpResponseError::EmailError(e.to_string()))?;
 
     txn.commit().await?;
-
     Ok(Nothing)
 }
 

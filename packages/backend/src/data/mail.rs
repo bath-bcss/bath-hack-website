@@ -32,7 +32,7 @@ impl Mailer {
         }
     }
 
-    pub fn send_template(&self, instruction: SendInstruction) -> SendResult<SendResponse> {
+    pub async fn send_template(&self, instruction: SendInstruction) -> SendResult<SendResponse> {
         let recipient = EmailAddress::address(&instruction.to);
 
         let message = Message {
@@ -46,7 +46,7 @@ impl Mailer {
         let client = self.mailgun(message);
         let from = EmailAddress::name_address("BCSS Bath Hack", "no-reply@hack.bathcs.com");
 
-        client.send(MailgunRegion::EU, &from)
+        client.async_send(MailgunRegion::EU, &from).await
     }
 
     pub async fn fake_send_email() {

@@ -68,10 +68,9 @@ impl SignupRequestHelper {
 
     pub async fn from_id<C: ConnectionTrait>(
         conn: &C,
-        id: &String,
+        id: &str,
     ) -> Result<Option<signup_request::Model>, SignupRequestFromIdError> {
-        let parsed_id =
-            uuid::Uuid::parse_str(id).map_err(SignupRequestFromIdError::InvalidID)?;
+        let parsed_id = uuid::Uuid::parse_str(id).map_err(SignupRequestFromIdError::InvalidID)?;
 
         let resp = SignupRequest::find()
             .filter(signup_request::Column::Id.eq(parsed_id))
@@ -99,7 +98,7 @@ impl SignupRequestHelper {
     }
     pub fn verify_hash(
         signup_request: &signup_request::Model,
-        secret: &String,
+        secret: &str,
     ) -> Result<bool, argon2::password_hash::Error> {
         PasswordManager::verify(secret, &signup_request.secret_hash)
     }
@@ -114,8 +113,8 @@ impl SignupRequestHelper {
             return Err(SignupRequestCreateError::AlreadyExists);
         }
 
-        let secret = PasswordManager::hash_random()
-            .map_err(SignupRequestCreateError::PasswordError)?;
+        let secret =
+            PasswordManager::hash_random().map_err(SignupRequestCreateError::PasswordError)?;
 
         let new_signup_request = signup_request::ActiveModel {
             id: Set(uuid::Uuid::new_v4()),
@@ -153,23 +152,23 @@ impl SignupRequestHelper {
     pub fn expired(signup_request: &signup_request::Model) -> bool {
         signup_request.expires_at <= Utc::now().naive_utc()
     }
-    pub fn send_email<'a>(
-        signup_request: &'a signup_request::Model,
-        config: &'a AppConfig,
-        secret: &'a String,
+    pub async fn send_email(
+        signup_request: &signup_request::Model,
+        config: &AppConfig,
+        secret: &str,
     ) -> SendResult<SendResponse> {
         let mailer = Mailer::client(config);
         let mut mail_vars = HashMap::new();
         mail_vars.insert("request_id".to_string(), signup_request.id.to_string());
-        mail_vars.insert("secret".to_string(), secret.clone());
+        mail_vars.insert("secret".to_string(), secret.to_owned());
 
         let instruction = SendInstruction {
             to: Self::email_address(signup_request),
-            subject: "Welcome to Bath Hack!".to_string(),
+            subject: "Welcome to Game Jam!".to_string(),
             template_key: "bhw-welcome".to_string(),
             vars: mail_vars,
         };
-        mailer.send_template(instruction)
+        mailer.send_template(instruction).await
     }
 
     #[cfg(feature = "ldap")]

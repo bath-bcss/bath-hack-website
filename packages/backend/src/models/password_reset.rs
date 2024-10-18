@@ -99,7 +99,7 @@ impl PasswordResetHelper {
         Ok(new_password_reset)
     }
 
-    pub fn send_email(
+    pub async fn send_email(
         app_config: &AppConfig,
         to_username: String,
         pin: String,
@@ -107,12 +107,14 @@ impl PasswordResetHelper {
         let mailer = Mailer::client(app_config);
         let mut mail_vars = HashMap::new();
         mail_vars.insert("pin".to_string(), pin);
-        mailer.send_template(SendInstruction {
-            to: email_address(to_username),
-            vars: mail_vars,
-            template_key: "bhw-password-reset".to_string(),
-            subject: "Reset your Bath Hack password".to_string(),
-        })
+        mailer
+            .send_template(SendInstruction {
+                to: email_address(to_username),
+                vars: mail_vars,
+                template_key: "bhw-password-reset".to_string(),
+                subject: "Reset your Game Jam password".to_string(),
+            })
+            .await
     }
 
     pub async fn find_and_delete_pin<T: ConnectionTrait>(

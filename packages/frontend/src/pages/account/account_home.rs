@@ -6,10 +6,7 @@ use yew_router::hooks::use_location;
 
 use crate::{
     components::{
-        account::profile::{
-            profile_datapoint::{ProfileDatapoint, ProfileKey},
-            t_shirt_size_picker::TShirtSizePicker,
-        },
+        account::profile::profile_datapoint::{ProfileDatapoint, ProfileKey},
         form::input::Input,
         loading_spinner::LoadingSpinner,
         page_container::PageContainer,
@@ -90,9 +87,7 @@ pub fn account_home_page() -> Html {
                         { "You made it!" }
                     </h2>
                     <p class="text-green-800 dark:text-green-200">
-                        { "That's it; you're officially going to Bath Hack! If you feel like it, you can fill out the rest
-                    of
-                    your profile, but that's all optional." }
+                        { "That's it; you're officially going to Game Jam! If you feel like it, you can fill out the rest of your profile, but that's all optional." }
                     </p>
                     <p class="text-green-800 dark:text-green-200">
                         { "When you're ready, check out the Group tab. Most people compete in groups of up to 4 people, and
@@ -132,11 +127,10 @@ pub fn account_home_page() -> Html {
                         current_value={profile.display_name}
                         on_value_change={on_datapoint_change.clone()}
                     />
-                    <TShirtSizePicker
+                    /*<TShirtSizePicker
                         current_value={profile.t_shirt_size}
                         on_datapoint_change={on_datapoint_change.clone()}
-                    />
-                    <ProfileDatapoint
+                    />*/<ProfileDatapoint
                         data_key={ProfileKey::AccessibilityRequirements}
                         current_value={profile.accessibility_requirements}
                         on_value_change={on_datapoint_change.clone()}

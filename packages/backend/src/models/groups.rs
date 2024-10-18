@@ -1,4 +1,4 @@
-use bhw_models::{prelude::*, website_user, competition_group};
+use bhw_models::{competition_group, prelude::*, website_user};
 use rand::{rngs::OsRng, RngCore};
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait,
@@ -53,7 +53,7 @@ pub enum RenameMemberGroupError {
     #[error("User does not exist")]
     UserNotFound,
     #[error("User is not in a group")]
-    UserNotInGroup
+    UserNotInGroup,
 }
 
 pub struct GroupsHelper;
@@ -87,13 +87,17 @@ impl GroupsHelper {
         Ok((group_with_code.clone(), group_members.clone()))
     }
 
-    async fn get_current_group_id<T:ConnectionTrait>(conn: &T, user_id: uuid::Uuid) -> Result<Option<uuid::Uuid>, GetUserGroupError> {
+    async fn get_current_group_id<T: ConnectionTrait>(
+        conn: &T,
+        user_id: uuid::Uuid,
+    ) -> Result<Option<uuid::Uuid>, GetUserGroupError> {
         let (user_group_id,): (Option<uuid::Uuid>,) = WebsiteUser::find_by_id(user_id)
             .select_only()
             .select_column(website_user::Column::GroupId)
             .into_tuple()
             .one(conn)
-            .await?.ok_or(GetUserGroupError::UserNotFound)?;
+            .await?
+            .ok_or(GetUserGroupError::UserNotFound)?;
 
         Ok(user_group_id)
     }
@@ -101,7 +105,8 @@ impl GroupsHelper {
     pub async fn get_current_group<T: ConnectionTrait>(
         conn: &T,
         user_id: uuid::Uuid,
-    ) -> Result<Option<(competition_group::Model, Vec<website_user::Model>)>, GetUserGroupError> {
+    ) -> Result<Option<(competition_group::Model, Vec<website_user::Model>)>, GetUserGroupError>
+    {
         let user_group_id = Self::get_current_group_id(conn, user_id).await?;
 
         if let Some(user_group_id) = user_group_id {
@@ -133,7 +138,6 @@ impl GroupsHelper {
             id: Set(uuid::Uuid::new_v4()),
             join_code: Set(Self::generate_join_code()),
             group_name: Set(group_name),
-            ..Default::default()
         };
 
         let new_group: competition_group::Model = new_group.insert(conn).await?;
@@ -198,11 +202,18 @@ impl GroupsHelper {
         Ok(())
     }
 
-    pub async fn rename_member_group<T: ConnectionTrait>(conn: &T, user_id: uuid::Uuid, new_name: String) -> Result<(), RenameMemberGroupError> {
-        let user_group_id = Self::get_current_group_id(conn, user_id).await.map_err(|e| match e {
-            GetUserGroupError::DBError(e) => RenameMemberGroupError::DBError(e),
-            GetUserGroupError::UserNotFound => RenameMemberGroupError::UserNotFound
-        })?.ok_or(RenameMemberGroupError::UserNotInGroup)?;
+    pub async fn rename_member_group<T: ConnectionTrait>(
+        conn: &T,
+        user_id: uuid::Uuid,
+        new_name: String,
+    ) -> Result<(), RenameMemberGroupError> {
+        let user_group_id = Self::get_current_group_id(conn, user_id)
+            .await
+            .map_err(|e| match e {
+                GetUserGroupError::DBError(e) => RenameMemberGroupError::DBError(e),
+                GetUserGroupError::UserNotFound => RenameMemberGroupError::UserNotFound,
+            })?
+            .ok_or(RenameMemberGroupError::UserNotInGroup)?;
 
         let updated_group = competition_group::ActiveModel {
             id: Set(user_group_id),

@@ -35,9 +35,9 @@ pub enum UpdateUserPasswordError {
 pub struct UserHelper;
 
 impl UserHelper {
-    pub fn validate_username(username: &String) -> bool {
+    pub fn validate_username(username: &str) -> bool {
         let username_regex = regex::Regex::new(r"^[a-z]{2,5}\d{2,5}$").expect("Username regex");
-        username_regex.is_match(username.as_str())
+        username_regex.is_match(username)
     }
 
     pub async fn check_username_exists<C: ConnectionTrait>(
@@ -97,8 +97,8 @@ impl UserHelper {
 
     pub async fn create<C: ConnectionTrait>(
         conn: &C,
-        username: &String,
-        password: &String,
+        username: &str,
+        password: &str,
         ldap_check_status: i16,
     ) -> Result<website_user::Model, CreateUserError> {
         let password_hash =
@@ -197,7 +197,7 @@ impl UserHelper {
 
     pub fn verify_password(
         user: &website_user::Model,
-        password: &String,
+        password: &str,
     ) -> Result<bool, argon2::password_hash::Error> {
         PasswordManager::verify(password, &user.password_hash)
     }
@@ -205,7 +205,7 @@ impl UserHelper {
     pub async fn update_password<C: ConnectionTrait>(
         conn: &C,
         id: &uuid::Uuid,
-        new_password: &String,
+        new_password: &str,
     ) -> Result<(), UpdateUserPasswordError> {
         let password_hash = PasswordManager::hash(new_password)
             .map_err(UpdateUserPasswordError::PasswordHash)?;

@@ -64,12 +64,11 @@ pub fn create_group_component(props: &AccountGroupSubpageProps) -> Html {
         <>
             <PageControlHeading>{ "Create a new group" }</PageControlHeading>
             <PageControlParagraph>
-                { "You'll need a group to enter Bath Hack. Your group can have between 1 and 4 members. When you create a
+                { "You'll need a group to enter. Your group can have between 1 and 4 members. When you create a
             group, you'll be given a join code that you can share with your other teammates." }
             </PageControlParagraph>
             <PageControlParagraph>
-                { "Don't worry too much about your group name! You'll be able to change it any time before the competition
-            starts." }
+                { "Don't worry too much about your group name! You'll be able to change it any time before the competition starts." }
             </PageControlParagraph>
             <form onsubmit={on_create_group_click}>
                 <Input
