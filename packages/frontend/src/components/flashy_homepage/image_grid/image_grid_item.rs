@@ -5,28 +5,20 @@ use crate::data::image_url::get_image_url;
 #[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub src: String,
-    #[prop_or_default]
-    pub is_portrait: bool,
+    pub href: String,
 }
 
 #[function_component(ImageGridItem)]
 pub fn image_grid_item(props: &Props) -> Html {
     let src = use_memo((props.src.clone(),), |(src,)| get_image_url(src.clone()));
 
-    let (width, height) = if props.is_portrait {
-        (400, 650)
-    } else {
-        (650, 400)
-    };
-
     html! {
-        <img
-            src={(*src).clone()}
-            class="w-full h-auto rounded-2xl dark:brightness-90"
-            loading="lazy"
-            width={width.to_string()}
-            height={height.to_string()}
-            role="presentation"
-        />
+        <p
+            class="h-auto w-[250px] rounded-2xl overflow-hidden dark:brightness-90 bg-bcss-400 dark:bg-bcss-800"
+        >
+            <a href={props.href.clone()} target="_blank" rel="noreferrer">
+                <img src={(*src).clone()} loading="lazy" role="presentation" />
+            </a>
+        </p>
     }
 }

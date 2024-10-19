@@ -172,7 +172,7 @@ pub fn home_page() -> Html {
                     anchor="about"
                 >
                     <FlashyHomepageSectionParagraph>
-                        { "This event has been organised by the Committee of the Bath Computer Science Society, in collaboration with Bath Illustration and Animation Society, Bath Video Game Society, Bath Fine Art Society, and Tabletop Gaming Society. It's our first time running this exciting collaboration, and we hope to continue it in future years!" }
+                        { "This event has been organised by the Committee of the Bath Computer Science Society, in collaboration with Bath Illustration and Animation Society, Bath Video Game Society, Bath Fine Art Society, Tabletop Gaming Society, and Women in Technology. It's our first time running this exciting collaboration, and we hope to continue it in future years!" }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph>
                         { "BCSS is a member society of the University of Bath Student Union and is also a student chapter of the
@@ -183,7 +183,7 @@ pub fn home_page() -> Html {
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph>
                         { "Our society is sponsored by:" }
-                        <a href="https://www.qube-rt.com/" target="_blank" rel="noreferer">
+                        <a href="https://www.qube-rt.com/" target="_blank" rel="noreferrer">
                             <img src="/img/sponsors/qrt.webp" class="w-36 mt-2" alt="QRT" />
                         </a>
                     </FlashyHomepageSectionParagraph>
