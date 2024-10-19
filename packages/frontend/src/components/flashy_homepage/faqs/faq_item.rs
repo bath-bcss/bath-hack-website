@@ -2,11 +2,11 @@ use yew::prelude::*;
 
 #[derive(Clone, PartialEq)]
 pub enum FAQItemIndex {
-    WhatIsHackathon,
+    InPerson,
     WhatIsPrizeTrack,
     WhoCanParticipate,
-    WhatCanBuild,
-    TwentyFour,
+    Devpost,
+    DevelopmentPeriod,
     Food,
 }
 

@@ -10,12 +10,12 @@ use crate::{
         flashy_homepage::{
             faqs::FAQs,
             footer::HomepageFooter,
+            image_grid::image_grid_container::ImageGrid,
             schedule::Schedule,
             section::{
                 heading::SectionIcon, page_section::FlashyHomepageSection,
                 section_paragraph::FlashyHomepageSectionParagraph,
             },
-            sponsors::SponsorsGrid,
             tracks::TrackGrid,
         },
         hero::gradient::HeroGradientContainer,
@@ -47,43 +47,45 @@ pub fn home_page() -> Html {
                 <div class="w-full px-4 sm:px-6 md:px-8 lg:px-[5%] xl:px-[10%] flex items-center">
                     <div class="space-y-4 flex-1 md:mr-10">
                         <h1
-                            class="text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-hero text-bcss-100 leading-none"
+                            class="text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-hero text-white dark:text-bcss-100 leading-none"
                         >
-                            { "Game Jam 2024" }
+                            { "Bath Game Jam" }
                         </h1>
-                        <p class="text-heroSubtitle text-bcss-100">
-                            { "Build games in inter-society teams to win cool prizes" }
+                        <p class="text-heroSubtitle text-white dark:text-bcss-100">
+                            { "Build cool digital and physical games in inter-society teams to win prizes!" }
                         </p>
-                        <p class="text-heroSubtitle text-bcss-100 font-bold italic">
+                        <p
+                            class="text-heroSubtitle text-white dark:text-bcss-100 font-bold italic"
+                        >
                             { "30th Oct — 13th Nov. Free to enter." }
                         </p>
                         <Button background_is_dark=true onclick={on_sign_up_click.clone()}>
                             { "Sign up!" }
                         </Button>
                     </div>
+                    <ImageGrid />
                 </div>
             </HeroGradientContainer>
             <div class="space-y-32 mt-32">
                 <FlashyHomepageSection
                     icon={SectionIcon::Emoji("👋".to_string())}
-                    title="Welcome to Bath Hack!"
+                    title="Game Jam: New for 2024!"
                     anchor="welcome"
-                    image="home_section1.webp"
+                    image="home_section_intro.webp"
                 >
                     <FlashyHomepageSectionParagraph full_width=true>
-                        { "The official BCSS Hackathon is back for 2024 — another exciting year of projects, prizes, and (most
-                    importantly) pizza! As per usual, it's open to " }
-                        <strong>{ "all University of Bath students" }</strong>
-                        { "; not just Computer Scientists." }
+                        { "BCSS' brand new competition is launching in 2024. We've joined forces with 4 societies to bring you a week-long game jam. Get together in groups of 4 to build your very own game and win prizes!" }
+                        { " You don't need any coding knowledge: even physical board games are eligible for entry." }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph full_width=true>
-                        { "You'll have exactly one day to build an innovative project with your team and impress the judges.
-                It's
-                a fun,
-                inclusive, and beginner-friendly atmosphere with a wide range of tracks and talks." }
+                        { "You'll have just over 7 days to build an innovative project with your team and impress the judges.
+                It's a fun, inclusive, and beginner-friendly atmosphere with a range of ways to compete." }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph full_width=true>
-                        { "Are you ready for the most exciting 24 hours of your life?" }
+                        { "The event starts with a fun kick-off and team-building session, and ends with an exciting showcase you can bring all your friends to (free pizza included)." }
+                        { " You'll build your projects to a " }
+                        <strong>{ "mystery theme" }</strong>
+                        { " that we'll reveal at the kick-off." }
                     </FlashyHomepageSectionParagraph>
                     <Button
                         onclick={on_sign_up_click.clone()}
@@ -114,20 +116,19 @@ pub fn home_page() -> Html {
                     icon={SectionIcon::Icon(IconId::FontAwesomeSolidClock)}
                     title="Schedule"
                     anchor="schedule"
-                    image="home_section3.webp"
+                    image="home_section_schedule.webp"
                 >
                     <Schedule />
                 </FlashyHomepageSection>
                 <FlashyHomepageSection
                     icon={SectionIcon::Icon(IconId::FontAwesomeSolidHeart)}
-                    title="Sponsors"
-                    anchor="sponsors"
+                    title="Sponsored by DucksBath"
+                    anchor="sponsor"
+                    image="sponsors/ducksbath.webp"
                 >
                     <FlashyHomepageSectionParagraph>
-                        { "We'd never be able to run Bath Hack without these lovely people! Our sponsors financially support the
-                    event and make it possible for us to offer free meals, snacks, merch, and more." }
+                        { "DucksBath are kindly sponsoring Game Jam with a range of merch that you'll be able to find around our events. Keep your eyes peeled for their cool duck-themed socks and caps! You can visit them in The Market on campus for the whole range of products." }
                     </FlashyHomepageSectionParagraph>
-                    <SponsorsGrid />
                 </FlashyHomepageSection>
                 <FlashyHomepageSection
                     icon={SectionIcon::Icon(IconId::FontAwesomeSolidQuestion)}
@@ -142,11 +143,10 @@ pub fn home_page() -> Html {
                     anchor="accessibility"
                 >
                     <FlashyHomepageSectionParagraph>
-                        { "Bath Hack 2024 will take place on-campus in the Chancellors' Building. The entire building will be
-                    reserved for the event, with various rooms in use for talks, workshops, etc." }
+                        { "Game Jam 2024 will take place across two events on-campus. We'll be using exclusively wheelchair-accessible rooms." }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph>
-                        { "Lifts, double-width doors, hearing loop support and water fountains are available in the building. If
+                        { "Lifts, double-width doors, hearing loop support and water fountains are available for all involved rooms. If
                 you have any specific access requirements that we haven't thought of, please let us know! You can either
                 " }
                         <a href="mailto:su-bcss@bath.ac.uk" class="underline">
@@ -156,14 +156,6 @@ pub fn home_page() -> Html {
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph>
                         { "You can also " }
-                        <a
-                            href="https://bath.autism-uni.org/location/chancellors-building/"
-                            target="_blank"
-                            class="underline"
-                        >
-                            { "view the Autism&Uni website" }
-                        </a>
-                        { " for accessibility information on the Chancellors' Building or " }
                         <a
                             href="https://www.bath.ac.uk/publications/campus-accessibility-map/attachments/university-campus-accessibility-map.pdf"
                             target="_blank"
@@ -180,8 +172,7 @@ pub fn home_page() -> Html {
                     anchor="about"
                 >
                     <FlashyHomepageSectionParagraph>
-                        { "This event has been organised by the Committee of the Bath Computer Science Society. We put lots of
-                    effort into organising it each year and aim to make it bigger and better every time." }
+                        { "This event has been organised by the Committee of the Bath Computer Science Society, in collaboration with Bath Illustration and Animation Society, Bath Video Game Society, Bath Fine Art Society, and Tabletop Gaming Society. It's our first time running this exciting collaboration, and we hope to continue it in future years!" }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph>
                         { "BCSS is a member society of the University of Bath Student Union and is also a student chapter of the
@@ -189,6 +180,12 @@ pub fn home_page() -> Html {
                 student
                 studying any degree. Our key aim is to encourage more people into the field, as well as to teach
                 important industry skills to help encourage our members to grow." }
+                    </FlashyHomepageSectionParagraph>
+                    <FlashyHomepageSectionParagraph>
+                        { "Our society is sponsored by:" }
+                        <a href="https://www.qube-rt.com/" target="_blank" rel="noreferer">
+                            <img src="/img/sponsors/qrt.webp" class="w-36 mt-2" alt="QRT" />
+                        </a>
                     </FlashyHomepageSectionParagraph>
                     <Button
                         onclick={on_find_out_more_click.clone()}

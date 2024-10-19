@@ -30,17 +30,12 @@ pub fn faqs_component() -> Html {
         <div class="mt-4 space-y-4">
             <FAQItem
                 current_open={currently_open_index.clone()}
-                i={FAQItemIndex::WhatIsHackathon}
+                i={FAQItemIndex::InPerson}
                 on_click={on_item_click.clone()}
-                question="What is a hackathon?"
+                question="Is Game Jam in-person?"
             >
                 <FAQItemParagraph>
-                    { "In short, it is the ultimate technological group work task. You have 24hrs and a team to plan, design,
-                develop and pitch a system from scratch. Whether you sacrifice functionality for ambition or strive for
-                a
-                fully working system the options are boundless. Pick a prize track and creatively solve the problem and
-                you'll be real competition. As cliche as it sounds, the most important thing is have fun and meet new
-                people." }
+                    { "Our kick-off and showcase sessions are both in-person. We'd like you to attend both of them if you're taking part in the competition. Don't worry, we'll make them super fun! We'll have a range of snacks at both, and pizza at the showcase. Other than these events, you'll do the development of your game in your own time. You can meet with your group in-person or online, however you'd like!" }
                 </FAQItemParagraph>
             </FAQItem>
             <FAQItem
@@ -50,12 +45,7 @@ pub fn faqs_component() -> Html {
                 question="What is a track?"
             >
                 <FAQItemParagraph>
-                    { "A track is a problem that needs to be solved or a question that needs to be answered. It's a
-                specific
-                goal your solution should fulfil." }
-                </FAQItemParagraph>
-                <FAQItemParagraph>
-                    { "Tracks can be vague or specific and your project can be eligible for more than one." }
+                    { "A track is like a target your project should be aiming for. You can choose which tracks you'd like to aim for at the start. However, you don't need to actually tell us which you choose, as your project will automatically be considered for all of them as applicable." }
                 </FAQItemParagraph>
             </FAQItem>
             <FAQItem
@@ -64,37 +54,38 @@ pub fn faqs_component() -> Html {
                 on_click={on_item_click.clone()}
                 question="Who can participate in this event?"
             >
-                <FAQItemParagraph>
-                    { "Any student at the University of Bath! Not just Computer Scientists." }
-                </FAQItemParagraph>
+                <FAQItemParagraph>{ "Any student at the University of Bath!" }</FAQItemParagraph>
                 <FAQItemParagraph>
                     { "In fact, you don't even need experience with coding or tech in general. All you need are creativity
                 and enthusiasm! There'll be lots of support available for those with less experience — but there will
                 also be ways to participate without writing a single line of code." }
                 </FAQItemParagraph>
-            </FAQItem>
-            <FAQItem
-                current_open={currently_open_index.clone()}
-                i={FAQItemIndex::WhatCanBuild}
-                on_click={on_item_click.clone()}
-                question="What can I build?"
-            >
                 <FAQItemParagraph>
-                    { "Anything cool! In the past lots of projects have involved electronics or programming, but we'll also
-                have ways to participate without writing any code!" }
+                    { "Plus, none of the tracks even require you to write code! A lot of groups will use digital approaches, but there's no requirement to do so. We're just looking for creative answers to our tracks." }
                 </FAQItemParagraph>
             </FAQItem>
             <FAQItem
                 current_open={currently_open_index.clone()}
-                i={FAQItemIndex::TwentyFour}
+                i={FAQItemIndex::Devpost}
                 on_click={on_item_click.clone()}
-                question="24 hours‽"
+                question="How do I submit my game?"
             >
                 <FAQItemParagraph>
-                    { "You don't have to use the full time and we encourage you to take a break and/or sleep. But yes, 24hrs
-                of potential project time." }
+                    { "We use a website called " }
+                    <strong>{ "Devpost" }</strong>
+                    { ". This allows you to submit a cool profile of your project with all your teammates added to it. We'll need you to upload a short video showcasing your game, as well as a brief description of how you came up with the idea. Don't worry, this isn't like an assignment, and it's super easy to do! Future employers will be able to see your work here, so it's great for your career too." }
                 </FAQItemParagraph>
-                <FAQItemParagraph>{ "Good luck, use it wisely!" }</FAQItemParagraph>
+            </FAQItem>
+            <FAQItem
+                current_open={currently_open_index.clone()}
+                i={FAQItemIndex::DevelopmentPeriod}
+                on_click={on_item_click.clone()}
+                question="How long do I have to build my game?"
+            >
+                <FAQItemParagraph>
+                    { "You'll have from 12:00 on Saturday 2nd November until 20:00 on Tuesday 12th November, so just over 10 days of project time! You can decide how to allocate your time and when to meet with your group. The deadline is a hard one, so we won't consider any submissions or changes made after that time." }
+                </FAQItemParagraph>
+                <FAQItemParagraph>{ "Good luck, use your time wisely!" }</FAQItemParagraph>
             </FAQItem>
             <FAQItem
                 current_open={currently_open_index.clone()}
@@ -103,12 +94,11 @@ pub fn faqs_component() -> Html {
                 question="Food?"
             >
                 <FAQItemParagraph>
-                    { "Food indeed! There will be 3 meals provided free of charge (thanks to our lovely sponsors!) to all
-                participants, including dinner, breakfast,
-                and lunch. We'll try to cater to all dietary requirements, so please specify these when you create your
-                account." }
+                    { "Food indeed! There will be free pizza provided to all
+                participants at the showcase event, as well as a range of snacks. We'll try to cater to all dietary requirements, so please specify these when you create your account." }
                 </FAQItemParagraph>
             </FAQItem>
+
         </div>
     }
 }

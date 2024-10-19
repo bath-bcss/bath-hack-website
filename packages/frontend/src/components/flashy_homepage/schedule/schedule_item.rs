@@ -39,7 +39,7 @@ pub fn schedule_item(props: &Props) -> Html {
     html! {
         <>
             <li class="flex items-start flex-col sm:flex-row">
-                <div class="w-24 pt-1">
+                <div class="w-36 pt-1">
                     if let Some(day) = props.day.clone() {
                         <p class="font-regular text-bcss-800 dark:text-bcss-300 mb-1 sm:mb-0">{ day }</p>
                     }

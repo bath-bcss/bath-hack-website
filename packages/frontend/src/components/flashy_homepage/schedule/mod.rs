@@ -15,65 +15,27 @@ pub fn schedule() -> Html {
                 { "Click on each item to see more information." }
             </FlashyHomepageSectionParagraph>
             <ul class="mt-4 space-y-2">
-                <ScheduleItem event="Team building" day="Friday" time="16:15-18:05" is_first=true>
-                    { "Don't have a team? Don't worry! Come along to our (optional) team-building session in CB3.1 on Friday
-                afternoon where we'll be runing a series of fun activities to help you find a team, including a quiz! " }
-                    { "There'll be plenty of opportunity to meet new people in a comfortable environment." }
+                <ScheduleItem
+                    event="Team building and kick-off"
+                    day="Wed 30th Oct"
+                    time="CB 3.5, 18:15-21:05"
+                    is_first=true
+                >
+                    { "We'll introduce the event and announce the surprise mystery theme! You'll get a chance to meet all our societies' committees and members and build your team of 4. Try getting a varied team with members from various societies for best results! Remember, this is just as much about design and concept as coding and execution. Of course, the kick-off event will feature Wii gameplay in your teams and we'll go to the SU for relaxed drinks straight after!" }
                 </ScheduleItem>
-                <ScheduleItem event="Last-minute team building" day="Saturday" time="10:00-11:00">
-                    { "Still don't have a team? That's okay! We'll have a final team-building event just before the hackathon
-                starts, where we'll help get you into a team you're comfortable with. " }
-                    { "If you can, please go along to the Friday session as it's likely to be more relaxed." }
+                <ScheduleItem event="Development time starts" day="Sat 2nd Nov" time="12:00">
+                    { "You can start working on your projects in your teams! How you do this is completely up to you; you can meet up in person or do it fully remote. If you need any advice or technical support, the BCSS Committee will be at your disposal. Whether you're coding or not, we'll be here to help you succeed :)" }
                 </ScheduleItem>
-                <ScheduleItem event="Registration" time="10:00-11:00">
-                    { "When you arrive at the hackathon, you'll need to register with one of our Committee Members at the main
-                entrance of the Chancellors Building. " }
-                    { "This will help us keep everyone safe at the event. " }
-                    { "It's okay if you miss the registration time! We'll have someone at the desk throughout the event." }
+                <ScheduleItem event="Development time ends" day="Tue 12th Nov" time="20:00">
+                    { "This is the deadline! You'll need to submit your projects to Devpost (we'll explain how to do this) by this time, and you won't be able to make any changes afterwards. We don't want to set the deadline too late to encourage you to get some sleep before the showcase!" }
                 </ScheduleItem>
-                <ScheduleItem event="XMOS presentation" time="10:30-11:30">
-                    { "XMOS will be delivering some presentations and showcasing two demonstrations of their technology to you all. " }
-                    { "You will be able to ask them questions are learn more about what they do." }
-                </ScheduleItem>
-                <ScheduleItem event="Introduction presentation" time="11:30-12:00">
-                    { "Here's where everything gets started! We'll explain how the event works and go over the tracks and prizes
-                you'll be competing for. " }
-                    { "You'll also get a chance to hear about our sponsors, as well as some important safety-related
-                information." }
-                </ScheduleItem>
-                <ScheduleItem event="Hacking starts!" time="12:00">
-                    { "Hacking will start at 12:00 on the dot so we can keep to our 24 hour competition time. " }
-                    { "You'll need to have finalised your group members and your group name by this point. " }
-                    { "We'll have loads of rooms available for you to work in, including collaborative ones where you can
-                check out what other teams are doing, as well as quieter ones." }
-                </ScheduleItem>
-                <ScheduleItem event="Pizza" time="~18:00">
-                    { "The first meal of your culinary hackathon journey! " }
-                    { " Make sure you've submitted your dietary requirements to avoid disappointment. " }
-                    { "As mentioned, all meals are completely free of charge." }
-                </ScheduleItem>
-                <ScheduleItem event="Breakfast" day="Sunday" time="~06:00">
-                    { "We'll have a buffet-style cold breakfast with a range of pastries, toast, snacks, and more." }
-                </ScheduleItem>
-                <ScheduleItem event="Devpost support" time="11:00-12:00">
-                    { "You'll need to post your project on Devpost before hacking ends at 12:00. " }
-                    { "We'll have a short session at 11:00 for anyone who hasn't done this before, and our Committee Members
-                will be on hand to help sort out any issues." }
-                </ScheduleItem>
-                <ScheduleItem event="Hacking ends + Lunch" time="12:00">
-                    { "You won't be able to make any changes to your project or its Devpost page after this time. " }
-                    { "As the final meal, we'll serve lunch around this time: Subway!" }
-                </ScheduleItem>
-                <ScheduleItem event="Showcase Fair" time="12:30-14:30">
-                    { "Along with all the other teams, you'll be able to demonstrate your project to our sponsors and judges at
-                our Showcase Fair. " }
-                    { "This is the best opportunity to impress the judges and secure your win! " }
-                    { "You'll also be able to vote on your favourite projects for the Hackers' Choice prize." }
-                </ScheduleItem>
-                <ScheduleItem event="Closing presentation" time="14:30-15:15" is_last=true>
-                    { "To finish off Bath Hack, we'll announce each of the winners and hand over their prizes. " }
-                    { "We'll have some of our sponsors present here, so you can here more from them about their companies. " }
-                    { "Now go home and get some sleep!" }
+                <ScheduleItem
+                    event="Showcase and prize-giving"
+                    day="Wed 13th Nov"
+                    time="TBA"
+                    is_last=true
+                >
+                    { "The big moment you've been waiting for! You'll get assigned a table and you'll have some time to set your game up in our open fair. Then, you'll be able to go around and play everyone else's games, and they'll come play yours. Everyone from the Uni is welcome here, so bring all your friends! There'll be snacks and free pizza (of course). Finally, our judges will make their decisions and we'll announce the winners." }
                 </ScheduleItem>
             </ul>
         </>

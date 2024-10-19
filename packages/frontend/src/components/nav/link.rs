@@ -32,10 +32,10 @@ pub fn nav_link(props: &Props) -> Html {
 
     let classes = use_memo((props.is_at_top,), |(is_at_top,)| {
         let mut base_class = classes!(
-            "text-bcss-200",
+            "text-bcss-100",
             "font-medium",
             "hover:text-white",
-            "hover:bg-bcss-800",
+            "hover:bg-bcss-700",
             "px-2",
             "py-2",
             "rounded-md",
@@ -47,7 +47,7 @@ pub fn nav_link(props: &Props) -> Html {
         );
 
         if *is_at_top {
-            base_class.push(classes!("bg-bcss-800/70", "backdrop-blur"));
+            base_class.push(classes!("bg-bcss-600/70", "backdrop-blur"));
         }
 
         base_class
