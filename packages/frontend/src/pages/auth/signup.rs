@@ -23,7 +23,8 @@ pub fn sign_up_page() -> Html {
         (navigator, username),
         move |e: SubmitEvent, (navigator, username)| {
             e.prevent_default();
-            navigator.push_with_state::<_, String>(&Route::SignupNotice, username.clone());
+            navigator
+                .push_with_state::<_, String>(&Route::SignupNotice, username.trim().to_lowercase());
         },
     );
 
