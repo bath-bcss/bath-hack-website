@@ -63,14 +63,7 @@ pub fn forgot_password_pin_page() -> Html {
             <GlassContainer>
                 <GlassContainerHeading>{ "Reset your password" }</GlassContainerHeading>
                 <GlassContainerParagraph>
-                    { "Thanks! If your entered username exists in our database, we've sent you an email with a PIN to reset
-                your
-                password." }
-                </GlassContainerParagraph>
-                <GlassContainerParagraph>
-                    { "For security reasons, we won't tell you if your username didn't exist. Also, you can only make one
-                reset
-                request every 15 minutes — if it's been less than that since your last one, we can't tell you!" }
+                    { "Thanks! If your entered username exists in our database, we've sent you an email with a PIN to reset your password." }
                 </GlassContainerParagraph>
                 <GlassContainerParagraph top_margin=true>
                     { "If you received your PIN, please enter it here." }
