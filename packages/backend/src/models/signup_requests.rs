@@ -123,7 +123,7 @@ impl SignupRequestHelper {
                 let now = Utc::now();
                 let new_time = now
                     .checked_add_signed(
-                        Duration::try_minutes(15).ok_or(SignupRequestCreateError::Duration)?,
+                        Duration::try_minutes(30).ok_or(SignupRequestCreateError::Duration)?,
                     )
                     .ok_or(SignupRequestCreateError::Duration)?;
                 Set(new_time.naive_utc())

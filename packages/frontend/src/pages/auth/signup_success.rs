@@ -16,8 +16,16 @@ pub fn signup_success_page() -> Html {
                 <GlassContainerParagraph>
                     { "We've sent an email to your Uni inbox. Please follow the link to continue :)" }
                 </GlassContainerParagraph>
-                <GlassContainerParagraph>
-                    { "It may take a while to arrive and it'll probably go to your Junk folder, so look out for it!" }
+                <GlassContainerParagraph top_margin=true>
+                    <strong>
+                        { "Our emails are taking a long time (5-10 minutes) to arrive right now." }
+                    </strong>
+                    { " Please be patient, and " }
+                    <strong>{ "check your Junk folder" }</strong>
+                    { " too. If it's still not working, please contact us." }
+                </GlassContainerParagraph>
+                <GlassContainerParagraph top_margin=true>
+                    { "We are currently working to resolve this issue, but for the meantime please wait patiently for your email to arrive." }
                 </GlassContainerParagraph>
             </GlassContainer>
         </HeroCenterContainer>
