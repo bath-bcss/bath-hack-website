@@ -107,10 +107,18 @@ impl SignupRequestHelper {
         conn: &C,
         username: &String,
         status: i16,
+        skip_existence_check: bool,
     ) -> Result<NewSignupRequestSecret, SignupRequestCreateError> {
-        let already_exists = Self::exists_for_username(conn, username).await?;
-        if already_exists {
-            return Err(SignupRequestCreateError::AlreadyExists);
+        if skip_existence_check {
+            SignupRequest::delete_many()
+                .filter(signup_request::Column::BathUsername.eq(username))
+                .exec(conn)
+                .await?;
+        } else {
+            let already_exists = Self::exists_for_username(conn, username).await?;
+            if already_exists {
+                return Err(SignupRequestCreateError::AlreadyExists);
+            }
         }
 
         let secret =
@@ -152,7 +160,7 @@ impl SignupRequestHelper {
     pub fn expired(signup_request: &signup_request::Model) -> bool {
         signup_request.expires_at <= Utc::now().naive_utc()
     }
-    pub async fn send_email(
+    pub async fn send_verification_email(
         signup_request: &signup_request::Model,
         config: &AppConfig,
         secret: &str,
@@ -167,6 +175,21 @@ impl SignupRequestHelper {
             subject: "Welcome to Game Jam!".to_string(),
             template_key: "bhw-welcome".to_string(),
             vars: mail_vars,
+        };
+        mailer.send_template(instruction).await
+    }
+
+    pub async fn send_notification_email(
+        signup_request: &signup_request::Model,
+        config: &AppConfig,
+    ) -> SendResult<SendResponse> {
+        let mailer = Mailer::client(config);
+
+        let instruction = SendInstruction {
+            to: Self::email_address(signup_request),
+            subject: "Welcome to Game Jam!".to_string(),
+            template_key: "bhw-welcome-noverify".to_string(),
+            vars: HashMap::new(),
         };
         mailer.send_template(instruction).await
     }

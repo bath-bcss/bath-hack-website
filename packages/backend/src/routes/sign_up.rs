@@ -82,16 +82,34 @@ pub async fn sign_up_route(
         return Err(SignUpResponseError::UsernameAlreadyExists);
     }
 
-    let new_sr = SignupRequestHelper::create(&txn, &request.bath_username.clone(), status)
-        .await
-        .map_err(|e| SignUpResponseError::CreateError(e.to_string()))?;
+    let new_sr = SignupRequestHelper::create(
+        &txn,
+        &request.bath_username.clone(),
+        status,
+        config.use_unverified_usernames,
+    )
+    .await
+    .map_err(|e| SignUpResponseError::CreateError(e.to_string()))?;
 
-    SignupRequestHelper::send_email(&new_sr.request, &config, &new_sr.secret)
-        .await
-        .map_err(|e| SignUpResponseError::EmailError(e.to_string()))?;
+    if config.use_unverified_usernames {
+        SignupRequestHelper::send_notification_email(&new_sr.request, &config)
+            .await
+            .map_err(|e| SignUpResponseError::EmailError(e.to_string()))?;
+    } else {
+        SignupRequestHelper::send_verification_email(&new_sr.request, &config, &new_sr.secret)
+            .await
+            .map_err(|e| SignUpResponseError::EmailError(e.to_string()))?;
+    }
 
     txn.commit().await?;
-    Ok(Nothing)
+    Ok(if config.use_unverified_usernames {
+        Some(bhw_types::requests::sign_up::SignUpResponse {
+            id: new_sr.request.id.to_string(),
+            secret: new_sr.secret,
+        })
+    } else {
+        None
+    })
 }
 
 #[post("/auth/activate")]

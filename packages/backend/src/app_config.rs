@@ -21,6 +21,7 @@ pub struct AppConfig {
     pub ldap_url: String,
 
     pub disable_signup: bool,
+    pub use_unverified_usernames: bool,
 
     pub allowed_origin: String,
     pub dev_weak_passwords: bool,

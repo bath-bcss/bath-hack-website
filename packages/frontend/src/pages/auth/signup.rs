@@ -33,7 +33,7 @@ pub fn sign_up_page() -> Html {
             <GlassContainer home_link=true>
                 <GlassContainerHeading>{ "Sign Up to Game Jam" }</GlassContainerHeading>
                 <GlassContainerParagraph>
-                    { "We'll send an email to your University email account with a link to set up your account." }
+                    { "We need your username to identify you and send event-related communications." }
                 </GlassContainerParagraph>
                 <form onsubmit={on_form_submit} class="mt-4">
                     <Input

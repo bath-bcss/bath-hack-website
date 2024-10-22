@@ -16,6 +16,7 @@ use crate::{
         hero::center::HeroCenterContainer,
     },
     data::sign_up::sign_up_request,
+    pages::auth::signup_activate::SignupActivateQueryParams,
     router::Route,
 };
 
@@ -50,8 +51,20 @@ pub fn signup_notice_page() -> Html {
                 loading_handle.set(false);
                 if let Err(response) = response {
                     error_handle.set(Some(response.to_string()));
-                } else if response.is_ok() {
-                    navigator.push(&Route::SignupSuccess);
+                } else if let Ok(response) = response {
+                    if let Some(response) = response {
+                        navigator
+                            .push_with_query(
+                                &Route::ActivateAccount,
+                                &SignupActivateQueryParams {
+                                    id: response.id,
+                                    secret: response.secret,
+                                },
+                            )
+                            .expect("Query to serialise trivially");
+                    } else {
+                        navigator.push(&Route::SignupSuccess);
+                    }
                 }
             });
         },
@@ -61,7 +74,7 @@ pub fn signup_notice_page() -> Html {
         html! {
             <HeroCenterContainer>
                 <GlassContainer home_link=true>
-                    <GlassContainerHeading>{ "One moment..." }</GlassContainerHeading>
+                    <GlassContainerHeading>{ "Important information" }</GlassContainerHeading>
                     <GlassContainerParagraph>
                         { "Hi " }
                         { username.clone() }

@@ -1,5 +1,5 @@
 use bhw_types::requests::activate::AccountActivateRequest;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
 use yew_router::hooks::{use_location, use_navigator};
@@ -19,10 +19,10 @@ use crate::{
     router::Route,
 };
 
-#[derive(Debug, Deserialize)]
-struct QueryParams {
-    id: String,
-    secret: String,
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SignupActivateQueryParams {
+    pub id: String,
+    pub secret: String,
 }
 
 #[function_component(SignupActivatePage)]
@@ -44,7 +44,7 @@ pub fn signup_activate_page() -> Html {
 
         let location = location.clone().expect_throw("location was missing");
 
-        let query_result = location.query::<QueryParams>();
+        let query_result = location.query::<SignupActivateQueryParams>();
         let query = match query_result {
             Err(e) => {
                 error_handle.set(Some(e.to_string()));
@@ -78,9 +78,9 @@ pub fn signup_activate_page() -> Html {
     html! {
         <HeroCenterContainer>
             <GlassContainer>
-                <GlassContainerHeading>{ "Welcome to Game Jam 24!" }</GlassContainerHeading>
+                <GlassContainerHeading>{ "One last step..." }</GlassContainerHeading>
                 <GlassContainerParagraph top_margin=true>
-                    { "To get started, please create a password." }
+                    { "To continue, please create a password." }
                 </GlassContainerParagraph>
                 <GlassContainerParagraph>
                     { "This should be different to your Uni password." }
