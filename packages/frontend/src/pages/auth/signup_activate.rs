@@ -39,41 +39,44 @@ pub fn signup_activate_page() -> Html {
 
     let navigator = use_navigator().expect_throw("Navigator not found");
 
-    let on_activate_click = use_callback((location,), move |e: SubmitEvent, (location,)| {
-        e.prevent_default();
+    let on_activate_click = use_callback(
+        (location, new_password),
+        move |e: SubmitEvent, (location, new_password)| {
+            e.prevent_default();
 
-        let location = location.clone().expect_throw("location was missing");
+            let location = location.clone().expect_throw("location was missing");
 
-        let query_result = location.query::<SignupActivateQueryParams>();
-        let query = match query_result {
-            Err(e) => {
-                error_handle.set(Some(e.to_string()));
-                return;
-            }
-            Ok(q) => q,
-        };
+            let query_result = location.query::<SignupActivateQueryParams>();
+            let query = match query_result {
+                Err(e) => {
+                    error_handle.set(Some(e.to_string()));
+                    return;
+                }
+                Ok(q) => q,
+            };
 
-        let new_password = new_password.clone();
-        let loading_handle = loading_handle.clone();
-        let error_handle = error_handle.clone();
-        let navigator = navigator.clone();
-        wasm_bindgen_futures::spawn_local(async move {
-            loading_handle.set(true);
-            let resp = account_activate_request(&AccountActivateRequest {
-                id: query.id,
-                secret: query.secret,
-                password: new_password,
-            })
-            .await;
+            let new_password = new_password.clone();
+            let loading_handle = loading_handle.clone();
+            let error_handle = error_handle.clone();
+            let navigator = navigator.clone();
+            wasm_bindgen_futures::spawn_local(async move {
+                loading_handle.set(true);
+                let resp = account_activate_request(&AccountActivateRequest {
+                    id: query.id,
+                    secret: query.secret,
+                    password: new_password,
+                })
+                .await;
 
-            loading_handle.set(false);
+                loading_handle.set(false);
 
-            match resp {
-                Err(e) => error_handle.set(Some(e.to_string())),
-                Ok(_) => navigator.push_with_state(&Route::AccountHome, InitialSignupState),
-            }
-        });
-    });
+                match resp {
+                    Err(e) => error_handle.set(Some(e.to_string())),
+                    Ok(_) => navigator.push_with_state(&Route::AccountHome, InitialSignupState),
+                }
+            });
+        },
+    );
 
     html! {
         <HeroCenterContainer>
