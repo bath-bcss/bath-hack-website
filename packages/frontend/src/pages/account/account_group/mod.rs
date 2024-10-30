@@ -43,6 +43,7 @@ pub fn account_group_page() -> Html {
                             current_group_handle.set(Some(FrontendGroupState {
                                 name: group.name,
                                 join_code: group.join_code,
+                                group_number: group.group_number,
                                 members: group.members,
                             }))
                         }

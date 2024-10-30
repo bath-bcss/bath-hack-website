@@ -49,6 +49,7 @@ pub fn create_group_component(props: &AccountGroupSubpageProps) -> Html {
                         update_group.set(Some(FrontendGroupState {
                             name: new_group_name,
                             join_code: new_group.new_group_join_code,
+                            group_number: new_group.new_group_number,
                             members: vec![GroupMember {
                                 bath_username: "You!".to_string(),
                                 display_name: None,

@@ -138,6 +138,7 @@ impl GroupsHelper {
             id: Set(uuid::Uuid::new_v4()),
             join_code: Set(Self::generate_join_code()),
             group_name: Set(group_name),
+            ..Default::default()
         };
 
         let new_group: competition_group::Model = new_group.insert(conn).await?;

@@ -8,6 +8,7 @@ use crate::models::group::GroupMember;
 pub struct MyGroupData {
     pub id: String,
     pub name: String,
+    pub group_number: u64,
     pub join_code: String,
     pub members: Vec<GroupMember>,
 }

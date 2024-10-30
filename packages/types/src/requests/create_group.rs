@@ -25,6 +25,7 @@ pub struct CreateGroupRequest {
 pub struct CreateGroupResponse {
     pub new_group_id: String,
     pub new_group_join_code: String,
+    pub new_group_number: u64,
 }
 
 #[derive(

@@ -62,6 +62,10 @@ pub fn account_group_manage(props: &AccountGroupSubpageProps) -> Html {
                     { "Join code: " }
                     <code>{ current_group.join_code }</code>
                 </p>
+                <p class="text-bcss-900 dark:text-bcss-200">
+                    { "Number: " }
+                    <code>{ current_group.group_number }</code>
+                </p>
                 <div
                     class="mt-4 flex flex-col sm:flex-row items-start gap-y-4 sm:gap-y-0 sm:gap-x-4"
                 >
