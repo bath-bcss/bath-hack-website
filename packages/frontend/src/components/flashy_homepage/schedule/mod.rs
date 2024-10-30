@@ -23,11 +23,18 @@ pub fn schedule() -> Html {
                 >
                     { "We'll introduce the event and announce the surprise mystery theme! You'll get a chance to meet all our societies' committees and members and build your team of 4. Try getting a varied team with members from various societies for best results! Remember, this is just as much about design and concept as coding and execution. Of course, the kick-off event will feature Wii gameplay in your teams and we'll go to the SU for relaxed drinks straight after!" }
                 </ScheduleItem>
-                <ScheduleItem event="Development time starts" day="Sat 2nd Nov" time="12:00">
+                <ScheduleItem event="Development time starts" time="21:05">
                     { "You can start working on your projects in your teams! How you do this is completely up to you; you can meet up in person or do it fully remote. If you need any advice or technical support, the BCSS Committee will be at your disposal. Whether you're coding or not, we'll be here to help you succeed :)" }
                 </ScheduleItem>
+                <ScheduleItem event="Devpost submissions open" day="Sat 2nd Nov" time="12:00">
+                    { "You'll need to submit your project on Devpost before the deadline of Tuesday 12th November 20:00. Simply head to " }
+                    <a href="https://jam24.devpost.com" target="_blank" class="underline">
+                        { "jam24.devpost.com" }
+                    </a>
+                    { " to get started. If you need any help, don't hesitate to get in touch with our Committee." }
+                </ScheduleItem>
                 <ScheduleItem event="Development time ends" day="Tue 12th Nov" time="20:00">
-                    { "This is the deadline! You'll need to submit your projects to Devpost (we'll explain how to do this) by this time, and you won't be able to make any changes afterwards. We don't want to set the deadline too late to encourage you to get some sleep before the showcase!" }
+                    { "This is the deadline! You'll need to submit your projects to Devpost by this time, and you won't be able to make any changes afterwards. We don't want to set the deadline too late to encourage you to get some sleep before the showcase!" }
                 </ScheduleItem>
                 <ScheduleItem
                     event="Showcase and prize-giving"
