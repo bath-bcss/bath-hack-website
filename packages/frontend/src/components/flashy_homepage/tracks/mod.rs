@@ -9,7 +9,7 @@ pub fn track_grid() -> Html {
     html! {
         <ul class="w-full grid md:grid-cols-3 grid-cols-1 gap-4 mt-8">
             <TrackGridItem
-                track_name="Hackers' Choice"
+                track_name="Jammers' Choice"
                 background_image="img/tracks/hackers_choice.webp"
                 track_caption="People are great, and we famously always make good decisions as a group. The biggest decision of your collective lives is now upon you! Who’s got the funniest game? Which one really tugs at your heart strings? Which do you think is just the best? It really is up to you!"
                 track_prize="£50 Amazon gift card + a DucksBath cap"
