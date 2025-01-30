@@ -49,15 +49,15 @@ pub fn home_page() -> Html {
                         <h1
                             class="text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-hero text-white dark:text-bcss-100 leading-none"
                         >
-                            { "Bath Game Jam" }
+                            { "WiTathon 2025" }
                         </h1>
                         <p class="text-heroSubtitle text-white dark:text-bcss-100">
-                            { "Build cool digital and physical games in inter-society teams to win prizes!" }
+                            { "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."}
                         </p>
                         <p
                             class="text-heroSubtitle text-white dark:text-bcss-100 font-bold italic"
                         >
-                            { "30th Oct — 13th Nov. Free to enter." }
+                            { "XXth — XXth Mar. Free to enter." }
                         </p>
                         <Button background_is_dark=true onclick={on_sign_up_click.clone()}>
                             { "Sign up!" }

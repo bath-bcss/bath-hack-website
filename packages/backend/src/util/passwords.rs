@@ -1,7 +1,10 @@
-use argon2::{password_hash::SaltString, Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
+use argon2::{
+    password_hash::{rand_core::OsRng, SaltString},
+    Argon2, PasswordHash, PasswordHasher, PasswordVerifier,
+};
 use log::warn;
 use passwords::{analyzer, scorer};
-use rand::{rngs::OsRng, RngCore};
+use rand::{rng, RngCore};
 use thiserror::Error;
 
 pub struct PasswordManager;
@@ -48,7 +51,7 @@ impl PasswordManager {
 
     pub fn hash_random() -> Result<RandomPasswordHash, argon2::password_hash::Error> {
         let mut random_data = [0u8; 32];
-        OsRng.fill_bytes(&mut random_data);
+        rng().fill_bytes(&mut random_data);
         let random_string = hex::encode(random_data).to_string();
 
         let hash = PasswordManager::hash(&random_string)?;

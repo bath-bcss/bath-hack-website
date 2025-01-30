@@ -9,13 +9,28 @@ edition = "2021"
 yew = { version = "0.21.0", features = ["csr"] }
 yew-router = { version = "0.18.0" }
 gloo-console = "0.3.0"
-gloo-net = { version = "0.6.0", features = ["json"]}
+gloo-net = { version = "0.6.0", features = ["json"] }
 gloo-utils = "0.2.0"
-rand = "0.8.5"
 web-sys = "0.3.68"
 wasm-bindgen-futures = "0.4.41"
-serde = { version = "1.0", features = ["derive"]}
+serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0.114" }
 bhw-types = { path = "../types" }
-thiserror = "1.0.57"
-yew_icons = { git = "https://github.com/palkerecsenyi/yew_icons.git", branch = "submodules", features = ["FontAwesomeSolidUser", "FontAwesomeSolidPeopleGroup", "FontAwesomeSolidCircleXmark", "FontAwesomeSolidBars", "FontAwesomeSolidShuffle", "FontAwesomeSolidTrophy", "FontAwesomeSolidQuestion", "FontAwesomeSolidCircleInfo", "FontAwesomeSolidHeart", "FontAwesomeSolidUniversalAccess", "FontAwesomeSolidArrowLeft", "FontAwesomeSolidSpinner", "FontAwesomeSolidPencil", "FontAwesomeSolidFileContract", "FontAwesomeSolidClock"]}
+thiserror = "2.0.11"
+yew_icons = { git = "https://github.com/palkerecsenyi/yew_icons.git", branch = "submodules", features = [
+    "FontAwesomeSolidUser",
+    "FontAwesomeSolidPeopleGroup",
+    "FontAwesomeSolidCircleXmark",
+    "FontAwesomeSolidBars",
+    "FontAwesomeSolidShuffle",
+    "FontAwesomeSolidTrophy",
+    "FontAwesomeSolidQuestion",
+    "FontAwesomeSolidCircleInfo",
+    "FontAwesomeSolidHeart",
+    "FontAwesomeSolidUniversalAccess",
+    "FontAwesomeSolidArrowLeft",
+    "FontAwesomeSolidSpinner",
+    "FontAwesomeSolidPencil",
+    "FontAwesomeSolidFileContract",
+    "FontAwesomeSolidClock",
+] }

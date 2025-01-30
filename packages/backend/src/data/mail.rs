@@ -24,11 +24,10 @@ impl Mailer {
         }
     }
 
-    fn mailgun(&self, message: Message) -> Mailgun {
+    fn mailgun(&self) -> Mailgun {
         Mailgun {
             api_key: self.api_key.clone(),
             domain: self.domain.clone(),
-            message,
         }
     }
 
@@ -43,10 +42,10 @@ impl Mailer {
             ..Default::default()
         };
 
-        let client = self.mailgun(message);
+        let client = self.mailgun();
         let from = EmailAddress::name_address("BCSS Game Jam", "no-reply@hack.bathcs.com");
 
-        client.async_send(MailgunRegion::EU, &from).await
+        client.async_send(MailgunRegion::EU, &from, message).await
     }
 
     pub async fn fake_send_email() {

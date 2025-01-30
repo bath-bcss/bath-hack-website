@@ -1,5 +1,5 @@
 use bhw_models::{competition_group, prelude::*, website_user};
-use rand::{rngs::OsRng, RngCore};
+use rand::{rng, RngCore};
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait,
     QueryFilter, QuerySelect, SelectColumns, Set,
@@ -125,7 +125,7 @@ impl GroupsHelper {
 
     fn generate_join_code() -> String {
         let mut rnd_data = [0u8; 3];
-        OsRng.fill_bytes(&mut rnd_data);
+        rng().fill_bytes(&mut rnd_data);
         hex::encode(rnd_data)
     }
 

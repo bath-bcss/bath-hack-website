@@ -3,10 +3,7 @@ use std::collections::HashMap;
 use bhw_models::{password_reset, prelude::*, website_user};
 use chrono::{Duration, Utc};
 use mailgun_rs::{SendResponse, SendResult};
-use rand::{
-    distributions::{Alphanumeric, DistString},
-    rngs::OsRng,
-};
+use rand::{distr::{Alphanumeric, SampleString}, rng};
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, ModelTrait, PaginatorTrait,
     QueryFilter, QuerySelect, SelectColumns, Set,
@@ -55,7 +52,7 @@ impl PasswordResetHelper {
     }
 
     fn generate_pin() -> String {
-        Alphanumeric.sample_string(&mut OsRng, 10)
+        Alphanumeric.sample_string(&mut rng(), 10)
     }
 
     pub async fn create<T: ConnectionTrait>(

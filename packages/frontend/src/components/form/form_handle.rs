@@ -1,7 +1,4 @@
-use rand::{
-    distributions::{Alphanumeric, DistString},
-    rngs::OsRng,
-};
+use web_sys::js_sys::Math;
 use yew::prelude::*;
 
 #[derive(Properties, Debug, Clone, PartialEq)]
@@ -23,7 +20,12 @@ pub struct FormHandleChildProps {
 pub fn form_handle(props: &Props) -> Html {
     let label_class = classes!("mb-1", "block", "text-bcss-900", "dark:text-bcss-300");
 
-    let label_id = use_memo((), |_| Alphanumeric.sample_string(&mut OsRng, 5));
+    let label_id = use_memo((), |_| {
+        Math::random()
+            .to_string()
+            .trim_start_matches("0.")
+            .to_string()
+    });
 
     let child = use_memo(
         ((*label_id).clone(), props.child_renderer.clone()),
