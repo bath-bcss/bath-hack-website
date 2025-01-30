@@ -36,7 +36,7 @@ pub fn home_page() -> Html {
         e.prevent_default();
         window()
             .location()
-            .set_href("https://thesubath.com/bcss")
+            .set_href("https://instagram.com/bath.wit")
             .expect_throw("Setting location.href");
     });
 
@@ -52,7 +52,7 @@ pub fn home_page() -> Html {
                             { "WiTathon 2025" }
                         </h1>
                         <p class="text-heroSubtitle text-white dark:text-bcss-100">
-                            { "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."}
+                            { "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat." }
                         </p>
                         <p
                             class="text-heroSubtitle text-white dark:text-bcss-100 font-bold italic"
@@ -143,14 +143,14 @@ pub fn home_page() -> Html {
                     anchor="accessibility"
                 >
                     <FlashyHomepageSectionParagraph>
-                        { "Game Jam 2024 will take place across two events on-campus. We'll be using exclusively wheelchair-accessible rooms." }
+                        { "WiTathon 2025 will take place in 1 West on-campus. We'll be using exclusively wheelchair-accessible rooms." }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph>
                         { "Lifts, double-width doors, hearing loop support and water fountains are available for all involved rooms. If
                 you have any specific access requirements that we haven't thought of, please let us know! You can either
                 " }
-                        <a href="mailto:su-bcss@bath.ac.uk" class="underline">
-                            { "get in touch at su-bcss@bath.ac.uk" }
+                        <a href="mailto:witbath.ac.uk" class="underline">
+                            { "get in touch at wit@bath.ac.uk" }
                         </a>
                         { " or set your access requirements on our dashboard once you've made your account." }
                     </FlashyHomepageSectionParagraph>
@@ -168,31 +168,21 @@ pub fn home_page() -> Html {
                 </FlashyHomepageSection>
                 <FlashyHomepageSection
                     icon={SectionIcon::Icon(IconId::FontAwesomeSolidCircleInfo)}
-                    title="About BCSS"
+                    title="About WiT"
                     anchor="about"
                 >
                     <FlashyHomepageSectionParagraph>
-                        { "This event has been organised by the Committee of the Bath Computer Science Society, in collaboration with Bath Illustration and Animation Society, Bath Video Game Society, Bath Fine Art Society, Tabletop Gaming Society, and Women in Technology. It's our first time running this exciting collaboration, and we hope to continue it in future years!" }
+                        { "This event has been organised by the Committee of Women in Technology." }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph>
-                        { "BCSS is a member society of the University of Bath Student Union and is also a student chapter of the
-                British Computer Society. We are a society for anyone with any interest in Computing, open to any
-                student
-                studying any degree. Our key aim is to encourage more people into the field, as well as to teach
-                important industry skills to help encourage our members to grow." }
-                    </FlashyHomepageSectionParagraph>
-                    <FlashyHomepageSectionParagraph>
-                        { "Our society is sponsored by:" }
-                        <a href="https://www.qube-rt.com/" target="_blank" rel="noreferrer">
-                            <img src="/img/sponsors/qrt.webp" class="w-36 mt-2" alt="QRT" />
-                        </a>
+                        { "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat. explain what WiT is and how people can get involved" }
                     </FlashyHomepageSectionParagraph>
                     <Button
                         onclick={on_find_out_more_click.clone()}
                         background_is_dark=false
                         class={classes!("mt-4")}
                     >
-                        { "Find out more" }
+                        { "Follow our Instagram" }
                     </Button>
                 </FlashyHomepageSection>
             </div>
