@@ -1,4 +1,4 @@
-use bhw_types::requests::sign_up::SignUpRequest;
+use bhw_types::requests::sign_up::{PossibleSignUpResponse, SignUpRequest};
 use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
 use yew_router::{
@@ -52,7 +52,7 @@ pub fn signup_notice_page() -> Html {
                 if let Err(response) = response {
                     error_handle.set(Some(response.to_string()));
                 } else if let Ok(response) = response {
-                    if let Some(response) = response {
+                    if let PossibleSignUpResponse::Finished(response) = response {
                         navigator
                             .push_with_query(
                                 &Route::ActivateAccount,

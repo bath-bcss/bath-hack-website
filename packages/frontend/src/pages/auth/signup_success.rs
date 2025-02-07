@@ -18,14 +18,11 @@ pub fn signup_success_page() -> Html {
                 </GlassContainerParagraph>
                 <GlassContainerParagraph top_margin=true>
                     <strong>
-                        { "Our emails are taking a long time (5-10 minutes) to arrive right now." }
+                        { "Our emails can take a long time (5-10 minutes) to arrive right now." }
                     </strong>
                     { " Please be patient, and " }
                     <strong>{ "check your Junk folder" }</strong>
                     { " too. If it's still not working, please contact us." }
-                </GlassContainerParagraph>
-                <GlassContainerParagraph top_margin=true>
-                    { "We are currently working to resolve this issue, but for the meantime please wait patiently for your email to arrive." }
                 </GlassContainerParagraph>
             </GlassContainer>
         </HeroCenterContainer>

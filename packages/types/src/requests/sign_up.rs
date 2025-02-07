@@ -30,9 +30,15 @@ pub enum SignUpResponseError {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, JsonResponder)]
-pub struct SignUpResponse {
+pub struct FinishedSignUpResponse {
     pub id: String,
     pub secret: String,
 }
 
-pub type SignUpResult = Result<Option<SignUpResponse>, SignUpResponseError>;
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, JsonResponder)]
+pub enum PossibleSignUpResponse {
+    Finished(FinishedSignUpResponse),
+    RequiresActivation,
+}
+
+pub type SignUpResult = Result<PossibleSignUpResponse, SignUpResponseError>;

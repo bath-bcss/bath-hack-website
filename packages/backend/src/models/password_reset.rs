@@ -109,7 +109,7 @@ impl PasswordResetHelper {
                 to: email_address(to_username),
                 vars: mail_vars,
                 template_key: "bhw-password-reset".to_string(),
-                subject: "Reset your Game Jam password".to_string(),
+                subject: "Reset your WiTathon password".to_string(),
             })
             .await
     }

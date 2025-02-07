@@ -43,7 +43,7 @@ impl Mailer {
         };
 
         let client = self.mailgun();
-        let from = EmailAddress::name_address("BCSS Game Jam", "no-reply@hack.bathcs.com");
+        let from = EmailAddress::name_address("WiTathon", "no-reply@hack.bathcs.com");
 
         client.async_send(MailgunRegion::EU, &from, message).await
     }

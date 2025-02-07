@@ -2,7 +2,7 @@ use bhw_types::{
     nothing::Nothing,
     requests::{
         activate::{AccountActivateRequest, AccountActivateResponseError},
-        sign_up::{SignUpRequest, SignUpResponse, SignUpResponseError},
+        sign_up::{PossibleSignUpResponse, SignUpRequest, SignUpResponseError},
     },
 };
 
@@ -10,7 +10,7 @@ use super::api::{send_post, FrontendRequestError};
 
 pub async fn sign_up_request(
     request: &SignUpRequest,
-) -> Result<Option<SignUpResponse>, FrontendRequestError<SignUpResponseError>> {
+) -> Result<PossibleSignUpResponse, FrontendRequestError<SignUpResponseError>> {
     send_post("/auth/signup".to_string(), &request).await
 }
 

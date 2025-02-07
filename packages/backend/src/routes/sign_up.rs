@@ -4,7 +4,10 @@ use bhw_types::{
     nothing::Nothing,
     requests::{
         activate::{AccountActivateRequest, AccountActivateResponseError, AccountActivateResult},
-        sign_up::{SignUpRequest, SignUpResponseError, SignUpResult},
+        sign_up::{
+            FinishedSignUpResponse, PossibleSignUpResponse, SignUpRequest, SignUpResponseError,
+            SignUpResult,
+        },
     },
 };
 use log::error;
@@ -103,12 +106,12 @@ pub async fn sign_up_route(
 
     txn.commit().await?;
     Ok(if config.use_unverified_usernames {
-        Some(bhw_types::requests::sign_up::SignUpResponse {
+        PossibleSignUpResponse::Finished(FinishedSignUpResponse {
             id: new_sr.request.id.to_string(),
             secret: new_sr.secret,
         })
     } else {
-        None
+        PossibleSignUpResponse::RequiresActivation
     })
 }
 

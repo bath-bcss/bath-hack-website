@@ -31,7 +31,7 @@ pub fn sign_up_page() -> Html {
     html! {
         <HeroCenterContainer>
             <GlassContainer home_link=true>
-                <GlassContainerHeading>{ "Sign Up to Game Jam" }</GlassContainerHeading>
+                <GlassContainerHeading>{ "Sign Up to WiTathon" }</GlassContainerHeading>
                 <GlassContainerParagraph>
                     { "We need your username to identify you and send event-related communications." }
                 </GlassContainerParagraph>

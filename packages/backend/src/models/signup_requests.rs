@@ -172,7 +172,7 @@ impl SignupRequestHelper {
 
         let instruction = SendInstruction {
             to: Self::email_address(signup_request),
-            subject: "Welcome to Game Jam!".to_string(),
+            subject: "Welcome to WiTathon!".to_string(),
             template_key: "bhw-welcome".to_string(),
             vars: mail_vars,
         };
@@ -187,7 +187,7 @@ impl SignupRequestHelper {
 
         let instruction = SendInstruction {
             to: Self::email_address(signup_request),
-            subject: "Welcome to Game Jam!".to_string(),
+            subject: "Welcome to WiTathon!".to_string(),
             template_key: "bhw-welcome-noverify".to_string(),
             vars: HashMap::new(),
         };
