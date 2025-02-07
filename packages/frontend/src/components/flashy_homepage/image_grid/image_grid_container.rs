@@ -13,8 +13,8 @@ pub fn image_grid() -> Html {
             <ImageGridItem src="hero/p2.webp" />
             <ImageGridItem src="hero/l2.webp" />
             <ImageGridItem src="hero/p3.webp" />
-            <ImageGridItem src="hero/l3.webp" />
             <ImageGridItem src="hero/p4.webp" />
+            <ImageGridItem src="hero/l3.webp" />
         </div>
     }
 }
