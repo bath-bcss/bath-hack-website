@@ -112,7 +112,7 @@ pub fn home_page() -> Html {
                     icon={SectionIcon::Icon(IconId::FontAwesomeSolidClock)}
                     title="Schedule"
                     anchor="schedule"
-                    image="home_section_schedule.webp"
+                    image="sections/schedule.webp"
                 >
                     <Schedule />
                 </FlashyHomepageSection>
