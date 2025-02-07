@@ -23,13 +23,8 @@ pub fn homepage_footer() -> Html {
                     { "." }
                 </p>
                 <p class="text-bcss-800 dark:text-bcss-200">
-                    { "Contact " }
-                    <a
-                        href="mailto:wit@bath.ac.uk"
-                        class="underline"
-                    >
-                        { "wit@bath.ac.uk" }
-                    </a>
+                    { "This website is managed by Bath Computer Science Society. Please contact " }
+                    <a href="mailto:wit@bath.ac.uk" class="underline">{ "su-bcss@bath.ac.uk" }</a>
                     { " for support." }
                 </p>
             </div>
