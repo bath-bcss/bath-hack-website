@@ -9,7 +9,7 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}:${{ github.sha }}
+  IMAGE_NAME: ${{ github.repository }}:${{ github.ref_name }}-${{ github.sha }}
 
 jobs:
   build-backend:
