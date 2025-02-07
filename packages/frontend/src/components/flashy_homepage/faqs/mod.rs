@@ -30,75 +30,45 @@ pub fn faqs_component() -> Html {
         <div class="mt-4 space-y-4">
             <FAQItem
                 current_open={currently_open_index.clone()}
-                i={FAQItemIndex::InPerson}
+                i={FAQItemIndex::Duration}
                 on_click={on_item_click.clone()}
-                question="Is Game Jam in-person?"
+                question="Do I have to stay 24 hours?
+    "
             >
                 <FAQItemParagraph>
-                    { "Our kick-off and showcase sessions are both in-person. We'd like you to attend both of them if you're taking part in the competition. Don't worry, we'll make them super fun! We'll have a range of snacks at both, and pizza at the showcase. Other than these events, you'll do the development of your game in your own time. You can meet with your group in-person or online, however you'd like!" }
-                </FAQItemParagraph>
-            </FAQItem>
-            <FAQItem
-                current_open={currently_open_index.clone()}
-                i={FAQItemIndex::WhatIsPrizeTrack}
-                on_click={on_item_click.clone()}
-                question="What is a track?"
-            >
-                <FAQItemParagraph>
-                    { "A track is like a target your project should be aiming for. You can choose which tracks you'd like to aim for at the start. However, you don't need to actually tell us which you choose, as your project will automatically be considered for all of them as applicable." }
+                    { "No! You can leave and return to the 1 West building as you like. Members of our committee will be on shifts at all times of the event so if you would like to stay the full time you are free to do so. But there is no expectation for you to stay awake 24 hours. Please put your health first." }
                 </FAQItemParagraph>
             </FAQItem>
             <FAQItem
                 current_open={currently_open_index.clone()}
                 i={FAQItemIndex::WhoCanParticipate}
                 on_click={on_item_click.clone()}
-                question="Who can participate in this event?"
-            >
-                <FAQItemParagraph>{ "Any student at the University of Bath!" }</FAQItemParagraph>
-                <FAQItemParagraph>
-                    { "In fact, you don't even need experience with coding or tech in general. All you need are creativity
-                and enthusiasm! There'll be lots of support available for those with less experience — but there will
-                also be ways to participate without writing a single line of code." }
-                </FAQItemParagraph>
-                <FAQItemParagraph>
-                    { "Plus, none of the tracks even require you to write code! A lot of groups will use digital approaches, but there's no requirement to do so. We're just looking for creative answers to our tracks." }
-                </FAQItemParagraph>
-            </FAQItem>
-            <FAQItem
-                current_open={currently_open_index.clone()}
-                i={FAQItemIndex::Devpost}
-                on_click={on_item_click.clone()}
-                question="How do I submit my game?"
+                question="Who is invited to participate?"
             >
                 <FAQItemParagraph>
-                    { "We use a website called " }
-                    <strong>{ "Devpost" }</strong>
-                    { ". This allows you to submit a cool profile of your project with all your teammates added to it. We'll need you to upload a short video showcasing your game, as well as a brief description of how you came up with the idea. Don't worry, this isn't like an assignment, and it's super easy to do! Future employers will be able to see your work here, so it's great for your career too." }
+                    { "Any student of Bath University who identifies as a woman or gender minority can take part in a group of 1 to 4. While some prize tracks are focused on rewarding impressive code solutions, you are free to join no matter your skill level." }
                 </FAQItemParagraph>
-            </FAQItem>
-            <FAQItem
-                current_open={currently_open_index.clone()}
-                i={FAQItemIndex::DevelopmentPeriod}
-                on_click={on_item_click.clone()}
-                question="How long do I have to build my game?"
-            >
-                <FAQItemParagraph>
-                    { "You'll have from 12:00 on Saturday 2nd November until 20:00 on Tuesday 12th November, so just over 10 days of project time! You can decide how to allocate your time and when to meet with your group. The deadline is a hard one, so we won't consider any submissions or changes made after that time." }
-                </FAQItemParagraph>
-                <FAQItemParagraph>{ "Good luck, use your time wisely!" }</FAQItemParagraph>
             </FAQItem>
             <FAQItem
                 current_open={currently_open_index.clone()}
                 i={FAQItemIndex::Food}
                 on_click={on_item_click.clone()}
-                question="Food?"
+                question="What food and drink is provided?"
             >
                 <FAQItemParagraph>
-                    { "Food indeed! There will be free pizza provided to all
-                participants at the showcase event, as well as a range of snacks. We'll try to cater to all dietary requirements, so please specify these when you create your account." }
+                    { "All food and drink provided is free, we will provide pizza Saturday at 6pm and lunch on Sunday, if you have any dietary restrictions please specify in your sign up or email wit@bath.ac.uk to let us know. We will also provide hot drinks and snacks Sunday morning similar to what we provide in our weekly coffee meets." }
                 </FAQItemParagraph>
             </FAQItem>
-
+            <FAQItem
+                current_open={currently_open_index.clone()}
+                i={FAQItemIndex::ExistingCode}
+                on_click={on_item_click.clone()}
+                question="Can I use existing code / Gen AI?"
+            >
+                <FAQItemParagraph>
+                    { "We allow the use of any and all online resources. You only have 24 hours so you should be resourscful in how you work. However, you should start a fresh project Saturday at 12pm, no work should be done prior to the event." }
+                </FAQItemParagraph>
+            </FAQItem>
         </div>
     }
 }

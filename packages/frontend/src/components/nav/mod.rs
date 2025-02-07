@@ -77,7 +77,7 @@ pub fn scrolling_navbar() -> Html {
                 />
                 <NavLink
                     dest={NavLinkDestination::Anchor("tracks".to_string())}
-                    label="Tracks "
+                    label="Tracks"
                     is_at_top={is_at_top}
                 />
                 <NavLink
@@ -87,7 +87,7 @@ pub fn scrolling_navbar() -> Html {
                 />
                 <NavLink
                     dest={NavLinkDestination::Anchor("sponsor".to_string())}
-                    label="Our Sponsor"
+                    label="Sponsors"
                     is_at_top={is_at_top}
                 />
                 <NavLink
@@ -102,7 +102,7 @@ pub fn scrolling_navbar() -> Html {
                 />
                 <NavLink
                     dest={NavLinkDestination::Anchor("about".to_string())}
-                    label="WiT"
+                    label="About WiT"
                     is_at_top={is_at_top}
                 />
             </div>
