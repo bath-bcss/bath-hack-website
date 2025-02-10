@@ -82,31 +82,15 @@ pub fn signup_notice_page() -> Html {
                         { " We're so excited that you're joining our event!" }
                     </GlassContainerParagraph>
                     <GlassContainerParagraph top_margin=true>
-                        { "Before we continue setting up your account: the legal bits! We will process your personal
-                    information under The SU Bath's " }
+                        { "By continuing, you confirm you have read and understood our " }
                         <a
-                            href="https://www.thesubath.com/pageassets/privacy/Privacy-Policy-2022.pdf"
+                            href="https://docs.google.com/document/d/1qdNYvHsxai4Xr7qLl1RnQOMxZDuBqXSO7oGSoh-SVCo/edit?usp=sharing"
                             target="_blank"
                             class="underline"
                         >
                             { "Privacy Policy" }
                         </a>
-                        { ". BCSS Committee members will have access to the information you provide on a legitimate interest
-                    basis,
-                    as they need the information to run the event." }
-                    </GlassContainerParagraph>
-                    <GlassContainerParagraph>
-                        { "Your information may be processed securely by third-parties also on a legitimate interest basis:
-                    to facilitate the secure recording of your details and ensure communication." }
-                    </GlassContainerParagraph>
-                    <GlassContainerParagraph>
-                        { "If you have any questions or would like to exercise your rights under the Data Protection Act
-                    2018 and (where relevant) the General Data Protection Act, please email su-bcss@bath.ac.uk from your
-                    University email account." }
-                    </GlassContainerParagraph>
-                    <GlassContainerParagraph top_margin=true>
-                        { "By pressing the button below, you accept the above points and agree to allow BCSS to process the
-                    personal information you provide." }
+                        { "." }
                     </GlassContainerParagraph>
                     <Button
                         background_is_dark=false
@@ -114,7 +98,7 @@ pub fn signup_notice_page() -> Html {
                         onclick={on_agree_click}
                         disabled={loading}
                     >
-                        { "I agree, sign up!" }
+                        { "I confirm, sign up!" }
                     </Button>
                     <ErrorMessage message={error.clone()} />
                     if error.is_some() {
