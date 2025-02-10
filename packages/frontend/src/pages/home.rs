@@ -74,7 +74,7 @@ pub fn home_page() -> Html {
                     image="sections/intro.webp"
                 >
                     <FlashyHomepageSectionParagraph full_width=true>
-                        { "Woman in Technology (WiT) aims to create an environment where women and gender minorities can support each other and share our love and passion for technology." }
+                        { "Women in Technology (WiT) aims to create an environment where women and gender minorities can support each other and share our love and passion for technology." }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph full_width=true>
                         { "The WiTathon is an annual event that aims to allow time for us to get together and work on personal projects that lie beyond typical university projects. The WiTathon is ran completely by you; you can choose to focus on wherever your strengths lie, no matter if that’s in Python or C++ or if it’s in business and marketing." }

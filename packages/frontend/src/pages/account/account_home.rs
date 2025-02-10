@@ -81,7 +81,7 @@ pub fn account_home_page() -> Html {
         <PageContainer>
             if is_initial_signup {
                 <div
-                    class="p-4 bg-green-200 dark:bg-green-700 shadow-lg dark:shadow-md shadow-green-100 dark:shadow-green-800 rounded-2xl mb-4"
+                    class="p-4 bg-green-200 dark:bg-green-700 shadow-lg dark:shadow-md shadow-green-100 dark:shadow-green-800 rounded-2xl mb-12"
                 >
                     <h2 class="text-green-900 dark:text-green-200 font-bold text-xl">
                         { "You made it!" }
@@ -101,12 +101,15 @@ pub fn account_home_page() -> Html {
                 { "Your profile" }
             </PageTitle>
             <PageControlParagraph>
-                { "All of the below fields are completely optional. Entering your name will help your group members
-                identify you, and adding your access or dietary requirements will help us provide everything you need at
-                the event." }
-            </PageControlParagraph>
-            <PageControlParagraph>
-                { "Your accessibility requirements will be stored securely and shared only with our Committee members or members of University staff as needed. Unless necessary, please do not disclose sensitive or medical information." }
+                { "All of the below fields are completely optional. Please refer to " }
+                <a
+                    href="https://docs.google.com/document/d/1qdNYvHsxai4Xr7qLl1RnQOMxZDuBqXSO7oGSoh-SVCo/edit?usp=sharing"
+                    target="_blank"
+                    class="underline"
+                >
+                    { "our Privacy Policy" }
+                </a>
+                { "." }
             </PageControlParagraph>
             if loading {
                 <LoadingSpinner class={classes!("mt-4")} />
@@ -117,12 +120,16 @@ pub fn account_home_page() -> Html {
                         static_value={profile.bath_username}
                         readonly=true
                         input_label="Bath Username"
-                    />
+                    >
+                        { "Need to change this? Please email su-bcss@bath.ac.uk." }
+                    </Input>
                     <ProfileDatapoint
                         data_key={ProfileKey::DisplayName}
                         current_value={profile.display_name}
                         on_value_change={on_datapoint_change.clone()}
-                    />
+                    >
+                        { "This will be shown to your team-mates and may be displayed throughout the event." }
+                    </ProfileDatapoint>
                     /*<TShirtSizePicker
                         current_value={profile.t_shirt_size}
                         on_datapoint_change={on_datapoint_change.clone()}
@@ -130,9 +137,7 @@ pub fn account_home_page() -> Html {
                         data_key={ProfileKey::AccessibilityRequirements}
                         current_value={profile.accessibility_requirements}
                         on_value_change={on_datapoint_change.clone()}
-                    >
-                        <>{ "If you have any serious allergies, please enter them here." }</>
-                    </ProfileDatapoint>
+                    />
                     <ProfileDatapoint
                         data_key={ProfileKey::DietaryRequirements}
                         current_value={profile.dietary_requirements}
