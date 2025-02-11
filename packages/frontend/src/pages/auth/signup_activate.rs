@@ -95,6 +95,7 @@ pub fn signup_activate_page() -> Html {
                         input_type="password"
                         required=true
                         handle={new_password_handle}
+                        autocomplete="new-password"
                     />
                     <Button
                         background_is_dark=false
