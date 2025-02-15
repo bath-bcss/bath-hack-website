@@ -36,7 +36,7 @@ pub fn home_page() -> Html {
         e.prevent_default();
         window()
             .location()
-            .set_href("https://linktr.ee/wit.bath?utm_source=qr_code")
+            .set_href("https://www.instagram.com/bath.wit/")
             .expect_throw("Setting location.href");
     });
 
@@ -158,7 +158,7 @@ pub fn home_page() -> Html {
                     anchor="about"
                 >
                     <FlashyHomepageSectionParagraph>
-    {"Women in Technology (WiT) aims to create an environment where women and gender minorities can support each other and share our love and passion for technology. We want to ensure everyone interested in learning about and entering the technology industry feels confident and safe to do so."}
+                        { "Women in Technology (WiT) aims to create an environment where women and gender minorities can support each other and share our love and passion for technology. We want to ensure everyone interested in learning about and entering the technology industry feels confident and safe to do so." }
                     </FlashyHomepageSectionParagraph>
                     <Button
                         onclick={on_find_out_more_click.clone()}
