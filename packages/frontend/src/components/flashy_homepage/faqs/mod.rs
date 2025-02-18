@@ -30,83 +30,43 @@ pub fn faqs_component() -> Html {
         <div class="mt-4 space-y-4">
             <FAQItem
                 current_open={currently_open_index.clone()}
-                i={FAQItemIndex::WhatIsHackathon}
+                i={FAQItemIndex::Duration}
                 on_click={on_item_click.clone()}
-                question="What is a hackathon?"
+                question="Do I have to stay 24 hours?
+    "
             >
                 <FAQItemParagraph>
-                    { "In short, it is the ultimate technological group work task. You have 24hrs and a team to plan, design,
-                develop and pitch a system from scratch. Whether you sacrifice functionality for ambition or strive for
-                a
-                fully working system the options are boundless. Pick a prize track and creatively solve the problem and
-                you'll be real competition. As cliche as it sounds, the most important thing is have fun and meet new
-                people." }
-                </FAQItemParagraph>
-            </FAQItem>
-            <FAQItem
-                current_open={currently_open_index.clone()}
-                i={FAQItemIndex::WhatIsPrizeTrack}
-                on_click={on_item_click.clone()}
-                question="What is a track?"
-            >
-                <FAQItemParagraph>
-                    { "A track is a problem that needs to be solved or a question that needs to be answered. It's a
-                specific
-                goal your solution should fulfil." }
-                </FAQItemParagraph>
-                <FAQItemParagraph>
-                    { "Tracks can be vague or specific and your project can be eligible for more than one." }
+                    { "No! You can leave and return to the 1 West building as you like. Members of our committee will be on shifts at all times of the event so if you would like to stay the full time you are free to do so. But there is no expectation for you to stay awake 24 hours. Please put your health first." }
                 </FAQItemParagraph>
             </FAQItem>
             <FAQItem
                 current_open={currently_open_index.clone()}
                 i={FAQItemIndex::WhoCanParticipate}
                 on_click={on_item_click.clone()}
-                question="Who can participate in this event?"
+                question="Who is invited to participate?"
             >
                 <FAQItemParagraph>
-                    { "Any student at the University of Bath! Not just Computer Scientists." }
+                    { "Any student of Bath University who identifies as a woman or gender minority can take part in a group of 1 to 4. While some prize tracks are focused on rewarding impressive code solutions, you are free to join no matter your skill level." }
                 </FAQItemParagraph>
-                <FAQItemParagraph>
-                    { "In fact, you don't even need experience with coding or tech in general. All you need are creativity
-                and enthusiasm! There'll be lots of support available for those with less experience — but there will
-                also be ways to participate without writing a single line of code." }
-                </FAQItemParagraph>
-            </FAQItem>
-            <FAQItem
-                current_open={currently_open_index.clone()}
-                i={FAQItemIndex::WhatCanBuild}
-                on_click={on_item_click.clone()}
-                question="What can I build?"
-            >
-                <FAQItemParagraph>
-                    { "Anything cool! In the past lots of projects have involved electronics or programming, but we'll also
-                have ways to participate without writing any code!" }
-                </FAQItemParagraph>
-            </FAQItem>
-            <FAQItem
-                current_open={currently_open_index.clone()}
-                i={FAQItemIndex::TwentyFour}
-                on_click={on_item_click.clone()}
-                question="24 hours‽"
-            >
-                <FAQItemParagraph>
-                    { "You don't have to use the full time and we encourage you to take a break and/or sleep. But yes, 24hrs
-                of potential project time." }
-                </FAQItemParagraph>
-                <FAQItemParagraph>{ "Good luck, use it wisely!" }</FAQItemParagraph>
             </FAQItem>
             <FAQItem
                 current_open={currently_open_index.clone()}
                 i={FAQItemIndex::Food}
                 on_click={on_item_click.clone()}
-                question="Food?"
+                question="What food and drink is provided?"
             >
                 <FAQItemParagraph>
-                    { "Food indeed! There will be 3 meals provided free of charge (thanks to our lovely sponsors!) to all
-                participants, including dinner, breakfast,
-                and lunch. We'll try to cater to all dietary requirements, so please specify these when you create your
-                account." }
+                    { "All food and drink provided is free, we will provide pizza Saturday at 6pm and lunch on Sunday, if you have any dietary restrictions please specify in your sign up or email wit@bath.ac.uk to let us know. We will also provide hot drinks and snacks Sunday morning similar to what we provide in our weekly coffee meets." }
+                </FAQItemParagraph>
+            </FAQItem>
+            <FAQItem
+                current_open={currently_open_index.clone()}
+                i={FAQItemIndex::ExistingCode}
+                on_click={on_item_click.clone()}
+                question="Can I use existing code / Gen AI?"
+            >
+                <FAQItemParagraph>
+                    { "We allow the use of any and all online resources. You only have 24 hours so you should be resourscful in how you work. However, you should start a fresh project Saturday at 12pm, no work should be done prior to the event." }
                 </FAQItemParagraph>
             </FAQItem>
         </div>

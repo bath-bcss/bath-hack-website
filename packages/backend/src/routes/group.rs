@@ -50,6 +50,7 @@ pub async fn get_my_group_route(
         id: group.id.to_string(),
         name: group.group_name,
         join_code: group.join_code,
+        group_number: group.group_number as u64,
         members: user_vec_to_members(members),
     });
 
@@ -85,6 +86,7 @@ pub async fn create_group_route(
     Ok(CreateGroupResponse {
         new_group_id: new_group.id.to_string(),
         new_group_join_code: new_group.join_code,
+        new_group_number: new_group.group_number as u64,
     })
 }
 
@@ -150,6 +152,7 @@ pub async fn join_group_route(
         group_id: group_details.id.to_string(),
         group_name: group_details.group_name,
         group_members: user_vec_to_members(group_members),
+        group_number: group_details.group_number as u64,
     })
 }
 

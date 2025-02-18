@@ -11,7 +11,7 @@ pub struct Props {
 pub fn glass_container_paragraph(props: &Props) -> Html {
     let p_class = use_memo((props.top_margin,), |(top_margin,)| {
         let mut base_classes = classes!("dark:text-bcss-300", "text-bcss-900");
-        if top_margin.clone() {
+        if *top_margin {
             base_classes.push("mt-4");
         }
 

@@ -5,6 +5,7 @@ use yew::{Properties, UseStateHandle};
 pub struct FrontendGroupState {
     pub name: String,
     pub join_code: String,
+    pub group_number: u64,
     pub members: Vec<GroupMember>,
 }
 

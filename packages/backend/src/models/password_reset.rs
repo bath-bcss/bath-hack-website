@@ -3,10 +3,7 @@ use std::collections::HashMap;
 use bhw_models::{password_reset, prelude::*, website_user};
 use chrono::{Duration, Utc};
 use mailgun_rs::{SendResponse, SendResult};
-use rand::{
-    distributions::{Alphanumeric, DistString},
-    rngs::OsRng,
-};
+use rand::{distr::{Alphanumeric, SampleString}, rng};
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, ModelTrait, PaginatorTrait,
     QueryFilter, QuerySelect, SelectColumns, Set,
@@ -55,7 +52,7 @@ impl PasswordResetHelper {
     }
 
     fn generate_pin() -> String {
-        Alphanumeric.sample_string(&mut OsRng, 10)
+        Alphanumeric.sample_string(&mut rng(), 10)
     }
 
     pub async fn create<T: ConnectionTrait>(
@@ -99,7 +96,7 @@ impl PasswordResetHelper {
         Ok(new_password_reset)
     }
 
-    pub fn send_email(
+    pub async fn send_email(
         app_config: &AppConfig,
         to_username: String,
         pin: String,
@@ -107,12 +104,14 @@ impl PasswordResetHelper {
         let mailer = Mailer::client(app_config);
         let mut mail_vars = HashMap::new();
         mail_vars.insert("pin".to_string(), pin);
-        mailer.send_template(SendInstruction {
-            to: email_address(to_username),
-            vars: mail_vars,
-            template_key: "bhw-password-reset".to_string(),
-            subject: "Reset your Bath Hack password".to_string(),
-        })
+        mailer
+            .send_template(SendInstruction {
+                to: email_address(to_username),
+                vars: mail_vars,
+                template_key: "bhw-password-reset".to_string(),
+                subject: "Reset your WiTathon password".to_string(),
+            })
+            .await
     }
 
     pub async fn find_and_delete_pin<T: ConnectionTrait>(

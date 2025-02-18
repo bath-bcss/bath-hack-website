@@ -12,9 +12,9 @@ use crate::{
 #[function_component(JoinGroup)]
 pub fn join_group_component(props: &AccountGroupSubpageProps) -> Html {
     let form_loading_handle = use_state_eq(|| false);
-    let form_loading = (*form_loading_handle).clone();
+    let form_loading = *form_loading_handle;
 
-    let join_code_handle = use_state_eq(|| String::default());
+    let join_code_handle = use_state_eq(String::default);
     let join_code = (*join_code_handle).clone();
 
     let join_group_error_handle = use_state_eq(|| None::<String>);
@@ -45,6 +45,7 @@ pub fn join_group_component(props: &AccountGroupSubpageProps) -> Html {
                     Ok(group) => update_group.set(Some(FrontendGroupState {
                         name: group.group_name,
                         join_code,
+                        group_number: group.group_number,
                         members: group.group_members,
                     })),
                 }

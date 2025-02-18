@@ -1,4 +1,4 @@
-use bhw_types::requests::sign_up::SignUpRequest;
+use bhw_types::requests::sign_up::{PossibleSignUpResponse, SignUpRequest};
 use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
 use yew_router::{
@@ -16,6 +16,7 @@ use crate::{
         hero::center::HeroCenterContainer,
     },
     data::sign_up::sign_up_request,
+    pages::auth::signup_activate::SignupActivateQueryParams,
     router::Route,
 };
 
@@ -27,7 +28,7 @@ pub fn signup_notice_page() -> Html {
 
     let navigator = use_navigator().expect_throw("Navigator not found");
     let loading_handle = use_state_eq(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
     let error_handle = use_state_eq(|| None::<String>);
     let error = (*error_handle).clone();
 
@@ -50,8 +51,20 @@ pub fn signup_notice_page() -> Html {
                 loading_handle.set(false);
                 if let Err(response) = response {
                     error_handle.set(Some(response.to_string()));
-                } else if let Ok(_) = response {
-                    navigator.push(&Route::SignupSuccess);
+                } else if let Ok(response) = response {
+                    if let PossibleSignUpResponse::Finished(response) = response {
+                        navigator
+                            .push_with_query(
+                                &Route::ActivateAccount,
+                                &SignupActivateQueryParams {
+                                    id: response.id,
+                                    secret: response.secret,
+                                },
+                            )
+                            .expect("Query to serialise trivially");
+                    } else {
+                        navigator.push(&Route::SignupSuccess);
+                    }
                 }
             });
         },
@@ -61,7 +74,7 @@ pub fn signup_notice_page() -> Html {
         html! {
             <HeroCenterContainer>
                 <GlassContainer home_link=true>
-                    <GlassContainerHeading>{ "One moment..." }</GlassContainerHeading>
+                    <GlassContainerHeading>{ "Important information" }</GlassContainerHeading>
                     <GlassContainerParagraph>
                         { "Hi " }
                         { username.clone() }
@@ -69,31 +82,15 @@ pub fn signup_notice_page() -> Html {
                         { " We're so excited that you're joining our event!" }
                     </GlassContainerParagraph>
                     <GlassContainerParagraph top_margin=true>
-                        { "Before we continue setting up your account: the legal bits! We will process your personal
-                    information under The SU Bath's " }
+                        { "By continuing, you confirm you have read and understood our " }
                         <a
-                            href="https://www.thesubath.com/pageassets/privacy/Privacy-Policy-2022.pdf"
+                            href="https://docs.google.com/document/d/1qdNYvHsxai4Xr7qLl1RnQOMxZDuBqXSO7oGSoh-SVCo/edit?usp=sharing"
                             target="_blank"
                             class="underline"
                         >
                             { "Privacy Policy" }
                         </a>
-                        { ". BCSS Committee members will have access to the information you provide on a legitimate interest
-                    basis,
-                    as they need the information to run the event." }
-                    </GlassContainerParagraph>
-                    <GlassContainerParagraph>
-                        { "Your information may be processed securely by third-parties also on a legitimate interest basis:
-                    to facilitate the secure recording of your details and ensure communication." }
-                    </GlassContainerParagraph>
-                    <GlassContainerParagraph>
-                        { "If you have any questions or would like to exercise your rights under the Data Protection Act
-                    2018 and (where relevant) the General Data Protection Act, please email su-bcss@bath.ac.uk from your
-                    University email account." }
-                    </GlassContainerParagraph>
-                    <GlassContainerParagraph top_margin=true>
-                        { "By pressing the button below, you accept the above points and agree to allow BCSS to process the
-                    personal information you provide." }
+                        { ". This website is operated jointly by WiT and BCSS; both Committees will have access to your information (as well as the specified third-parties)." }
                     </GlassContainerParagraph>
                     <Button
                         background_is_dark=false
@@ -101,7 +98,7 @@ pub fn signup_notice_page() -> Html {
                         onclick={on_agree_click}
                         disabled={loading}
                     >
-                        { "I agree, sign up!" }
+                        { "I confirm, sign up!" }
                     </Button>
                     <ErrorMessage message={error.clone()} />
                     if error.is_some() {

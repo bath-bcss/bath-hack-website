@@ -6,10 +6,7 @@ use yew_router::hooks::use_location;
 
 use crate::{
     components::{
-        account::profile::{
-            profile_datapoint::{ProfileDatapoint, ProfileKey},
-            t_shirt_size_picker::TShirtSizePicker,
-        },
+        account::profile::profile_datapoint::{ProfileDatapoint, ProfileKey},
         form::input::Input,
         loading_spinner::LoadingSpinner,
         page_container::PageContainer,
@@ -27,7 +24,7 @@ pub fn account_home_page() -> Html {
     let profile = (*profile_handle).clone();
 
     let loading_handle = use_state_eq(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
 
     let is_initial_signup = use_location()
         .expect_throw("Location not found")
@@ -56,7 +53,7 @@ pub fn account_home_page() -> Html {
             (profile.clone(),),
             move |req: UpdateProfileRequest, (profile,)| {
                 let profile = (*profile).clone();
-                if let None = profile {
+                if profile.is_none() {
                     return;
                 }
 
@@ -84,19 +81,16 @@ pub fn account_home_page() -> Html {
         <PageContainer>
             if is_initial_signup {
                 <div
-                    class="p-4 bg-green-200 dark:bg-green-700 shadow-lg dark:shadow-md shadow-green-100 dark:shadow-green-800 rounded-2xl mb-4"
+                    class="p-4 bg-green-200 dark:bg-green-700 shadow-lg dark:shadow-md shadow-green-100 dark:shadow-green-800 rounded-2xl mb-12"
                 >
                     <h2 class="text-green-900 dark:text-green-200 font-bold text-xl">
                         { "You made it!" }
                     </h2>
                     <p class="text-green-800 dark:text-green-200">
-                        { "That's it; you're officially going to Bath Hack! If you feel like it, you can fill out the rest
-                    of
-                    your profile, but that's all optional." }
+                        { "That's it; you're officially going! If you feel like it, you can fill out the rest of your profile, but that's all optional." }
                     </p>
                     <p class="text-green-800 dark:text-green-200">
-                        { "When you're ready, check out the Group tab. Most people compete in groups of up to 4 people, and
-                it's really easy to join or create them." }
+                        { "When you're ready, check out the Group tab. Most people compete in groups of up to 4 people, and it's really easy to join or create them." }
                     </p>
                     <p class="text-green-800 dark:text-green-200">
                         { "Keep an eye on your inbox for more updates from our Committee as the event approaches :)" }
@@ -107,17 +101,17 @@ pub fn account_home_page() -> Html {
                 { "Your profile" }
             </PageTitle>
             <PageControlParagraph>
-                { "All of the below fields are completely optional. Entering your name will help your group members
-                identify you, and adding your access or dietary requirements will help us provide everything you need at
-                the event." }
+                { "All of the below fields are completely optional. Please refer to " }
+                <a
+                    href="https://docs.google.com/document/d/1qdNYvHsxai4Xr7qLl1RnQOMxZDuBqXSO7oGSoh-SVCo/edit?usp=sharing"
+                    target="_blank"
+                    class="underline"
+                >
+                    { "our Privacy Policy" }
+                </a>
+                { "." }
             </PageControlParagraph>
-            <PageControlParagraph>
-                { "Your accessibility requirements will be stored securely and shared only with BCSS Committee members
-                or
-                members of University staff as needed. Unless necessary, please do not disclose sensitive or medical
-                information." }
-            </PageControlParagraph>
-            if loading.clone() {
+            if loading {
                 <LoadingSpinner class={classes!("mt-4")} />
             }
             if let Some(profile) = profile {
@@ -126,23 +120,24 @@ pub fn account_home_page() -> Html {
                         static_value={profile.bath_username}
                         readonly=true
                         input_label="Bath Username"
-                    />
+                    >
+                        { "Need to change this? Please email su-bcss@bath.ac.uk." }
+                    </Input>
                     <ProfileDatapoint
                         data_key={ProfileKey::DisplayName}
                         current_value={profile.display_name}
                         on_value_change={on_datapoint_change.clone()}
-                    />
-                    <TShirtSizePicker
+                    >
+                        { "This will be shown to your team-mates and may be displayed throughout the event." }
+                    </ProfileDatapoint>
+                    /*<TShirtSizePicker
                         current_value={profile.t_shirt_size}
                         on_datapoint_change={on_datapoint_change.clone()}
-                    />
-                    <ProfileDatapoint
+                    />*/<ProfileDatapoint
                         data_key={ProfileKey::AccessibilityRequirements}
                         current_value={profile.accessibility_requirements}
                         on_value_change={on_datapoint_change.clone()}
-                    >
-                        <>{ "If you have any serious allergies, please enter them here." }</>
-                    </ProfileDatapoint>
+                    />
                     <ProfileDatapoint
                         data_key={ProfileKey::DietaryRequirements}
                         current_value={profile.dietary_requirements}

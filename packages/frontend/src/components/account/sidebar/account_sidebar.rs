@@ -25,7 +25,7 @@ pub fn account_sidebar(props: &Props) -> Html {
     });
 
     let small_screen_show_handle = use_state_eq(|| false);
-    let small_screen_show = (*small_screen_show_handle).clone();
+    let small_screen_show = *small_screen_show_handle;
 
     let sidebar_container_classes = use_memo((small_screen_show,), |(small_screen_show,)| {
         let mut base_classes = classes!(
@@ -86,7 +86,7 @@ pub fn account_sidebar(props: &Props) -> Html {
                 <div class="flex items-center justify-between mb-2 md:mb-0">
                     <h1 class="text-3xl text-white dark:text-bcss-200 font-bold tracking-tighter">
                         <Link<Route> to={Route::Home} classes={classes!("hover:underline")}>
-                            { "Bath Hack 24" }
+                            { "WiTathon 25" }
                         </Link<Route>>
                     </h1>
                     <Button
@@ -116,11 +116,12 @@ pub fn account_sidebar(props: &Props) -> Html {
                         label="Group"
                         icon={IconId::FontAwesomeSolidPeopleGroup}
                     />
+                    /*
                     <SidebarElement
                         link_to={AccountRoute::CV}
                         label="CV"
                         icon={IconId::FontAwesomeSolidFileContract}
-                    />
+                    /> */
                 </div>
             </div>
             <div class="flex-1 pb-10">

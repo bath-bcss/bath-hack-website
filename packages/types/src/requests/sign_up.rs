@@ -1,8 +1,6 @@
-use bhw_macro_types::{FromSeaORMError, ResponseError};
+use bhw_macro_types::{FromSeaORMError, JsonResponder, ResponseError};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
-
-use crate::nothing::Nothing;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct SignUpRequest {
@@ -31,4 +29,16 @@ pub enum SignUpResponseError {
     BlockingError,
 }
 
-pub type SignUpResult = Result<Nothing, SignUpResponseError>;
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, JsonResponder)]
+pub struct FinishedSignUpResponse {
+    pub id: String,
+    pub secret: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, JsonResponder)]
+pub enum PossibleSignUpResponse {
+    Finished(FinishedSignUpResponse),
+    RequiresActivation,
+}
+
+pub type SignUpResult = Result<PossibleSignUpResponse, SignUpResponseError>;

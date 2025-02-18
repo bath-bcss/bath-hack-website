@@ -12,19 +12,25 @@ pub struct Props {
     pub is_last: bool,
     #[prop_or_default]
     pub day: Option<String>,
+    #[prop_or_default]
+    pub has_caption: bool,
+    #[prop_or_default]
     pub children: Html,
 }
 
 #[function_component(ScheduleItem)]
 pub fn schedule_item(props: &Props) -> Html {
     let modal_open_handle = use_state(|| false);
-    let modal_open = (*modal_open_handle).clone();
+    let modal_open = *modal_open_handle;
 
     let on_open_modal_click = use_callback(
-        (modal_open_handle.clone(),),
-        |e: MouseEvent, (modal_open_handle,)| {
+        (modal_open_handle.clone(), props.has_caption),
+        |e: MouseEvent, (modal_open_handle, has_children)| {
             e.prevent_default();
-            modal_open_handle.set(true);
+
+            if has_children.clone() {
+                modal_open_handle.set(true);
+            }
         },
     );
 
@@ -39,13 +45,15 @@ pub fn schedule_item(props: &Props) -> Html {
     html! {
         <>
             <li class="flex items-start flex-col sm:flex-row">
-                <div class="w-24 pt-1">
+                <div class="w-36 pt-1">
                     if let Some(day) = props.day.clone() {
-                        <p class="font-regular text-bcss-800 dark:text-bcss-300 mb-1 sm:mb-0">{ day }</p>
+                        <p class="font-regular text-bcss-800 dark:text-bcss-300 mb-1 sm:mb-0">
+                            { day }
+                        </p>
                     }
                 </div>
                 <button
-                    class="w-full bg-bcss-100 dark:bg-bcss-800 rounded-2xl hover:-translate-y-[2px] transition-all motion-reduce:hover:translate-y-0 hover:shadow-md hover:shadow-bcss-400/50 dark:hover:shadow-bcss-700/50 text-left flex overflow-hidden"
+                    class={"w-full bg-bcss-100 dark:bg-bcss-800 rounded-2xl transition-all text-left flex overflow-hidden ".to_owned() + if !props.has_caption {"cursor-default"} else {"hover:-translate-y-[2px] motion-reduce:hover:translate-y-0 hover:shadow-md hover:shadow-bcss-400/50 dark:hover:shadow-bcss-700/50"}}
                     onclick={on_open_modal_click}
                 >
                     <div class="ml-4">

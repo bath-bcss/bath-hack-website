@@ -19,7 +19,7 @@ pub fn account_group_manage(props: &AccountGroupSubpageProps) -> Html {
         .expect_throw("Cannot use AccountGroupManage with a None value for group_handle.");
 
     let leave_group_loading_handle = use_state_eq(|| false);
-    let leave_group_loading = (*leave_group_loading_handle).clone();
+    let leave_group_loading = *leave_group_loading_handle;
 
     let leave_group_error_handle = use_state_eq(|| None::<String>);
     let leave_group_error = (*leave_group_error_handle).clone();
@@ -62,10 +62,14 @@ pub fn account_group_manage(props: &AccountGroupSubpageProps) -> Html {
                     { "Join code: " }
                     <code>{ current_group.join_code }</code>
                 </p>
+                <p class="text-bcss-900 dark:text-bcss-200">
+                    { "Number: " }
+                    <code>{ current_group.group_number }</code>
+                </p>
                 <div
                     class="mt-4 flex flex-col sm:flex-row items-start gap-y-4 sm:gap-y-0 sm:gap-x-4"
                 >
-                    { current_group.members.into_iter().map(|m| member_card(m)).collect::<Html>() }
+                    { current_group.members.into_iter().map(member_card).collect::<Html>() }
                 </div>
                 <Button
                     class={classes!("mt-4")}

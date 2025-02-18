@@ -23,7 +23,7 @@ pub struct Props {
 #[function_component(TrackGridItem)]
 pub fn track_grid_item(props: &Props) -> Html {
     let modal_handle = use_state(|| false);
-    let show_modal = (*modal_handle).clone();
+    let show_modal = *modal_handle;
 
     let on_open_click = use_callback((modal_handle.clone(),), |_, (modal_handle,)| {
         modal_handle.set(true);

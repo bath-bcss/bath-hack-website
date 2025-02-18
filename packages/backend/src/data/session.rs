@@ -13,9 +13,7 @@ static USER_SESSION_KEY: &str = "authenticated_user";
 #[derive(Debug, Clone)]
 pub struct SessionUser {
     pub id: uuid::Uuid,
-    pub bath_username: String,
 }
-
 
 impl FromRequest for SessionUser {
     type Error = AuthSessionError;
@@ -45,7 +43,7 @@ impl FromRequest for SessionUser {
 impl SessionUser {
     async fn from_id<C: ConnectionTrait>(
         conn: &C,
-        id: &String,
+        id: &str,
     ) -> Result<Option<Self>, AuthSessionError> {
         let parsed_id =
             uuid::Uuid::parse_str(id).map_err(|e| AuthSessionError::IDNotValid(e.to_string()))?;
@@ -61,7 +59,7 @@ impl SessionUser {
             .await
             .map_err(|e| AuthSessionError::DBError(e.to_string()))?;
 
-        Ok(user.map(|(id, bath_username)| SessionUser { id, bath_username }))
+        Ok(user.map(|(id,_)| SessionUser { id }))
     }
 
     pub fn set_id(session: &Session, new_user_id: &String) -> Result<(), SessionInsertError> {

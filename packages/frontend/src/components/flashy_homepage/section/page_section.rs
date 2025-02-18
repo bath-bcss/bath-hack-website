@@ -26,7 +26,7 @@ pub struct Props {
 #[function_component(FlashyHomepageSection)]
 pub fn flashy_homepage_section(props: &Props) -> Html {
     let image_src = use_memo((props.image.clone(),), |(image_src,)| {
-        image_src.clone().map(|s| get_image_url(s))
+        image_src.clone().map(get_image_url)
     });
 
     html! {
@@ -51,6 +51,7 @@ pub fn flashy_homepage_section(props: &Props) -> Html {
                     <img
                         src={image_src}
                         class="h-auto rounded-2xl shadow-xl shadow-bcss-900/40 dark:brightness-95"
+                        width="400"
                         loading="lazy"
                         role="presentation"
                     />

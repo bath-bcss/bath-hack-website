@@ -5,7 +5,7 @@ use crate::{
     components::account::sidebar::account_sidebar::AccountSidebar,
     pages::{
         account::{
-            account_cv::AccountCVPage, account_group::AccountGroupPage,
+            account_group::AccountGroupPage,
             account_home::AccountHomePage,
         },
         auth::{
@@ -14,7 +14,7 @@ use crate::{
             signup_activate::SignupActivatePage, signup_notice::SignupNoticePage,
             signup_success::SignupSuccessPage,
         },
-        home_alt::HomePageAlt,
+        home::HomePage,
         not_found::NotFoundPage,
     },
 };
@@ -56,13 +56,13 @@ pub enum AccountRoute {
     Profile,
     #[at("/account/groups")]
     Groups,
-    #[at("/account/cv")]
-    CV,
+    // #[at("/account/cv")]
+    // CV,
 }
 
 pub fn switch(routes: Route) -> Html {
     match routes {
-        Route::Home => html! { <HomePageAlt /> },
+        Route::Home => html! { <HomePage /> },
         Route::Login => html! { <LoginPage /> },
         Route::Logout => html! { <LogoutPage /> },
         Route::SignupNotice => html! { <SignupNoticePage /> },
@@ -85,6 +85,6 @@ pub fn switch_account(route: AccountRoute) -> Html {
     match route {
         AccountRoute::Profile => html! { <AccountHomePage /> },
         AccountRoute::Groups => html! { <AccountGroupPage /> },
-        AccountRoute::CV => html! { <AccountCVPage /> },
+        // AccountRoute::CV => html! { <AccountCVPage /> },
     }
 }

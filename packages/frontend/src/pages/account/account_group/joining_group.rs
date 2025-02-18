@@ -52,9 +52,7 @@ pub fn account_group_joining(props: &AccountGroupSubpageProps) -> Html {
                 }
             } else {
                 <PageControlParagraph>
-                    { "You aren't currently in a group. You'll need a group of between 1 and 4 people to take part in Bath Hack.
-            It's
-            really easy to create or join one!" }
+                    { "You aren't currently in a group. You'll need a group of between 1 and 4 people to take part. It's really easy to create or join one!" }
                 </PageControlParagraph>
                 <div
                     class="mt-4 flex md:flex-row flex-col items-stretch md:items-center md:gap-x-4"

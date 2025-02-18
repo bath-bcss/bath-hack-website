@@ -18,10 +18,10 @@ use crate::{
 
 #[function_component(ForgotPasswordPage)]
 pub fn forgot_password_page() -> Html {
-    let username_handle = use_state_eq(|| String::default());
+    let username_handle = use_state_eq(String::default);
     let error_handle = use_state_eq(|| None::<String>);
     let loading_handle = use_state_eq(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
     let navigator = use_navigator().expect_throw("Navigator not found");
 
     let on_submit = use_callback(

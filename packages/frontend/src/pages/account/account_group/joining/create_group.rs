@@ -13,9 +13,9 @@ use crate::{
 #[function_component(CreateGroup)]
 pub fn create_group_component(props: &AccountGroupSubpageProps) -> Html {
     let form_loading_handle = use_state_eq(|| false);
-    let form_loading = (*form_loading_handle).clone();
+    let form_loading = *form_loading_handle;
 
-    let new_group_name_handle = use_state_eq(|| String::default());
+    let new_group_name_handle = use_state_eq(String::default);
     let new_group_name = (*new_group_name_handle).clone();
 
     let create_group_error_handle = use_state_eq(|| None::<String>);
@@ -49,6 +49,7 @@ pub fn create_group_component(props: &AccountGroupSubpageProps) -> Html {
                         update_group.set(Some(FrontendGroupState {
                             name: new_group_name,
                             join_code: new_group.new_group_join_code,
+                            group_number: new_group.new_group_number,
                             members: vec![GroupMember {
                                 bath_username: "You!".to_string(),
                                 display_name: None,
@@ -64,12 +65,11 @@ pub fn create_group_component(props: &AccountGroupSubpageProps) -> Html {
         <>
             <PageControlHeading>{ "Create a new group" }</PageControlHeading>
             <PageControlParagraph>
-                { "You'll need a group to enter Bath Hack. Your group can have between 1 and 4 members. When you create a
+                { "You'll need a group to enter. Your group can have between 1 and 4 members. When you create a
             group, you'll be given a join code that you can share with your other teammates." }
             </PageControlParagraph>
             <PageControlParagraph>
-                { "Don't worry too much about your group name! You'll be able to change it any time before the competition
-            starts." }
+                { "Don't worry too much about your group name! You'll be able to change it any time before the competition starts." }
             </PageControlParagraph>
             <form onsubmit={on_create_group_click}>
                 <Input

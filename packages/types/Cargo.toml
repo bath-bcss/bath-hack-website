@@ -6,16 +6,16 @@ edition = "2021"
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-thiserror = "1.0.57"
+thiserror = "2.0.11"
 bhw-macro-types = { path = "../macro-types" }
 strum = { version = "0.26", features = ["derive"] }
 
 [target.'cfg(target_family = "unix")'.dependencies]
 actix-web = "4"
-actix-multipart = { version = "0.6.1", features = ["derive"]}
-sea-orm = { version = "0.12" }
+actix-multipart = { version = "0.7.2", features = ["derive"] }
+sea-orm = { version = "1.1.0" }
 log = "0.4.20"
-validator = { version = "0.16", features = ["derive", "unic"] }
-actix-web-validator = "5.0.1"
+validator = { version = "0.18.0", features = ["derive", "unic"] }
+actix-web-validator = "6.0.0"
 once_cell = "1.19.0"
 regex = "1.10.3"

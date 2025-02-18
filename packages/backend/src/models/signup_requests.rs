@@ -68,10 +68,9 @@ impl SignupRequestHelper {
 
     pub async fn from_id<C: ConnectionTrait>(
         conn: &C,
-        id: &String,
+        id: &str,
     ) -> Result<Option<signup_request::Model>, SignupRequestFromIdError> {
-        let parsed_id =
-            uuid::Uuid::parse_str(id).map_err(|e| SignupRequestFromIdError::InvalidID(e))?;
+        let parsed_id = uuid::Uuid::parse_str(id).map_err(SignupRequestFromIdError::InvalidID)?;
 
         let resp = SignupRequest::find()
             .filter(signup_request::Column::Id.eq(parsed_id))
@@ -99,23 +98,31 @@ impl SignupRequestHelper {
     }
     pub fn verify_hash(
         signup_request: &signup_request::Model,
-        secret: &String,
+        secret: &str,
     ) -> Result<bool, argon2::password_hash::Error> {
-        PasswordManager::verify(&secret, &signup_request.secret_hash)
+        PasswordManager::verify(secret, &signup_request.secret_hash)
     }
 
     pub async fn create<C: ConnectionTrait>(
         conn: &C,
         username: &String,
         status: i16,
+        skip_existence_check: bool,
     ) -> Result<NewSignupRequestSecret, SignupRequestCreateError> {
-        let already_exists = Self::exists_for_username(conn, &username).await?;
-        if already_exists {
-            return Err(SignupRequestCreateError::AlreadyExists);
+        if skip_existence_check {
+            SignupRequest::delete_many()
+                .filter(signup_request::Column::BathUsername.eq(username))
+                .exec(conn)
+                .await?;
+        } else {
+            let already_exists = Self::exists_for_username(conn, username).await?;
+            if already_exists {
+                return Err(SignupRequestCreateError::AlreadyExists);
+            }
         }
 
-        let secret = PasswordManager::hash_random()
-            .map_err(|e| SignupRequestCreateError::PasswordError(e))?;
+        let secret =
+            PasswordManager::hash_random().map_err(SignupRequestCreateError::PasswordError)?;
 
         let new_signup_request = signup_request::ActiveModel {
             id: Set(uuid::Uuid::new_v4()),
@@ -124,7 +131,7 @@ impl SignupRequestHelper {
                 let now = Utc::now();
                 let new_time = now
                     .checked_add_signed(
-                        Duration::try_minutes(15).ok_or(SignupRequestCreateError::Duration)?,
+                        Duration::try_minutes(30).ok_or(SignupRequestCreateError::Duration)?,
                     )
                     .ok_or(SignupRequestCreateError::Duration)?;
                 Set(new_time.naive_utc())
@@ -153,23 +160,38 @@ impl SignupRequestHelper {
     pub fn expired(signup_request: &signup_request::Model) -> bool {
         signup_request.expires_at <= Utc::now().naive_utc()
     }
-    pub fn send_email<'a>(
-        signup_request: &'a signup_request::Model,
-        config: &'a AppConfig,
-        secret: &'a String,
+    pub async fn send_verification_email(
+        signup_request: &signup_request::Model,
+        config: &AppConfig,
+        secret: &str,
     ) -> SendResult<SendResponse> {
         let mailer = Mailer::client(config);
         let mut mail_vars = HashMap::new();
         mail_vars.insert("request_id".to_string(), signup_request.id.to_string());
-        mail_vars.insert("secret".to_string(), secret.clone());
+        mail_vars.insert("secret".to_string(), secret.to_owned());
 
         let instruction = SendInstruction {
             to: Self::email_address(signup_request),
-            subject: "Welcome to Bath Hack!".to_string(),
+            subject: "Welcome to WiTathon!".to_string(),
             template_key: "bhw-welcome".to_string(),
             vars: mail_vars,
         };
-        mailer.send_template(instruction)
+        mailer.send_template(instruction).await
+    }
+
+    pub async fn send_notification_email(
+        signup_request: &signup_request::Model,
+        config: &AppConfig,
+    ) -> SendResult<SendResponse> {
+        let mailer = Mailer::client(config);
+
+        let instruction = SendInstruction {
+            to: Self::email_address(signup_request),
+            subject: "Welcome to WiTathon!".to_string(),
+            template_key: "bhw-welcome-noverify".to_string(),
+            vars: HashMap::new(),
+        };
+        mailer.send_template(instruction).await
     }
 
     #[cfg(feature = "ldap")]
@@ -179,7 +201,7 @@ impl SignupRequestHelper {
         new_status: i16,
     ) -> Result<(), DbErr> {
         let updated_signup_request = signup_request::ActiveModel {
-            id: Set(id.clone()),
+            id: Set(*id),
             ldap_check_status: Set(new_status),
             ..Default::default()
         };

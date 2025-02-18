@@ -19,7 +19,7 @@ pub fn flashy_homepage_section_heading(props: &Props) -> Html {
     let icon_component = use_memo((props.icon.clone(),), |(icon,)| match icon {
         SectionIcon::Icon(id) => html! {
             <Icon
-                icon_id={id.clone()}
+                icon_id={*id}
                 class={classes!("text-bcss-800", "dark:text-bcss-300" )}
                 width="48"
                 height="48"

@@ -1,5 +1,5 @@
 use bhw_types::requests::activate::AccountActivateRequest;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
 use yew_router::hooks::{use_location, use_navigator};
@@ -19,10 +19,10 @@ use crate::{
     router::Route,
 };
 
-#[derive(Debug, Deserialize)]
-struct QueryParams {
-    id: String,
-    secret: String,
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SignupActivateQueryParams {
+    pub id: String,
+    pub secret: String,
 }
 
 #[function_component(SignupActivatePage)]
@@ -33,54 +33,57 @@ pub fn signup_activate_page() -> Html {
     let new_password = (*new_password_handle).clone();
 
     let loading_handle = use_state_eq(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
     let error_handle = use_state_eq(|| None::<String>);
     let error = (*error_handle).clone();
 
     let navigator = use_navigator().expect_throw("Navigator not found");
 
-    let on_activate_click = use_callback((location,), move |e: SubmitEvent, (location,)| {
-        e.prevent_default();
+    let on_activate_click = use_callback(
+        (location, new_password),
+        move |e: SubmitEvent, (location, new_password)| {
+            e.prevent_default();
 
-        let location = location.clone().expect_throw("location was missing");
+            let location = location.clone().expect_throw("location was missing");
 
-        let query_result = location.query::<QueryParams>();
-        let query = match query_result {
-            Err(e) => {
-                error_handle.set(Some(e.to_string()));
-                return;
-            }
-            Ok(q) => q,
-        };
+            let query_result = location.query::<SignupActivateQueryParams>();
+            let query = match query_result {
+                Err(e) => {
+                    error_handle.set(Some(e.to_string()));
+                    return;
+                }
+                Ok(q) => q,
+            };
 
-        let new_password = new_password.clone();
-        let loading_handle = loading_handle.clone();
-        let error_handle = error_handle.clone();
-        let navigator = navigator.clone();
-        wasm_bindgen_futures::spawn_local(async move {
-            loading_handle.set(true);
-            let resp = account_activate_request(&AccountActivateRequest {
-                id: query.id,
-                secret: query.secret,
-                password: new_password,
-            })
-            .await;
+            let new_password = new_password.clone();
+            let loading_handle = loading_handle.clone();
+            let error_handle = error_handle.clone();
+            let navigator = navigator.clone();
+            wasm_bindgen_futures::spawn_local(async move {
+                loading_handle.set(true);
+                let resp = account_activate_request(&AccountActivateRequest {
+                    id: query.id,
+                    secret: query.secret,
+                    password: new_password,
+                })
+                .await;
 
-            loading_handle.set(false);
+                loading_handle.set(false);
 
-            match resp {
-                Err(e) => error_handle.set(Some(e.to_string())),
-                Ok(_) => navigator.push_with_state(&Route::AccountHome, InitialSignupState),
-            }
-        });
-    });
+                match resp {
+                    Err(e) => error_handle.set(Some(e.to_string())),
+                    Ok(_) => navigator.push_with_state(&Route::AccountHome, InitialSignupState),
+                }
+            });
+        },
+    );
 
     html! {
         <HeroCenterContainer>
             <GlassContainer>
-                <GlassContainerHeading>{ "Welcome to Bath Hack 24!" }</GlassContainerHeading>
+                <GlassContainerHeading>{ "One last step..." }</GlassContainerHeading>
                 <GlassContainerParagraph top_margin=true>
-                    { "To get started, please create a password." }
+                    { "To continue, please create a password." }
                 </GlassContainerParagraph>
                 <GlassContainerParagraph>
                     { "This should be different to your Uni password." }
@@ -92,6 +95,7 @@ pub fn signup_activate_page() -> Html {
                         input_type="password"
                         required=true
                         handle={new_password_handle}
+                        autocomplete="new-password"
                     />
                     <Button
                         background_is_dark=false

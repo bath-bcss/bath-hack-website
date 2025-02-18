@@ -35,9 +35,9 @@ pub enum UpdateUserPasswordError {
 pub struct UserHelper;
 
 impl UserHelper {
-    pub fn validate_username(username: &String) -> bool {
+    pub fn validate_username(username: &str) -> bool {
         let username_regex = regex::Regex::new(r"^[a-z]{2,5}\d{2,5}$").expect("Username regex");
-        username_regex.is_match(username.as_str())
+        username_regex.is_match(username)
     }
 
     pub async fn check_username_exists<C: ConnectionTrait>(
@@ -97,12 +97,12 @@ impl UserHelper {
 
     pub async fn create<C: ConnectionTrait>(
         conn: &C,
-        username: &String,
-        password: &String,
+        username: &str,
+        password: &str,
         ldap_check_status: i16,
     ) -> Result<website_user::Model, CreateUserError> {
         let password_hash =
-            PasswordManager::hash(&password).map_err(|e| CreateUserError::PasswordHash(e))?;
+            PasswordManager::hash(password).map_err(CreateUserError::PasswordHash)?;
 
         let new_user = website_user::ActiveModel {
             id: Set(uuid::Uuid::new_v4()),
@@ -128,21 +128,21 @@ impl UserHelper {
 
         // i know this is horrible
         if let Some(display_name) = request.display_name {
-            if display_name.len() == 0 {
+            if display_name.is_empty() {
                 updated_user.display_name = Set(None)
             } else {
                 updated_user.display_name = Set(Some(display_name));
             }
         }
         if let Some(accessibility_requirements) = request.accessibility_requirements {
-            if accessibility_requirements.len() == 0 {
+            if accessibility_requirements.is_empty() {
                 updated_user.accessibility_requirements = Set(None)
             } else {
                 updated_user.accessibility_requirements = Set(Some(accessibility_requirements));
             }
         }
         if let Some(dietary_requirements) = request.dietary_requirements {
-            if dietary_requirements.len() == 0 {
+            if dietary_requirements.is_empty() {
                 updated_user.dietary_requirements = Set(None)
             } else {
                 updated_user.dietary_requirements = Set(Some(dietary_requirements));
@@ -186,7 +186,7 @@ impl UserHelper {
         new_status: i16,
     ) -> Result<(), DbErr> {
         let updated_user = website_user::ActiveModel {
-            id: Set(id.clone()),
+            id: Set(*id),
             ldap_check_status: Set(new_status),
             ..Default::default()
         };
@@ -197,7 +197,7 @@ impl UserHelper {
 
     pub fn verify_password(
         user: &website_user::Model,
-        password: &String,
+        password: &str,
     ) -> Result<bool, argon2::password_hash::Error> {
         PasswordManager::verify(password, &user.password_hash)
     }
@@ -205,12 +205,12 @@ impl UserHelper {
     pub async fn update_password<C: ConnectionTrait>(
         conn: &C,
         id: &uuid::Uuid,
-        new_password: &String,
+        new_password: &str,
     ) -> Result<(), UpdateUserPasswordError> {
         let password_hash = PasswordManager::hash(new_password)
-            .map_err(|e| UpdateUserPasswordError::PasswordHash(e))?;
+            .map_err(UpdateUserPasswordError::PasswordHash)?;
         let updated_user = website_user::ActiveModel {
-            id: Set(id.clone()),
+            id: Set(*id),
             password_hash: Set(password_hash),
             ..Default::default()
         };

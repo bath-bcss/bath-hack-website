@@ -19,11 +19,11 @@ pub async fn check_signed_in() -> Result<CheckAuthResponse, FrontendRequestError
 macro_rules! redirect_if_not_authed {
     ($navigator: ident) => {
         wasm_bindgen_futures::spawn_local(async move {
-            match crate::data::auth::check_signed_in().await {
-                Err(_) => $navigator.push(&crate::router::Route::Login),
+            match $crate::data::auth::check_signed_in().await {
+                Err(_) => $navigator.push(&$crate::router::Route::Login),
                 Ok(resp) => match resp.signed_in {
                     true => return,
-                    false => $navigator.push(&crate::router::Route::Login),
+                    false => $navigator.push(&$crate::router::Route::Login),
                 },
             }
         });

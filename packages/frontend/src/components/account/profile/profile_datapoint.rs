@@ -30,10 +30,7 @@ pub fn profile_datapoint(props: &Props) -> Html {
         ProfileKey::DietaryRequirements => "Dietary requirements",
     });
 
-    let local_input_state = use_state_eq(|| match props.current_value.clone() {
-        Some(cv) => cv,
-        None => String::default(),
-    });
+    let local_input_state = use_state_eq(|| props.current_value.clone().unwrap_or_default());
     let local_input_value = (*local_input_state).clone();
     let error_handle = use_state(|| None::<String>);
     let error = (*error_handle).clone();
@@ -50,7 +47,7 @@ pub fn profile_datapoint(props: &Props) -> Html {
     );
 
     let loading_handle = use_state(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
 
     let on_save_click = use_callback(
         (

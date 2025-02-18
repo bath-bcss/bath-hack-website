@@ -24,15 +24,14 @@ impl Mailer {
         }
     }
 
-    fn mailgun(&self, message: Message) -> Mailgun {
+    fn mailgun(&self) -> Mailgun {
         Mailgun {
             api_key: self.api_key.clone(),
             domain: self.domain.clone(),
-            message,
         }
     }
 
-    pub fn send_template<'b>(&self, instruction: SendInstruction) -> SendResult<SendResponse> {
+    pub async fn send_template(&self, instruction: SendInstruction) -> SendResult<SendResponse> {
         let recipient = EmailAddress::address(&instruction.to);
 
         let message = Message {
@@ -43,10 +42,10 @@ impl Mailer {
             ..Default::default()
         };
 
-        let client = self.mailgun(message);
-        let from = EmailAddress::name_address("BCSS Bath Hack", "no-reply@hack.bathcs.com");
+        let client = self.mailgun();
+        let from = EmailAddress::name_address("WiTathon", "no-reply@hack.bathcs.com");
 
-        client.send(MailgunRegion::EU, &from)
+        client.async_send(MailgunRegion::EU, &from, message).await
     }
 
     pub async fn fake_send_email() {

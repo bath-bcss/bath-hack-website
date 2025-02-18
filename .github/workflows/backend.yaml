@@ -1,8 +1,7 @@
 name: Build and deploy backend
 
 on:
-  push:
-    branches: ['main']
+  push
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -10,7 +9,7 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository }}:${{ github.ref_name }}-${{ github.sha }}
 
 jobs:
   build-backend:

@@ -1,4 +1,4 @@
-FROM docker.io/rust:1.76-bookworm as builder
+FROM docker.io/rust:1-bookworm as builder
 
 WORKDIR /usr/src/bhw
 

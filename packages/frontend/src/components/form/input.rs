@@ -24,6 +24,8 @@ pub struct Props {
     #[prop_or_default]
     pub input_type: Option<String>,
     #[prop_or_default]
+    pub autocomplete: Option<String>,
+    #[prop_or_default]
     pub accept_file: Option<String>,
     #[prop_or_default]
     pub required: bool,
@@ -80,6 +82,7 @@ pub fn input(props: &Props) -> Html {
             props.required,
             props.disabled,
             props.readonly,
+            props.autocomplete.clone(),
             props.children.clone(),
             handle_value,
             on_change_handler,
@@ -93,6 +96,7 @@ pub fn input(props: &Props) -> Html {
             required,
             disabled,
             readonly,
+            autocomplete,
             children,
             handle_value,
             on_change_handler,
@@ -110,12 +114,13 @@ pub fn input(props: &Props) -> Html {
                         id={child_props.id}
                         placeholder={placeholder.clone()}
                         type={input_type.clone()}
-                        required={required.clone()}
+                        required={*required}
                         oninput={on_change_handler}
                         value={handle_value.clone()}
-                        disabled={disabled.clone()}
-                        readonly={readonly.clone()}
+                        disabled={*disabled}
+                        readonly={*readonly}
                         accept={accept_file.clone()}
+                        autocomplete={autocomplete.clone()}
                     />
                     if children.to_vlist_mut().len() > 0 {
                         <p class="text-gray-600 dark:text-gray-200 text-sm mt-1">

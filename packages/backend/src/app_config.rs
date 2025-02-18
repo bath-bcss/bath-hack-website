@@ -17,9 +17,11 @@ pub struct AppConfig {
     pub s3_region: String,
     pub s3_bucket: String,
 
+    #[cfg(feature = "ldap")]
     pub ldap_url: String,
 
     pub disable_signup: bool,
+    pub use_unverified_usernames: bool,
 
     pub allowed_origin: String,
     pub dev_weak_passwords: bool,

@@ -88,14 +88,14 @@ where
                     Ok(origin) => {
                         if origin == self.allowed_origin {
                             let fut = self.service.call(req);
-                            return Box::pin(async move {
+                            Box::pin(async move {
                                 let res = fut.await?;
                                 Ok(res)
-                            });
+                            })
                         } else {
-                            return Box::pin(async {
+                            Box::pin(async {
                                 Err(CsrfMiddlewareError::OriginNotAllowed.into())
-                            });
+                            })
                         }
                     }
                 }

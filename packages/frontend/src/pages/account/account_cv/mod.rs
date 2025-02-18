@@ -16,9 +16,9 @@ mod upload_cv;
 #[function_component(AccountCVPage)]
 pub fn account_cv_page() -> Html {
     let cv_exists_handle = use_state_eq(|| false);
-    let cv_exists_val = (*cv_exists_handle).clone();
+    let cv_exists_val = *cv_exists_handle;
     let cv_exists_loading_handle = use_state_eq(|| true);
-    let cv_exists_loading = (*cv_exists_loading_handle).clone();
+    let cv_exists_loading = *cv_exists_loading_handle;
     let cv_exists_error_handle = use_state_eq(|| None::<String>);
     let cv_exists_error = (*cv_exists_error_handle).clone();
 

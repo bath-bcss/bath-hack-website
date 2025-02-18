@@ -32,7 +32,7 @@ pub fn upload_cv_page(props: &AccountCVSubpageProps) -> Html {
     let error_handle = use_state_eq(|| None::<String>);
     let error = (*error_handle).clone();
     let loading_handle = use_state_eq(|| false);
-    let loading = (*loading_handle).clone();
+    let loading = *loading_handle;
     let on_cv_submit = use_callback(
         (
             current_file.clone(),

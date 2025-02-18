@@ -15,7 +15,7 @@ pub struct UpdateProfileRequest {
         validate(
             length(max = 30, message = "Can't be longer than 30 characters"),
             regex(
-                path = "crate::validation::RE_NAME",
+                path = *crate::validation::RE_NAME,
                 message = "Can only contain alphanumeric and ' - _"
             )
         )

@@ -23,16 +23,25 @@ pub fn sign_up_page() -> Html {
         (navigator, username),
         move |e: SubmitEvent, (navigator, username)| {
             e.prevent_default();
-            navigator.push_with_state::<_, String>(&Route::SignupNotice, username.clone());
+            navigator.push_with_state::<_, String>(
+                &Route::SignupNotice,
+                username
+                    .trim()
+                    .to_lowercase()
+                    // If users accidentally enter an email instead of a username, be nice and kind
+                    // and remove it for them
+                    .trim_end_matches("@bath.ac.uk")
+                    .to_string(),
+            );
         },
     );
 
     html! {
         <HeroCenterContainer>
             <GlassContainer home_link=true>
-                <GlassContainerHeading>{ "Sign Up to Bath Hack" }</GlassContainerHeading>
+                <GlassContainerHeading>{ "Sign Up to WiTathon" }</GlassContainerHeading>
                 <GlassContainerParagraph>
-                    { "We'll send an email to your University email account with a link to set up your account." }
+                    { "We need your username to identify you and send event-related communications." }
                 </GlassContainerParagraph>
                 <form onsubmit={on_form_submit} class="mt-4">
                     <Input

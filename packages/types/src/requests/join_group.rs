@@ -13,6 +13,7 @@ pub struct JoinGroupRequest {
 pub struct JoinGroupResponse {
     pub group_id: String,
     pub group_name: String,
+    pub group_number: u64,
     pub group_members: Vec<GroupMember>,
 }
 

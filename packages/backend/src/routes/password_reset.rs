@@ -10,7 +10,7 @@ use bhw_types::{
         },
     },
 };
-use log::{error, info, warn};
+use log::{error, info};
 use sea_orm::{AccessMode, DatabaseConnection, IsolationLevel, TransactionTrait};
 
 use crate::{
@@ -65,26 +65,18 @@ pub async fn forgot_password_route(
 
     let new_password_reset = new_password_reset_result.unwrap();
 
-    let email_result = web::block(move || {
-        PasswordResetHelper::send_email(
-            config.as_ref(),
-            data.bath_username.clone(),
-            new_password_reset.pin,
-        )
-    })
+    PasswordResetHelper::send_email(
+        config.as_ref(),
+        data.bath_username.clone(),
+        new_password_reset.pin,
+    )
     .await
     .map_err(|e| {
-        error!("blocking: {}", e.to_string());
+        error!("send reset email: {}", e.to_string());
         ForgotPasswordResponseError::BlockingError
     })?;
 
-    if let Err(email_result) = email_result {
-        warn!("send reset email: {}", email_result.to_string());
-        return Ok(Nothing);
-    }
-
     txn.commit().await?;
-
     Ok(Nothing)
 }
 

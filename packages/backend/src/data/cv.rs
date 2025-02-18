@@ -8,7 +8,7 @@ use crate::app_config::AppConfig;
 
 #[derive(Debug, Clone)]
 pub struct CVManager {
-    bucket: Bucket,
+    bucket: Box<Bucket>,
 }
 
 #[derive(Debug, Error)]
@@ -58,7 +58,7 @@ impl CVManager {
 
     fn user_id_to_path(user_id: &uuid::Uuid) -> String {
         let user_id_string = user_id.to_string();
-        return user_id_string + ".pdf";
+        user_id_string + ".pdf"
     }
 
     pub async fn upload_file_by_path(

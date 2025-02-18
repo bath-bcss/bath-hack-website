@@ -4,7 +4,10 @@ use bhw_types::{
     nothing::Nothing,
     requests::{
         activate::{AccountActivateRequest, AccountActivateResponseError, AccountActivateResult},
-        sign_up::{SignUpRequest, SignUpResponseError, SignUpResult},
+        sign_up::{
+            FinishedSignUpResponse, PossibleSignUpResponse, SignUpRequest, SignUpResponseError,
+            SignUpResult,
+        },
     },
 };
 use log::error;
@@ -82,21 +85,34 @@ pub async fn sign_up_route(
         return Err(SignUpResponseError::UsernameAlreadyExists);
     }
 
-    let new_sr = SignupRequestHelper::create(&txn, &request.bath_username.clone(), status)
-        .await
-        .map_err(|e| SignUpResponseError::CreateError(e.to_string()))?;
-
-    web::block(move || -> Result<(), SignUpResponseError> {
-        SignupRequestHelper::send_email(&new_sr.request, &config, &new_sr.secret)
-            .map_err(|e| SignUpResponseError::EmailError(e.to_string()))?;
-        Ok(())
-    })
+    let new_sr = SignupRequestHelper::create(
+        &txn,
+        &request.bath_username.clone(),
+        status,
+        config.use_unverified_usernames,
+    )
     .await
-    .map_err(|_| SignUpResponseError::BlockingError)??;
+    .map_err(|e| SignUpResponseError::CreateError(e.to_string()))?;
+
+    if config.use_unverified_usernames {
+        SignupRequestHelper::send_notification_email(&new_sr.request, &config)
+            .await
+            .map_err(|e| SignUpResponseError::EmailError(e.to_string()))?;
+    } else {
+        SignupRequestHelper::send_verification_email(&new_sr.request, &config, &new_sr.secret)
+            .await
+            .map_err(|e| SignUpResponseError::EmailError(e.to_string()))?;
+    }
 
     txn.commit().await?;
-
-    Ok(Nothing)
+    Ok(if config.use_unverified_usernames {
+        PossibleSignUpResponse::Finished(FinishedSignUpResponse {
+            id: new_sr.request.id.to_string(),
+            secret: new_sr.secret,
+        })
+    } else {
+        PossibleSignUpResponse::RequiresActivation
+    })
 }
 
 #[post("/auth/activate")]

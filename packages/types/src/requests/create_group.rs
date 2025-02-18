@@ -13,7 +13,7 @@ pub struct CreateGroupRequest {
         validate(
             length(min = 2, max = 20, message = "Must be between 2 and 20 characters"),
             regex(
-                path = "crate::validation::RE_ALPHANUM",
+                path = *crate::validation::RE_ALPHANUM,
                 message = "Must be alphanumeric"
             )
         )
@@ -25,6 +25,7 @@ pub struct CreateGroupRequest {
 pub struct CreateGroupResponse {
     pub new_group_id: String,
     pub new_group_join_code: String,
+    pub new_group_number: u64,
 }
 
 #[derive(
