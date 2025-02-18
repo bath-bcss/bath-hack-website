@@ -12,34 +12,14 @@ pub fn sponsors_grid() -> Html {
             role="list"
         >
             <SponsorItem
-                name="Frasers"
-                logo_url="img/sponsors/frasers.svg"
-                url="https://www.houseoffraser.co.uk"
+                name="Multimatic"
+                logo_url="img/sponsors/multimatic.svg"
+                url="https://www.multimatic.com"
             />
             <SponsorItem
-                name="Airbus"
-                logo_url="img/sponsors/airbus.svg"
-                url="https://www.airbus.com"
-            />
-            <SponsorItem
-                name="Siemens"
-                logo_url="img/sponsors/siemens.svg"
-                url="https://www.siemens.com/uk/en/industries.html"
-            />
-            <SponsorItem
-                name="HomeLINK"
-                logo_url="img/sponsors/homelink.svg"
-                url="https://www.homelink.com/smart-home"
-            />
-            <SponsorItem
-                name="Kingfisher"
-                logo_url="img/sponsors/kingfisher.svg"
-                url="https://www.kingfisher.com"
-            />
-            <SponsorItem
-                name="Fivium"
-                logo_url="img/sponsors/fivium.png"
-                url="https://www.fivium.co.uk"
+                name="SparkLayer"
+                logo_url="img/sponsors/sparklayer.png"
+                url="https://www.sparklayer.io/"
             />
         </div>
     }

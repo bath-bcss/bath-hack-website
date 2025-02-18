@@ -2,7 +2,7 @@ name: Build and deploy frontend
 
 on:
   push:
-    branches: ['wit25']
+    branches: ['main']
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -25,10 +25,10 @@ jobs:
         run: trunk build --release # --filehash false
         working-directory: ./packages/frontend
         env:
-          BHW_FRONTEND_API_URL: "https://wit-api.bathcs.com"
+          BHW_FRONTEND_API_URL: "https://bh25-api.bathcs.com"
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy --project-name=wit25 --branch=main packages/frontend/dist
+          command: pages deploy --project-name=bh25 --branch=main packages/frontend/dist

@@ -1,3 +1,4 @@
+use bhw_types::common_data::EVENT_INSTANCE_NAME;
 use gloo_utils::window;
 use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
@@ -36,7 +37,7 @@ pub fn home_page() -> Html {
         e.prevent_default();
         window()
             .location()
-            .set_href("https://www.instagram.com/bath.wit/")
+            .set_href("https://bcss.bathcs.com/")
             .expect_throw("Setting location.href");
     });
 
@@ -49,15 +50,15 @@ pub fn home_page() -> Html {
                         <h1
                             class="text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-hero text-white dark:text-bcss-100 leading-none"
                         >
-                            { "WiTathon 2025 — Reinvent the Wheel" }
+                            { EVENT_INSTANCE_NAME }
                         </h1>
                         <p class="text-heroSubtitle text-white dark:text-bcss-100">
-                            { "Take the chance to evaluate problems from a new angle. Develop unique solutions. Play to your strengths from graphic design to hardware development." }
+                            { "Join 200 engineers, designers, and creators in Bath's ultimate 24-hour challenge. Win incredible prizes, eat free food, and make amazing memories." }
                         </p>
                         <p
                             class="text-heroSubtitle text-white dark:text-bcss-100 font-bold italic"
                         >
-                            { "8th — 9th Mar. Free to enter." }
+                            { "5th — 6th Apr. Free to enter." }
                         </p>
                         <Button background_is_dark=true onclick={on_sign_up_click.clone()}>
                             { "Sign up!" }
@@ -68,21 +69,21 @@ pub fn home_page() -> Html {
             </HeroGradientContainer>
             <div class="space-y-32 mt-32">
                 <FlashyHomepageSection
-                    icon={SectionIcon::Emoji("👋".to_string())}
-                    title="A hackathon made for women by women"
+                    icon={SectionIcon::Emoji("⏰".to_string())}
+                    title="The Ultimate 24-Hour Challenge"
                     anchor="welcome"
                     image="sections/intro.webp"
                 >
                     <FlashyHomepageSectionParagraph full_width=true>
-                        { "Women in Technology (WiT) aims to create an environment where women and gender minorities can support each other and share our love and passion for technology." }
+                        { "The Bath Computer Science Society's official hackathon is back for 2025, and it's bigger than ever. Join us for an entire day (literally) for hacking, learning, building, and sharing fun memories with your friends." }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph full_width=true>
-                        { "The WiTathon is an annual event that aims to allow time for us to get together and work on personal projects that lie beyond typical university projects. The WiTathon is ran completely by you; you can choose to focus on wherever your strengths lie, no matter if that’s in Python or C++ or if it’s in business and marketing." }
+                        { "The goal is simple: build something cool that will impress the judges, and win some of our incredible prizes. We're looking for innovation and creativity, not just sheer complexity. It's super fun, inclusive, and perfect for all levels of ability." }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph full_width=true>
-                        { "This year's theme is " }
-                        <strong>{ "Reinvent the Wheel" }</strong>
-                        { ". We want you to take something boring and outdated and improve it. We don’t believe in \"if it isn't broken, don't fix it\". Everything has room for improvement." }
+                        { "It's open to " }
+                        <strong>{ "all students at Bath" }</strong>
+                        { " and we have loads of non-CS participants joining us every year. Are you ready for the best 24 hours of your life?" }
                     </FlashyHomepageSectionParagraph>
                     <Button
                         onclick={on_sign_up_click.clone()}
@@ -98,13 +99,14 @@ pub fn home_page() -> Html {
                     anchor="tracks"
                 >
                     <FlashyHomepageSectionParagraph>
-                        { "A hackathon track is a category that has a specific prize you can choose to focus your project on for a chance of winning. All projects will be considered for all tracks." }
+                        { "Prizes are attached to tracks, which give you a guiding aim for your project. You don't have to commit at the start, and your project will be automatically considered for all relevant tracks." }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph>
-                        { "Our tracks will be released closer to the event date." }
+                        <strong>{ "Our tracks will be released in the coming weeks" }</strong>
+                        { " — keep an eye on your emails!" }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph>
-                        { "There will be tracks based on technical ability, User graphics and entrepreneurial approach. This is a hacking competition but we encourage students of all technical ability to attend." }
+                        { "We'll have a range of options based on popular vote, technical ability, and creativity/design." }
                     </FlashyHomepageSectionParagraph>
                     /* <TrackGrid /> */
                 </FlashyHomepageSection>
@@ -114,6 +116,9 @@ pub fn home_page() -> Html {
                     anchor="schedule"
                     image="sections/schedule.webp"
                 >
+                    <FlashyHomepageSectionParagraph>
+                        { "This schedule is indicative so you can plan your availability. We'll release more detail nearer to the time." }
+                    </FlashyHomepageSectionParagraph>
                     <Schedule />
                 </FlashyHomepageSection>
                 <FlashyHomepageSection
@@ -122,7 +127,7 @@ pub fn home_page() -> Html {
                     anchor="sponsor"
                 >
                     <FlashyHomepageSectionParagraph>
-                        { "We are so grateful to every sponsor of this event. We would not be able to host WiTathon 2025 without their continued support." }
+                        { "Our sponsors make the event possible: they fund our food, snacks, prizes, t-shirts, and everything else. We're immensely thankful to them, as Bath Hack would not be able to run without their support! Many of them will be present at our careers fair for some valuable networking." }
                     </FlashyHomepageSectionParagraph>
                     <SponsorsGrid />
                 </FlashyHomepageSection>
@@ -139,33 +144,36 @@ pub fn home_page() -> Html {
                     anchor="accessibility"
                 >
                     <FlashyHomepageSectionParagraph>
-                        { "The event will all take place on the ground floor of 1 West, no stairs for access. All rooms used are wheelchair accessible. There will be toilets and a water fountain nearby and committee members available 24/7 during the event." }
+                        { "The event will use the entirety of the Chancellor's Building, with presentations taking place in the ground-floor lecture theatres as well as the other classrooms. Designated spaces can be used for hacking. All rooms used are wheelchair accessible. There are toilets and water fountains on all floors and Committee Members will be available 24/7 during the event." }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph>
                         { "Please " }
-                        <a href="mailto:witbath.ac.uk" class="underline">
-                            { "email wit@bath.ac.uk" }
+                        <a href="mailto:su-bcss@bath.ac.uk" class="underline">
+                            { "email su-bcss@bath.ac.uk" }
                         </a>
-                        { " if you have any accessibility requirements." }
+                        { " if you have any questions about accessibility." }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph>
-                        { "Please bring your own laptops and any other devices you will need." }
+                        { "You can use either your own laptop/devices, or the computer labs on floors 4 and 5." }
                     </FlashyHomepageSectionParagraph>
                 </FlashyHomepageSection>
                 <FlashyHomepageSection
                     icon={SectionIcon::Icon(IconId::FontAwesomeSolidCircleInfo)}
-                    title="About WiT"
+                    title="About BCSS"
                     anchor="about"
                 >
                     <FlashyHomepageSectionParagraph>
-                        { "Women in Technology (WiT) aims to create an environment where women and gender minorities can support each other and share our love and passion for technology. We want to ensure everyone interested in learning about and entering the technology industry feels confident and safe to do so." }
+                        { "This event has been organised by the Committee of the Bath Computer Science Society. We put lots of effort into organising it each year and aim to make it bigger and better every time." }
+                    </FlashyHomepageSectionParagraph>
+                    <FlashyHomepageSectionParagraph>
+                        { "BCSS is a member society of the University of Bath Student Union and is also a student chapter of the British Computer Society. We are a society for anyone with any interest in Computing, open to any student studying any degree. Our key aim is to encourage more people into the field, as well as to teach important industry skills to help encourage our members to grow." }
                     </FlashyHomepageSectionParagraph>
                     <Button
                         onclick={on_find_out_more_click.clone()}
                         background_is_dark=false
                         class={classes!("mt-4")}
                     >
-                        { "Visit our website" }
+                        { "Find out more" }
                     </Button>
                 </FlashyHomepageSection>
             </div>

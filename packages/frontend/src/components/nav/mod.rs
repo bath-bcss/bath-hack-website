@@ -102,7 +102,7 @@ pub fn scrolling_navbar() -> Html {
                 />
                 <NavLink
                     dest={NavLinkDestination::Anchor("about".to_string())}
-                    label="About WiT"
+                    label="About BCSS"
                     is_at_top={is_at_top}
                 />
             </div>

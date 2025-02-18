@@ -1,3 +1,4 @@
+use bhw_types::common_data::EVENT_NAME;
 use yew::prelude::*;
 use yew_router::hooks::use_navigator;
 
@@ -39,7 +40,7 @@ pub fn sign_up_page() -> Html {
     html! {
         <HeroCenterContainer>
             <GlassContainer home_link=true>
-                <GlassContainerHeading>{ "Sign Up to WiTathon" }</GlassContainerHeading>
+                <GlassContainerHeading>{ "Sign Up to " }{ EVENT_NAME }</GlassContainerHeading>
                 <GlassContainerParagraph>
                     { "We need your username to identify you and send event-related communications." }
                 </GlassContainerParagraph>

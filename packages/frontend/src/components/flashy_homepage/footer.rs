@@ -9,7 +9,7 @@ pub fn homepage_footer() -> Html {
                     { "Website copyright © Pal Kerecsenyi 2024-25; licensed under GNU GPL 3.0." }
                 </p>
                 <p class="text-bcss-800 dark:text-bcss-200">
-                    { "Images, some text, and other assets © WiT Committee 2024/25 and 2023/24." }
+                    { "Images, some text, and other assets © BCSS Committee 2024/25, 2023/24, and 2022/23." }
                 </p>
                 <p class="text-bcss-800 dark:text-bcss-200">
                     { "Source code and license details available on " }
@@ -23,8 +23,10 @@ pub fn homepage_footer() -> Html {
                     { "." }
                 </p>
                 <p class="text-bcss-800 dark:text-bcss-200">
-                    { "This website is managed by Bath Computer Science Society. Please contact " }
-                    <a href="mailto:wit@bath.ac.uk" class="underline">{ "su-bcss@bath.ac.uk" }</a>
+                    { "Please contact " }
+                    <a href="mailto:su-bcss@bath.ac.uk" class="underline">
+                        { "su-bcss@bath.ac.uk" }
+                    </a>
                     { " for support." }
                 </p>
             </div>

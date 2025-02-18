@@ -90,7 +90,7 @@ pub fn signup_notice_page() -> Html {
                         >
                             { "Privacy Policy" }
                         </a>
-                        { ". This website is operated jointly by WiT and BCSS; both Committees will have access to your information (as well as the specified third-parties)." }
+                        { "." }
                     </GlassContainerParagraph>
                     <Button
                         background_is_dark=false
