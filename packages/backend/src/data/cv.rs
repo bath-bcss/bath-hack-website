@@ -44,12 +44,17 @@ impl CVManager {
             endpoint: app_config.s3_endpoint.clone(),
         };
 
-        let bucket = Bucket::new(
-            app_config.s3_bucket.clone().as_str(),
-            region,
-            Credentials::default().expect("Parse credentials"),
+        let credentials = Credentials::new(
+            Some(&app_config.s3_access_key),
+            Some(&app_config.s3_secret_key),
+            None,
+            None,
+            None,
         )
-        .expect("init bucket");
+        .unwrap();
+
+        let bucket = Bucket::new(app_config.s3_bucket.clone().as_str(), region, credentials)
+            .expect("init bucket");
 
         CVManager { bucket }
     }

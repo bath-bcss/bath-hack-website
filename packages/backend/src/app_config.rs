@@ -16,6 +16,8 @@ pub struct AppConfig {
     pub s3_endpoint: String,
     pub s3_region: String,
     pub s3_bucket: String,
+    pub s3_access_key: String,
+    pub s3_secret_key: String,
 
     #[cfg(feature = "ldap")]
     pub ldap_url: String,
