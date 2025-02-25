@@ -86,7 +86,7 @@ pub fn account_sidebar(props: &Props) -> Html {
                 <div class="flex items-center justify-between mb-2 md:mb-0">
                     <h1 class="text-3xl text-white dark:text-bcss-200 font-bold tracking-tighter">
                         <Link<Route> to={Route::Home} classes={classes!("hover:underline")}>
-                            { "WiTathon 25" }
+                            { "Bath Hack 25" }
                         </Link<Route>>
                     </h1>
                     <Button
