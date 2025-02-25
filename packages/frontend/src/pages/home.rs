@@ -18,7 +18,6 @@ use crate::{
                 heading::SectionIcon, page_section::FlashyHomepageSection,
                 section_paragraph::FlashyHomepageSectionParagraph,
             },
-            sponsors::SponsorsGrid,
         },
         hero::gradient::HeroGradientContainer,
         nav::ScrollingNavbar,
