@@ -130,7 +130,11 @@ pub fn home_page() -> Html {
                     <FlashyHomepageSectionParagraph>
                         { "Our sponsors make the event possible: they fund our food, snacks, prizes, t-shirts, and everything else. We're immensely thankful to them, as Bath Hack would not be able to run without their support! Many of them will be present at our careers fair for some valuable networking." }
                     </FlashyHomepageSectionParagraph>
-                    <SponsorsGrid />
+                    <FlashyHomepageSectionParagraph>
+                        <strong>{ "Full list of sponsors coming soon!" }</strong>
+                        { " We'll be announcing a range of exciting sponsors this year very shortly." }
+                    </FlashyHomepageSectionParagraph>
+                    // <SponsorsGrid />
                 </FlashyHomepageSection>
                 <ImageRow />
                 <FlashyHomepageSection
