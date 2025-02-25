@@ -9,7 +9,18 @@ pub fn homepage_footer() -> Html {
                     { "Website copyright © Pal Kerecsenyi 2024-25; licensed under GNU GPL 3.0." }
                 </p>
                 <p class="text-bcss-800 dark:text-bcss-200">
-                    { "Images, some text, and other assets © BCSS Committee 2024/25, 2023/24, and 2022/23." }
+                    { "Photos by Joshua Dale (IG: " }
+                    <a href="https://instagram.com/crafty_jj" target="_blank" class="underline">
+                        { "@crafty_jj" }
+                    </a>
+                    { ") and Hayden Fernandes (IG: " }
+                    <a href="https://instagram.com/heyhayden02" target="_blank" class="underline">
+                        { "@heyhayden02" }
+                    </a>
+                    { ") from Bath Hack 2024." }
+                </p>
+                <p class="text-bcss-800 dark:text-bcss-200">
+                    { "Some images, text, and other assets © BCSS Committee 2024/25, 2023/24, and 2022/23." }
                 </p>
                 <p class="text-bcss-800 dark:text-bcss-200">
                     { "Source code and license details available on " }

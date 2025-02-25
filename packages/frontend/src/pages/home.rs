@@ -9,15 +9,10 @@ use crate::{
     components::{
         button::Button,
         flashy_homepage::{
-            faqs::FAQs,
-            footer::HomepageFooter,
-            image_grid::image_grid_container::ImageGrid,
-            schedule::Schedule,
-            section::{
+            faqs::FAQs, footer::HomepageFooter, image_grid::image_grid_container::ImageGrid, image_row::image_row::ImageRow, schedule::Schedule, section::{
                 heading::SectionIcon, page_section::FlashyHomepageSection,
                 section_paragraph::FlashyHomepageSectionParagraph,
-            },
-            sponsors::SponsorsGrid,
+            }, sponsors::SponsorsGrid
         },
         hero::gradient::HeroGradientContainer,
         nav::ScrollingNavbar,
@@ -131,6 +126,7 @@ pub fn home_page() -> Html {
                     </FlashyHomepageSectionParagraph>
                     <SponsorsGrid />
                 </FlashyHomepageSection>
+                <ImageRow />
                 <FlashyHomepageSection
                     icon={SectionIcon::Icon(IconId::FontAwesomeSolidQuestion)}
                     title="FAQs"

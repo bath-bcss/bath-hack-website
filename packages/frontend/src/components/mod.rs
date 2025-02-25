@@ -5,6 +5,7 @@ pub mod flashy_homepage;
 pub mod form;
 pub mod glass_container;
 pub mod hero;
+pub mod image;
 pub mod loading_spinner;
 pub mod modal;
 pub mod nav;

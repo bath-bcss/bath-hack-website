@@ -1,9 +1,9 @@
 use yew::prelude::*;
 
 use crate::{
-    components::flashy_homepage::section::{
+    components::{flashy_homepage::section::{
         heading::FlashyHomepageSectionHeading, section_paragraph::FlashyHomepageSectionParagraph,
-    },
+    }, image::Image},
     data::image_url::get_image_url,
 };
 
@@ -48,13 +48,7 @@ pub fn flashy_homepage_section(props: &Props) -> Html {
             </div>
             if let Some(image_src) = (*image_src).clone() {
                 <div class="md:max-w-[40%] mt-14 md:mt-20 md:ml-8">
-                    <img
-                        src={image_src}
-                        class="h-auto rounded-2xl shadow-xl shadow-bcss-900/40 dark:brightness-95"
-                        width="400"
-                        loading="lazy"
-                        role="presentation"
-                    />
+                    <Image src={image_src} />
                 </div>
             }
         </div>
