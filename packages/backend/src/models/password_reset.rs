@@ -2,8 +2,10 @@ use std::collections::HashMap;
 
 use bhw_models::{password_reset, prelude::*, website_user};
 use chrono::{Duration, Utc};
-use mailgun_rs::{SendResponse, SendResult};
-use rand::{distr::{Alphanumeric, SampleString}, rng};
+use rand::{
+    distr::{Alphanumeric, SampleString},
+    rng,
+};
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, ModelTrait, PaginatorTrait,
     QueryFilter, QuerySelect, SelectColumns, Set,
@@ -100,7 +102,7 @@ impl PasswordResetHelper {
         app_config: &AppConfig,
         to_username: String,
         pin: String,
-    ) -> SendResult<SendResponse> {
+    ) -> Result<(), reqwest::Error> {
         let mailer = Mailer::client(app_config);
         let mut mail_vars = HashMap::new();
         mail_vars.insert("pin".to_string(), pin);
@@ -111,7 +113,8 @@ impl PasswordResetHelper {
                 template_key: "bhw-password-reset".to_string(),
                 subject: "Reset your WiTathon password".to_string(),
             })
-            .await
+            .await?;
+        Ok(())
     }
 
     pub async fn find_and_delete_pin<T: ConnectionTrait>(

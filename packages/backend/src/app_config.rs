@@ -25,6 +25,7 @@ pub struct AppConfig {
 
     pub allowed_origin: String,
     pub dev_weak_passwords: bool,
+    pub dev_skip_emails: bool,
 }
 
 pub fn parse_config() -> AppConfig {

@@ -9,8 +9,6 @@ use bhw_models::prelude::*;
 use bhw_models::signup_request;
 use chrono::Duration;
 use chrono::Utc;
-use mailgun_rs::SendResponse;
-use mailgun_rs::SendResult;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait,
     QueryFilter, QuerySelect, Set,
@@ -164,7 +162,7 @@ impl SignupRequestHelper {
         signup_request: &signup_request::Model,
         config: &AppConfig,
         secret: &str,
-    ) -> SendResult<SendResponse> {
+    ) -> Result<(), reqwest::Error> {
         let mailer = Mailer::client(config);
         let mut mail_vars = HashMap::new();
         mail_vars.insert("request_id".to_string(), signup_request.id.to_string());
@@ -176,13 +174,14 @@ impl SignupRequestHelper {
             template_key: "bhw-welcome".to_string(),
             vars: mail_vars,
         };
-        mailer.send_template(instruction).await
+        mailer.send_template(instruction).await?;
+        Ok(())
     }
 
     pub async fn send_notification_email(
         signup_request: &signup_request::Model,
         config: &AppConfig,
-    ) -> SendResult<SendResponse> {
+    ) -> Result<(), reqwest::Error> {
         let mailer = Mailer::client(config);
 
         let instruction = SendInstruction {
@@ -191,7 +190,8 @@ impl SignupRequestHelper {
             template_key: "bhw-welcome-noverify".to_string(),
             vars: HashMap::new(),
         };
-        mailer.send_template(instruction).await
+        mailer.send_template(instruction).await?;
+        Ok(())
     }
 
     #[cfg(feature = "ldap")]

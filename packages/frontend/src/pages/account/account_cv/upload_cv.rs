@@ -65,15 +65,15 @@ pub fn upload_cv_page(props: &AccountCVSubpageProps) -> Html {
     html! {
         <>
             <PageControlParagraph>
-                { "Some of our sponsors may be recruiting interns and are therefore interested in seeing the CVs of
-                    any
-                    potential applicants. This is completely optional, and it only takes a few seconds!" }
+                { "Some of our sponsors may be recruiting placement students and/or graduates, and are therefore interested in seeing the CVs of any potential applicants. This is completely optional, and it only takes a few seconds!" }
             </PageControlParagraph>
             <PageControlParagraph>
-                { "If you upload a CV, it will be shared with some of our sponsors, along with your provided display
-            name (if any), group name, and University username (so they can get in touch with you). This does " }
+                { "If you upload a CV, it will be shared with some of our sponsors, along with your provided display name (if any), group name, and University username (so they can get in touch with you). This does " }
                 <strong>{ "not" }</strong>
                 { " constitute a formal job application of any kind." }
+            </PageControlParagraph>
+            <PageControlParagraph>
+                { "You'll be able to remove your CV at any point prior to the end of the event." }
             </PageControlParagraph>
             <form onsubmit={on_cv_submit.clone()}>
                 <Input

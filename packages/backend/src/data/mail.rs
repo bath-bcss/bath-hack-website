@@ -1,12 +1,13 @@
 use std::collections::HashMap;
 
-use mailgun_rs::{EmailAddress, Mailgun, MailgunRegion, Message, SendResponse, SendResult};
+use mailgun_rs::{EmailAddress, Mailgun, MailgunRegion, Message};
 
 use crate::app_config::AppConfig;
 
 pub struct Mailer {
-    pub api_key: String,
-    pub domain: String,
+    api_key: String,
+    domain: String,
+    skip: bool,
 }
 
 pub struct SendInstruction {
@@ -21,6 +22,7 @@ impl Mailer {
         Mailer {
             api_key: config.mailgun_api_key.clone(),
             domain: config.mailgun_domain.clone(),
+            skip: config.dev_skip_emails,
         }
     }
 
@@ -31,7 +33,11 @@ impl Mailer {
         }
     }
 
-    pub async fn send_template(&self, instruction: SendInstruction) -> SendResult<SendResponse> {
+    pub async fn send_template(&self, instruction: SendInstruction) -> Result<(), reqwest::Error> {
+        if self.skip {
+            return Ok(());
+        }
+
         let recipient = EmailAddress::address(&instruction.to);
 
         let message = Message {
@@ -45,7 +51,8 @@ impl Mailer {
         let client = self.mailgun();
         let from = EmailAddress::name_address("WiTathon", "no-reply@hack.bathcs.com");
 
-        client.async_send(MailgunRegion::EU, &from, message).await
+        client.async_send(MailgunRegion::EU, &from, message).await?;
+        Ok(())
     }
 
     pub async fn fake_send_email() {

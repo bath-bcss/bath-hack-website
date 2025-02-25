@@ -6,7 +6,10 @@ use yew_router::hooks::use_location;
 
 use crate::{
     components::{
-        account::profile::profile_datapoint::{ProfileDatapoint, ProfileKey},
+        account::profile::{
+            profile_datapoint::{ProfileDatapoint, ProfileKey},
+            t_shirt_size_picker::TShirtSizePicker,
+        },
         form::input::Input,
         loading_spinner::LoadingSpinner,
         page_container::PageContainer,
@@ -130,10 +133,11 @@ pub fn account_home_page() -> Html {
                     >
                         { "This will be shown to your team-mates and may be displayed throughout the event." }
                     </ProfileDatapoint>
-                    /*<TShirtSizePicker
+                    <TShirtSizePicker
                         current_value={profile.t_shirt_size}
                         on_datapoint_change={on_datapoint_change.clone()}
-                    />*/<ProfileDatapoint
+                    />
+                    <ProfileDatapoint
                         data_key={ProfileKey::AccessibilityRequirements}
                         current_value={profile.accessibility_requirements}
                         on_value_change={on_datapoint_change.clone()}

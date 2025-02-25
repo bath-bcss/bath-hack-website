@@ -116,12 +116,11 @@ pub fn account_sidebar(props: &Props) -> Html {
                         label="Group"
                         icon={IconId::FontAwesomeSolidPeopleGroup}
                     />
-                    /*
                     <SidebarElement
                         link_to={AccountRoute::CV}
                         label="CV"
                         icon={IconId::FontAwesomeSolidFileContract}
-                    /> */
+                    />
                 </div>
             </div>
             <div class="flex-1 pb-10">

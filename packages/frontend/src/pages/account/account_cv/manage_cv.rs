@@ -75,9 +75,7 @@ pub fn manage_cv_page(props: &AccountCVSubpageProps) -> Html {
             sponsors of the event, as listed on our home page." }
             </PageControlParagraph>
             <PageControlParagraph>
-                { "You can remove your CV (and thereby revoke consent to share your data with our sponsors) at any time
-                before
-                the end of the event. After this time, please contact each of the sponsors directly." }
+                { "You can remove your CV (and thereby revoke consent to share your data with our sponsors) at any time before the end of the event. After this time, please contact each of the sponsors directly." }
             </PageControlParagraph>
             <div>
                 <Button

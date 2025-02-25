@@ -43,7 +43,7 @@ where
             .await
             .map_err(|e| FrontendRequestError::DeserializeFailed(e.to_string()))?;
         return Err(data.into());
-    } else if response.status() < 500 {
+    } else if response.status() == 400 {
         let data: ValidationError = response
             .json()
             .await
