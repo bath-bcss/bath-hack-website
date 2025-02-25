@@ -2,10 +2,15 @@ use yew::prelude::*;
 
 #[derive(Clone, PartialEq)]
 pub enum FAQItemIndex {
+    NoCode,
     Duration,
     WhoCanParticipate,
     Food,
-    ExistingCode
+    Prizes,
+    Equipment,
+    ExistingCode,
+    Games,
+    Recruiters,
 }
 
 #[derive(Properties, PartialEq, Clone)]
