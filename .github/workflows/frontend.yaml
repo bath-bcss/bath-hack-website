@@ -25,7 +25,7 @@ jobs:
         run: trunk build --release # --filehash false
         working-directory: ./packages/frontend
         env:
-          BHW_FRONTEND_API_URL: "https://bh25-api.bathcs.com"
+          BHW_FRONTEND_API_URL: "https://bhw25-api.bathcs.com"
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
