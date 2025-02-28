@@ -4,36 +4,32 @@ use gloo_utils::window;
 use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
 use yew_icons::IconId;
-use yew_router::prelude::*;
 
-use crate::{
-    components::{
-        button::Button,
-        flashy_homepage::{
-            countdown::countdown::CountdownTimer,
-            faqs::FAQs,
-            footer::HomepageFooter,
-            image_grid::image_grid_container::ImageGrid,
-            image_row::image_row::ImageRow,
-            schedule::Schedule,
-            section::{
-                heading::SectionIcon, page_section::FlashyHomepageSection,
-                section_paragraph::FlashyHomepageSectionParagraph,
-            },
+use crate::components::{
+    button::Button,
+    flashy_homepage::{
+        countdown::countdown::CountdownTimer,
+        faqs::FAQs,
+        footer::HomepageFooter,
+        image_grid::image_grid_container::ImageGrid,
+        image_row::image_row::ImageRow,
+        schedule::Schedule,
+        section::{
+            heading::SectionIcon, page_section::FlashyHomepageSection,
+            section_paragraph::FlashyHomepageSectionParagraph,
         },
-        hero::gradient::HeroGradientContainer,
-        nav::ScrollingNavbar,
     },
-    router::Route,
+    hero::gradient::HeroGradientContainer,
+    nav::ScrollingNavbar,
 };
 
 #[function_component(HomePage)]
 pub fn home_page() -> Html {
-    let navigator = use_navigator().expect_throw("Navigator not found");
+    // let navigator = use_navigator().expect_throw("Navigator not found");
 
-    let on_sign_up_click = use_callback(navigator.clone(), move |_, _| {
+    /*let on_sign_up_click = use_callback(navigator.clone(), move |_, _| {
         navigator.push(&Route::Signup);
-    });
+    });*/
 
     let on_find_out_more_click = use_callback((), |e: MouseEvent, _| {
         e.prevent_default();
@@ -90,13 +86,18 @@ pub fn home_page() -> Html {
                         <strong>{ "all students at Bath" }</strong>
                         { " and we have loads of non-CS participants joining us every year. Are you ready for the best 24 hours of your life?" }
                     </FlashyHomepageSectionParagraph>
-                    <Button
+                    /*<Button
                         onclick={on_sign_up_click.clone()}
                         background_is_dark=false
                         class={classes!("mt-4")}
                     >
                         { "Sign up now!" }
-                    </Button>
+                    </Button>*/<CountdownTimer
+                        time_to={Utc.with_ymd_and_hms(2025, 3, 6, 12, 0, 0).unwrap()}
+                        target_name="Sign-ups open in"
+                        light=true
+                        class={classes!("mt-4")}
+                    />
                 </FlashyHomepageSection>
                 <FlashyHomepageSection
                     icon={SectionIcon::Icon(IconId::FontAwesomeSolidShuffle)}

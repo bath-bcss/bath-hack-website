@@ -8,6 +8,10 @@ use crate::components::flashy_homepage::countdown::countdown_unit::CountdownUnit
 pub struct Props {
     pub time_to: DateTime<Utc>,
     pub target_name: String,
+    #[prop_or_default]
+    pub light: bool,
+    #[prop_or_default]
+    pub class: Option<Classes>,
 }
 
 fn get_time_remaining(until: &DateTime<Utc>) -> TimeDelta {
@@ -40,14 +44,40 @@ pub fn countdown_timer(props: &Props) -> Html {
     let num_hours = (time_remaining.num_seconds() % 86400) / 3600;
     let num_days = (time_remaining.num_seconds()) / 86400;
 
+    let classes = classes!(
+        "rounded-xl",
+        "inline-block",
+        if props.light {
+            "bg-bcss-100"
+        } else {
+            "bg-bcss-300"
+        },
+        props.class.clone()
+    );
+
+    let row_classes = classes!(
+        "flex",
+        "border-t",
+        if props.light {
+            "border-bcss-300"
+        } else {
+            "border-bcss-400"
+        }
+    );
+
     html! {
-        <div class="bg-bcss-300 rounded-xl inline-block">
+        <div class={classes}>
             <p class="text-bcss-900 text-center my-2">{ props.target_name.to_owned() }</p>
-            <div class="flex border-t border-bcss-400">
-                <CountdownUnit unit_name="days" value={num_days} skip_leading_zeroes=true />
-                <CountdownUnit unit_name="hours" value={num_hours} />
-                <CountdownUnit unit_name="mins" value={num_mins} />
-                <CountdownUnit unit_name="secs" value={num_secs} />
+            <div class={row_classes}>
+                <CountdownUnit
+                    light={props.light}
+                    unit_name="days"
+                    value={num_days}
+                    skip_leading_zeroes=true
+                />
+                <CountdownUnit light={props.light} unit_name="hours" value={num_hours} />
+                <CountdownUnit light={props.light} unit_name="mins" value={num_mins} />
+                <CountdownUnit light={props.light} unit_name="secs" value={num_secs} />
             </div>
         </div>
     }

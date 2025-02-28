@@ -27,8 +27,12 @@ pub fn schedule() -> Html {
                 <ScheduleItem event="Hacking starts" time="12:00" is_first=false has_caption=true>
                     { "Get started with hacking! You'll have exactly 24 hours to build and document your project. Our Committee Members will be there to help with coding or practical issues, so look out for them in their hoodies." }
                 </ScheduleItem>
+                <ScheduleItem event="Free dinner!" time="19:00" has_caption=true>
+                    { "That's right! Bath Hack wouldn't be the same without free food. Dinner, breakfast, lunch, and snacks are all included at no charge whatsoever, thanks to our lovely sponsors! We usually serve Domino's pizza for dinner, but we'll confirm this shortly. A range of options will be available to meet all dietary requirements, so make sure to specify them when you sign up!" }
+                </ScheduleItem>
+                <ScheduleItem event="Breakfast" time="08:00" has_caption=false />
                 <ScheduleItem
-                    event="Hacking ends"
+                    event="Hacking ends & lunch"
                     day="Sun 6th Apr"
                     time="12:00"
                     is_first=false
