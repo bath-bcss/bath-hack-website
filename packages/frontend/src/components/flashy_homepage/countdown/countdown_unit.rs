@@ -35,7 +35,7 @@ pub fn countdown_unit(props: &Props) -> Html {
     html! {
         <div class={div_classes}>
             <p class="text-3xl text-bcss-950 font-medium leading-none">{ formatted_value }</p>
-            <p class="text-bcss-800 leading-none">{ props.unit_name.to_owned() }</p>
+            <p class="text-bcss-900 leading-none">{ props.unit_name.to_owned() }</p>
         </div>
     }
 }
