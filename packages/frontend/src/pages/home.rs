@@ -5,22 +5,25 @@ use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
 use yew_icons::IconId;
 
-use crate::components::{
-    button::Button,
-    flashy_homepage::{
-        countdown::countdown::CountdownTimer,
-        faqs::FAQs,
-        footer::HomepageFooter,
-        image_grid::image_grid_container::ImageGrid,
-        image_row::image_row::ImageRow,
-        schedule::Schedule,
-        section::{
-            heading::SectionIcon, page_section::FlashyHomepageSection,
-            section_paragraph::FlashyHomepageSectionParagraph,
+use crate::{
+    components::{
+        button::Button,
+        flashy_homepage::{
+            countdown::countdown::CountdownTimer,
+            faqs::FAQs,
+            footer::HomepageFooter,
+            image_grid::image_grid_container::ImageGrid,
+            image_row::image_row::ImageRow,
+            schedule::Schedule,
+            section::{
+                heading::SectionIcon, page_section::FlashyHomepageSection,
+                section_paragraph::FlashyHomepageSectionParagraph,
+            },
         },
+        hero::gradient::HeroGradientContainer,
+        nav::ScrollingNavbar,
     },
-    hero::gradient::HeroGradientContainer,
-    nav::ScrollingNavbar,
+    data::image_url::get_image_url,
 };
 
 #[function_component(HomePage)]
@@ -177,12 +180,26 @@ pub fn home_page() -> Html {
                         { "This event has been organised by the Committee of the Bath Computer Science Society. We put lots of effort into organising it each year and aim to make it bigger and better every time." }
                     </FlashyHomepageSectionParagraph>
                     <FlashyHomepageSectionParagraph>
-                        { "BCSS is a member society of the University of Bath Student Union and is also a student chapter of the British Computer Society. We are a society for anyone with any interest in Computing, open to any student studying any degree. Our key aim is to encourage more people into the field, as well as to teach important industry skills to help encourage our members to grow." }
+                        { "BCSS is a member society of the University of Bath Student Union and is also a student chapter of the British Computing Society. We are a society for anyone with any interest in Computing, open to any student studying any degree. Our key aim is to encourage more people into the field, as well as to teach important industry skills to help encourage our members to grow." }
+                    </FlashyHomepageSectionParagraph>
+                    <FlashyHomepageSectionParagraph>
+                        { "We are sponsored by" }
+                        <a
+                            href="https://www.qube-rt.com/"
+                            target="_blank"
+                            rel="noreferrer"
+                            class="mt-3 block"
+                        >
+                            <img
+                                src={get_image_url("sponsors/qrt.svg".to_owned())}
+                                class="h-16 w-auto inline-block"
+                            />
+                        </a>
                     </FlashyHomepageSectionParagraph>
                     <Button
                         onclick={on_find_out_more_click.clone()}
                         background_is_dark=false
-                        class={classes!("mt-4")}
+                        class={classes!("mt-8")}
                     >
                         { "Find out more" }
                     </Button>

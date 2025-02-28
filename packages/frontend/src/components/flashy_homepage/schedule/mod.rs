@@ -22,7 +22,7 @@ pub fn schedule() -> Html {
                     is_first=true
                     has_caption=true
                 >
-                    { "Come to our reception to get checked into the event. We'll make sure you've got a group and help you find one if you don't. Then, explore our career's fair to network with our exciting placement and graduate employers." }
+                    { "Come to our reception to get checked into the event and claim your FREE t-shirt! We'll make sure you've got a group and help you find one if you don't. Then, explore our career's fair to network with our exciting placement and graduate employers." }
                 </ScheduleItem>
                 <ScheduleItem event="Hacking starts" time="12:00" is_first=false has_caption=true>
                     { "Get started with hacking! You'll have exactly 24 hours to build and document your project. Our Committee Members will be there to help with coding or practical issues, so look out for them in their hoodies." }
