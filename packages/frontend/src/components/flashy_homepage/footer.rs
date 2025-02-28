@@ -1,5 +1,7 @@
 use yew::prelude::*;
 
+use crate::data::image_url::get_image_url;
+
 #[function_component(HomepageFooter)]
 pub fn homepage_footer() -> Html {
     html! {
@@ -40,6 +42,12 @@ pub fn homepage_footer() -> Html {
                     </a>
                     { " for support." }
                 </p>
+                <a href="https://thesubath.com" target="_blank" rel="noreferrer">
+                    <img
+                        src={get_image_url("sponsors/thesubath.webp".to_string())}
+                        class="mt-6 h-12 w-auto"
+                    />
+                </a>
             </div>
         </footer>
     }
