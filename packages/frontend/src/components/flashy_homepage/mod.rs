@@ -1,3 +1,4 @@
+pub mod countdown;
 pub mod faqs;
 pub mod footer;
 pub mod image_grid;

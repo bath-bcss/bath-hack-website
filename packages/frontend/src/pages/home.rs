@@ -1,4 +1,5 @@
 use bhw_types::common_data::EVENT_INSTANCE_NAME;
+use chrono::prelude::*;
 use gloo_utils::window;
 use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
@@ -9,6 +10,7 @@ use crate::{
     components::{
         button::Button,
         flashy_homepage::{
+            countdown::countdown::CountdownTimer,
             faqs::FAQs,
             footer::HomepageFooter,
             image_grid::image_grid_container::ImageGrid,
@@ -60,9 +62,12 @@ pub fn home_page() -> Html {
                         >
                             { "5th — 6th Apr. Free to enter." }
                         </p>
-                        <Button background_is_dark=true onclick={on_sign_up_click.clone()}>
+                        /* <Button background_is_dark=true onclick={on_sign_up_click.clone()}>
                             { "Sign up!" }
-                        </Button>
+                        </Button> */<CountdownTimer
+                            time_to={Utc.with_ymd_and_hms(2025, 3, 6, 12, 0, 0).unwrap()}
+                            target_name="Sign-ups open in"
+                        />
                     </div>
                     <ImageGrid />
                 </div>
