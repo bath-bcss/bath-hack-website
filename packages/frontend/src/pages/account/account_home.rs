@@ -106,7 +106,7 @@ pub fn account_home_page() -> Html {
             <PageControlParagraph>
                 { "All of the below fields are completely optional. Please refer to " }
                 <a
-                    href="https://docs.google.com/document/d/1qdNYvHsxai4Xr7qLl1RnQOMxZDuBqXSO7oGSoh-SVCo/edit?usp=sharing"
+                    href="https://docs.google.com/document/d/1wB2TAomtm-AqGnNGw_sjMskf_KuEoHDC6qy9XHaitqY/edit?usp=sharing"
                     target="_blank"
                     class="underline"
                 >

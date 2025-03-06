@@ -84,7 +84,7 @@ pub fn signup_notice_page() -> Html {
                     <GlassContainerParagraph top_margin=true>
                         { "By continuing, you confirm you have read and understood our " }
                         <a
-                            href="https://docs.google.com/document/d/1qdNYvHsxai4Xr7qLl1RnQOMxZDuBqXSO7oGSoh-SVCo/edit?usp=sharing"
+                            href="https://docs.google.com/document/d/1wB2TAomtm-AqGnNGw_sjMskf_KuEoHDC6qy9XHaitqY/edit?usp=sharing"
                             target="_blank"
                             class="underline"
                         >
