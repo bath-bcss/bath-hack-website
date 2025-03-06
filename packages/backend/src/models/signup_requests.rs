@@ -7,6 +7,7 @@ use crate::util::email_address::email_address;
 use crate::util::passwords::PasswordManager;
 use bhw_models::prelude::*;
 use bhw_models::signup_request;
+use bhw_types::common_data::EVENT_NAME;
 use chrono::Duration;
 use chrono::Utc;
 use sea_orm::{
@@ -170,7 +171,7 @@ impl SignupRequestHelper {
 
         let instruction = SendInstruction {
             to: Self::email_address(signup_request),
-            subject: "Welcome to WiTathon!".to_string(),
+            subject: format!("Welcome to {}!", EVENT_NAME),
             template_key: "bhw-welcome".to_string(),
             vars: mail_vars,
         };
@@ -186,7 +187,7 @@ impl SignupRequestHelper {
 
         let instruction = SendInstruction {
             to: Self::email_address(signup_request),
-            subject: "Welcome to WiTathon!".to_string(),
+            subject: format!("Welcome to {}!", EVENT_NAME),
             template_key: "bhw-welcome-noverify".to_string(),
             vars: HashMap::new(),
         };

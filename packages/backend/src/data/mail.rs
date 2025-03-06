@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use bhw_types::common_data::EVENT_NAME;
 use mailgun_rs::{EmailAddress, Mailgun, MailgunRegion, Message};
 
 use crate::app_config::AppConfig;
@@ -49,7 +50,7 @@ impl Mailer {
         };
 
         let client = self.mailgun();
-        let from = EmailAddress::name_address("WiTathon", "no-reply@hack.bathcs.com");
+        let from = EmailAddress::name_address(EVENT_NAME, "no-reply@hack.bathcs.com");
 
         client.async_send(MailgunRegion::EU, &from, message).await?;
         Ok(())

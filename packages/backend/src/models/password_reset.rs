@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use bhw_models::{password_reset, prelude::*, website_user};
+use bhw_types::common_data::EVENT_NAME;
 use chrono::{Duration, Utc};
 use rand::{
     distr::{Alphanumeric, SampleString},
@@ -111,7 +112,7 @@ impl PasswordResetHelper {
                 to: email_address(to_username),
                 vars: mail_vars,
                 template_key: "bhw-password-reset".to_string(),
-                subject: "Reset your WiTathon password".to_string(),
+                subject: format!("Reset your {} password", EVENT_NAME),
             })
             .await?;
         Ok(())
