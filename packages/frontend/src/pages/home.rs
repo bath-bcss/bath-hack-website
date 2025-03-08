@@ -17,6 +17,7 @@ use crate::{
                 section_paragraph::FlashyHomepageSectionParagraph,
             },
             sponsors::SponsorsGrid,
+            tracks::TrackGrid,
         },
         hero::gradient::HeroGradientContainer,
         nav::ScrollingNavbar,
@@ -100,13 +101,7 @@ pub fn home_page() -> Html {
                     <FlashyHomepageSectionParagraph>
                         { "A hackathon track is a category that has a specific prize you can choose to focus your project on for a chance of winning. All projects will be considered for all tracks." }
                     </FlashyHomepageSectionParagraph>
-                    <FlashyHomepageSectionParagraph>
-                        { "Our tracks will be released closer to the event date." }
-                    </FlashyHomepageSectionParagraph>
-                    <FlashyHomepageSectionParagraph>
-                        { "There will be tracks based on technical ability, User graphics and entrepreneurial approach. This is a hacking competition but we encourage students of all technical ability to attend." }
-                    </FlashyHomepageSectionParagraph>
-                    /* <TrackGrid /> */
+                    <TrackGrid />
                 </FlashyHomepageSection>
                 <FlashyHomepageSection
                     icon={SectionIcon::Icon(IconId::FontAwesomeSolidClock)}
