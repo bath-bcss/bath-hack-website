@@ -48,12 +48,13 @@ pub fn home_page() -> Html {
             <HeroGradientContainer>
                 <div class="w-full px-4 sm:px-6 md:px-8 lg:px-[5%] xl:px-[10%] flex items-center">
                     <div class="space-y-4 flex-1 md:mr-10">
+                        <img src={get_image_url("logo.svg".to_string())} class="h-36 xl:h-48 mb-2" />
                         <h1
-                            class="text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-hero text-white dark:text-bcss-100 leading-none"
+                            class="text-4xl md:text-5xl xl:text-6xl font-hero text-white dark:text-bcss-100 leading-none"
                         >
                             { EVENT_INSTANCE_NAME }
                         </h1>
-                        <p class="text-heroSubtitle text-white dark:text-bcss-100">
+                        <p class="text-heroSubtitle text-white dark:text-bcss-100 leading-tight">
                             { "Join 200 engineers, designers, and creators in Bath's ultimate 24-hour challenge. Win incredible prizes, eat free food, and make amazing memories." }
                         </p>
                         <p

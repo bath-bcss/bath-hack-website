@@ -11,6 +11,7 @@ use crate::{
         },
         hero::center::HeroCenterContainer,
     },
+    data::image_url::get_image_url,
     router::Route,
 };
 
@@ -40,6 +41,7 @@ pub fn sign_up_page() -> Html {
     html! {
         <HeroCenterContainer>
             <GlassContainer home_link=true>
+                <img src={get_image_url("logo.svg".to_string())} class="h-36 mb-4" />
                 <GlassContainerHeading>{ "Sign Up to " }{ EVENT_NAME }</GlassContainerHeading>
                 /*<GlassContainerParagraph>
                     { "Sign-ups are currently closed, and will open at 12pm on Thursday 6th March. Places are likely to go extremely quickly, so be ready!" }

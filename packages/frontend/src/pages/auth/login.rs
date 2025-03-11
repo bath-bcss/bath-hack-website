@@ -36,7 +36,7 @@ pub fn login_page() -> Html {
         move |e: SubmitEvent, _| {
             e.prevent_default();
 
-            let username = username.clone();
+            let username = username.trim_end_matches("@bath.ac.uk").to_owned();
             let password = password.clone();
             let error_handle = error_handle.clone();
             let loading_handle = loading_handle.clone();
@@ -77,11 +77,7 @@ pub fn login_page() -> Html {
                         input_class={classes!("mb-4")}
                         disabled={loading}
                     />
-                    <Button
-                        background_is_dark=false
-                        button_type="submit"
-                        disabled={loading}
-                    >
+                    <Button background_is_dark=false button_type="submit" disabled={loading}>
                         { "Sign in!" }
                     </Button>
                     <ErrorMessage message={error} />
