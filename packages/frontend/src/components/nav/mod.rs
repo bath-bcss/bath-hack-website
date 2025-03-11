@@ -4,7 +4,10 @@ use web_sys::{
 };
 use yew::prelude::*;
 
-use crate::components::nav::link::{NavLink, NavLinkDestination};
+use crate::{
+    components::nav::link::{NavLink, NavLinkDestination},
+    data::image_url::get_image_url,
+};
 
 mod link;
 
@@ -67,9 +70,33 @@ pub fn scrolling_navbar() -> Html {
         base_classes
     });
 
+    let logo_heading_classes = use_memo((is_at_top,), |(is_at_top,)| {
+        let mut base_classes = classes!(
+            "transition-[transform,opacity]",
+            "hover:scale-110",
+            "active:scale-105",
+            "mr-6"
+        );
+
+        if *is_at_top {
+            base_classes.push(classes!("opacity-0"))
+        }
+
+        base_classes
+    });
+
     html! {
         <div class={(*container_classes).clone()}>
             <div class="flex items-center justify-start space-x-3">
+                <h1 class={(*logo_heading_classes).clone()}>
+                    <a
+                        class="text-lg tracking-tighter font-bold text-bcss-200 hover:text-white"
+                        href="#"
+                        tabindex="-1"
+                    >
+                        <img src={get_image_url("wizard.svg".to_string())} class="h-16 w-16" />
+                    </a>
+                </h1>
                 <NavLink
                     dest={NavLinkDestination::Anchor("welcome".to_string())}
                     label="About"

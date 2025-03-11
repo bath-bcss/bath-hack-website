@@ -11,6 +11,17 @@ pub fn homepage_footer() -> Html {
                     { "Website copyright © Pal Kerecsenyi 2024-25; licensed under GNU GPL 3.0." }
                 </p>
                 <p class="text-bcss-800 dark:text-bcss-200">
+                    { "Bath Hack Logo copyright © 2025 Helen Slater licensed under " }
+                    <a
+                        href="https://creativecommons.org/licenses/by-sa/4.0"
+                        target="_blank"
+                        class="underline"
+                    >
+                        { "CC BY-SA 4.0" }
+                    </a>
+                    { "." }
+                </p>
+                <p class="text-bcss-800 dark:text-bcss-200">
                     { "Photos by Joshua Dale (IG: " }
                     <a href="https://instagram.com/crafty_jj" target="_blank" class="underline">
                         { "@crafty_jj" }
