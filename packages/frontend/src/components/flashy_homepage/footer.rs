@@ -35,6 +35,10 @@ pub fn homepage_footer() -> Html {
                 <p class="text-bcss-800 dark:text-bcss-200">
                     { "Some images, text, and other assets © BCSS Committee 2024/25, 2023/24, and 2022/23." }
                 </p>
+                <p class="text-bcss-800 dark:text-bcss-200 my-2">
+                    { "GITHUB®, the GITHUB® logo design, the INVERTOCAT logo design, OCTOCAT®, and the OCTOCAT® logo design are trademarks of GitHub, Inc., registered in the United States and other countries. " }
+                    { "AMD and AMD Arrow logo are trademarks of Advanced Micro Devices, Inc., registered in the United States and other countries." }
+                </p>
                 <p class="text-bcss-800 dark:text-bcss-200">
                     { "Source code and license details available on " }
                     <a
