@@ -85,6 +85,16 @@ pub async fn sign_up_route(
         return Err(SignUpResponseError::UsernameAlreadyExists);
     }
 
+    let new_allowed = UserHelper::are_new_users_allowed(&txn, &config)
+        .await
+        .map_err(|e| {
+            error!("checking user limit: {}", e.to_string());
+            SignUpResponseError::DBError
+        })?;
+    if !new_allowed {
+        return Err(SignUpResponseError::Capacity);
+    }
+
     let new_sr = SignupRequestHelper::create(
         &txn,
         &request.bath_username.clone(),

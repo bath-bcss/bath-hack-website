@@ -1,12 +1,13 @@
-use bhw_models::{prelude::*, sea_orm_active_enums::TShirtSizeEnum, website_user};
+use bhw_models::{prelude::*, sea_orm_active_enums::TShirtSizeEnum, signup_request, website_user};
 use bhw_types::{models::website_user::TShirtSize, requests::update_profile::UpdateProfileRequest};
+use chrono::Utc;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, PaginatorTrait,
     QueryFilter, QuerySelect, Set,
 };
 use thiserror::Error;
 
-use crate::util::passwords::PasswordManager;
+use crate::{app_config::AppConfig, util::passwords::PasswordManager};
 
 #[derive(Debug, Error)]
 pub enum CreateUserError {
@@ -50,6 +51,23 @@ impl UserHelper {
             .count(conn)
             .await?;
         Ok(result_count > 0)
+    }
+
+    pub async fn are_new_users_allowed<C: ConnectionTrait>(
+        conn: &C,
+        config: &AppConfig,
+    ) -> Result<bool, DbErr> {
+        if config.max_signups.is_none() {
+            return Ok(true);
+        }
+
+        let user_count = WebsiteUser::find().count(conn).await?;
+        let active_signup_request_count = SignupRequest::find()
+            .filter(signup_request::Column::ExpiresAt.gt(Utc::now()))
+            .count(conn)
+            .await?;
+
+        Ok((user_count + active_signup_request_count + 1) <= config.max_signups.unwrap())
     }
 
     pub async fn find_by_username<C: ConnectionTrait>(
@@ -207,8 +225,8 @@ impl UserHelper {
         id: &uuid::Uuid,
         new_password: &str,
     ) -> Result<(), UpdateUserPasswordError> {
-        let password_hash = PasswordManager::hash(new_password)
-            .map_err(UpdateUserPasswordError::PasswordHash)?;
+        let password_hash =
+            PasswordManager::hash(new_password).map_err(UpdateUserPasswordError::PasswordHash)?;
         let updated_user = website_user::ActiveModel {
             id: Set(*id),
             password_hash: Set(password_hash),

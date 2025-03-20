@@ -13,6 +13,8 @@ pub struct SignUpRequest {
 pub enum SignUpResponseError {
     #[error("Username already registered")]
     UsernameAlreadyExists,
+    #[error("All places are already filled and we aren't accepting any more signups. Sorry!")]
+    Capacity,
     #[error("That doesn't look like a valid UoB username. Please contact su-bcss@bath.ac.uk if we're wrong.")]
     UsernameInvalid,
     #[error("Sorry, it looks like you aren't a student at UoB. Please contact su-bcss@bath.ac.uk if we're wrong.")]

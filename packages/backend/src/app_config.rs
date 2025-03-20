@@ -24,6 +24,7 @@ pub struct AppConfig {
 
     pub disable_signup: bool,
     pub use_unverified_usernames: bool,
+    pub max_signups: Option<u64>,
 
     pub allowed_origin: String,
     pub dev_weak_passwords: bool,
