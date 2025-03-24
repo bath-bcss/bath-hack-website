@@ -43,6 +43,9 @@ pub fn sign_up_page() -> Html {
             <GlassContainer home_link=true>
                 <img src={get_image_url("logo.svg".to_string())} class="h-36 mb-4" />
                 <GlassContainerHeading>{ "Sign Up to " }{ EVENT_NAME }</GlassContainerHeading>
+                <GlassContainerParagraph>
+                    { "Unfortunately, sign-ups are now completely full. Please refer to the FAQ section of our home page for more information." }
+                </GlassContainerParagraph>
                 /*<GlassContainerParagraph>
                     { "Sign-ups are currently closed, and will open at 12pm on Thursday 6th March. Places are likely to go extremely quickly, so be ready!" }
                 </GlassContainerParagraph>
@@ -51,10 +54,9 @@ pub fn sign_up_page() -> Html {
                     target_name="Sign-ups open in"
                     light=true
                     class={classes!("mt-4")}
-                />*/<GlassContainerParagraph>
+                />*//*<GlassContainerParagraph>
                     { "We need your username to identify you and send event-related communications." }
-                </GlassContainerParagraph>
-                <form onsubmit={on_form_submit} class="mt-4">
+                </GlassContainerParagraph>*//*<form onsubmit={on_form_submit} class="mt-4">
                     <Input
                         input_label="Bath Username"
                         placeholder="E.g. pk760"
@@ -64,7 +66,7 @@ pub fn sign_up_page() -> Html {
                     <Button background_is_dark=false class={classes!("mt-4")} button_type="submit">
                         { "Sign up!" }
                     </Button>
-                </form>
+                </form>*/
             </GlassContainer>
         </HeroCenterContainer>
     }

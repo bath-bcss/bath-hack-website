@@ -30,6 +30,22 @@ pub fn faqs_component() -> Html {
         <div class="mt-4 space-y-4">
             <FAQItem
                 current_open={currently_open_index.clone()}
+                i={FAQItemIndex::SignupsFull}
+                on_click={on_item_click.clone()}
+                question="Signups are full?!"
+            >
+                <FAQItemParagraph>
+                    { "We know it's annoying! We have a record-breaking 220 participants this year, and we aren't financially able to provide a good experience for any more than this. New spaces are very unlikely to become available, but if they do you'll be able to sign up through this website." }
+                </FAQItemParagraph>
+                <FAQItemParagraph>
+                    { "If you or someone you know can no longer take part, please email su-bcss@bath.ac.uk to free up the space." }
+                </FAQItemParagraph>
+                <FAQItemParagraph>
+                    { "If someone who was supposed to be in your group didn't get to sign up, please email us and we'll see if we can sort out an additional spot." }
+                </FAQItemParagraph>
+            </FAQItem>
+            <FAQItem
+                current_open={currently_open_index.clone()}
                 i={FAQItemIndex::NoCode}
                 on_click={on_item_click.clone()}
                 question="I don't know how to code!"

@@ -3,7 +3,6 @@ use gloo_utils::window;
 use web_sys::wasm_bindgen::UnwrapThrowExt;
 use yew::prelude::*;
 use yew_icons::IconId;
-use yew_router::hooks::use_navigator;
 
 use crate::{
     components::{
@@ -24,16 +23,15 @@ use crate::{
         nav::ScrollingNavbar,
     },
     data::image_url::get_image_url,
-    router::Route,
 };
 
 #[function_component(HomePage)]
 pub fn home_page() -> Html {
-    let navigator = use_navigator().expect_throw("Navigator not found");
+    // let navigator = use_navigator().expect_throw("Navigator not found");
 
-    let on_sign_up_click = use_callback(navigator.clone(), move |_, _| {
+    /*let on_sign_up_click = use_callback(navigator.clone(), move |_, _| {
         navigator.push(&Route::Signup);
-    });
+    });*/
 
     let on_find_out_more_click = use_callback((), |e: MouseEvent, _| {
         e.prevent_default();
@@ -63,10 +61,14 @@ pub fn home_page() -> Html {
                         >
                             { "5th — 6th Apr. Free to enter." }
                         </p>
-                        <Button background_is_dark=true onclick={on_sign_up_click.clone()}>
+                        <p
+                            class="text-3xl text-white dark:text-bcss-100 font-bold py-4 px-6 inline-block bg-white/20 rounded-xl"
+                        >
+                            { "Sign-ups are now full!" }
+                        </p>
+                        /*<Button background_is_dark=true onclick={on_sign_up_click.clone()}>
                             { "Sign up!" }
-                        </Button>
-                        /*<CountdownTimer
+                        </Button>*//*<CountdownTimer
                             time_to={Utc.with_ymd_and_hms(2025, 3, 6, 12, 0, 0).unwrap()}
                             target_name="Sign-ups open in"
                         />*/
@@ -92,13 +94,17 @@ pub fn home_page() -> Html {
                         <strong>{ "all students at Bath" }</strong>
                         { " and we have loads of non-CS participants joining us every year. Are you ready for the best 24 hours of your life?" }
                     </FlashyHomepageSectionParagraph>
-                    <Button
+                    /*<Button
                         onclick={on_sign_up_click.clone()}
                         background_is_dark=false
                         class={classes!("mt-4")}
                     >
                         { "Sign up now!" }
-                    </Button>
+                    </Button>*/<p
+                        class="mt-6 text-3xl text-bcss-950 dark:text-bcss-100 font-bold py-4 px-6 inline-block bg-bcss-100 dark:bg-bcss-800 rounded-xl"
+                    >
+                        { "Sign-ups are now full!" }
+                    </p>
                     /*<CountdownTimer
                         time_to={Utc.with_ymd_and_hms(2025, 3, 6, 12, 0, 0).unwrap()}
                         target_name="Sign-ups open in"
